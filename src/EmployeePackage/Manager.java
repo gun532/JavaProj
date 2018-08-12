@@ -153,8 +153,7 @@ public class Manager extends Employee  {
             return e1;
         }
 
-        public static void main(String [] args)
-    {
+        public static void main(String [] args){
         Manager m = new Manager("Guy",1243,"050-112211",234532,2);
         //Employee e2 = new Seller("Joan",323,"052-44444444",423,m.getBranchNumber());
         //m.addEmploee();
@@ -163,5 +162,6 @@ public class Manager extends Employee  {
         e2.setJobPos(Profession.CASHIER);
         m.updateEpmloyee(e2);
         //m.deleteEmployee();
+        //me trying to see if I can push from intellij
     }
 }
