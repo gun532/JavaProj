@@ -98,7 +98,7 @@ public abstract class Client {
 
     @Override
     public String toString() {
-        return "Client Code: " + this.clientCode + "\nClient id: " + this.id + "\nClient full name: " + this.fullName + "\nClient phone number: " + this.phoneNumber
+        return "\nClient Details:\n" + "Client Code: " + this.clientCode + "\nClient id: " + this.id + "\nClient full name: " + this.fullName + "\nClient phone number: " + this.phoneNumber
         + "\nClient Type: " + this.type + "\nDiscount Rate: " + this.discountRate + "\nShopping History:\n" + this.shoppingHistory;
     }
 

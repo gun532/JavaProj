@@ -71,6 +71,6 @@ public class Product {
     @Override
     public String toString() {
         return "Product code" + "\nName: " + this.name + "\nPrice: " + this.price
-                + "\nAmount: " + this.amount + '\n';
+                + "\nAmount: " + this.amount + "\nTotal Value: " + this.price*this.amount + '\n';
     }
 }
