@@ -1,4 +1,4 @@
-package EmployeePackage;
+package ClientsPackage;
 
 public class Cashier extends Employee{
     public Cashier(String name, int id, String phone, int accountNum, int branchNumber)

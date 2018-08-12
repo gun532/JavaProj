@@ -1,4 +1,4 @@
-package EmployeePackage;
+package ClientsPackage;
 
 public class Seller extends Employee {
     public Seller(String name, int id, String phone, int accountNum, int branchNumber)

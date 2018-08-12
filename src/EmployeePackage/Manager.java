@@ -1,4 +1,4 @@
-package EmployeePackage;
+package ClientsPackage;
 
 import java.sql.*;
 import java.util.Scanner;

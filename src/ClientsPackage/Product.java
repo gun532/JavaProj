@@ -1,28 +1,31 @@
 package ClientsPackage;
 
-//MAY NEED TO DISTINCT BETWEEN PRODUCT TO ITEM
 public class Product {
-    private static int counter = 0;
-    private  int productCode;
+    private int productCode;
     private String name;
     private double price;
     private int amount;
 
-    public Product(){}
+    public Product(){
+        this.name = null;
+        this.price = 0;
+        this.amount = 0;
+        this.productCode = hashCode();
+    }
     public Product(String name, double price, int amount)
     {
-        this.productCode = counter++;
         this.name = name;
         this.price = price;
         this.amount = amount;
+        this.productCode = hashCode();
     }
 
-    public Product(int productCode, int amount)
+    public Product(Product product)
     {
-        this.productCode = productCode;
-        this.name = name;
-        this.price = price;
-        this.amount = amount;
+        this.productCode = product.productCode;
+        this.name = product.name;
+        this.price = product.price;
+        this.amount = product.amount;
     }
 
     public int getProductCode() {
@@ -67,7 +70,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product code: " + this.productCode + ", Name: " + this.name + ", Price: " + this.price
-                + ", Amount: " + this.amount;
+        return "Product code" + "\nName: " + this.name + "\nPrice: " + this.price
+                + "\nAmount: " + this.amount + '\n';
     }
 }
