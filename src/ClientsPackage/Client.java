@@ -22,14 +22,14 @@ public abstract class Client {
         this.shoppingHistory = new LinkedHashMap<Integer, ShoppingCart>();
     }
 
-    public Client(int in_id, String in_fullName, String in_phoneNumber) {
+    public Client(int in_id, String in_fullName, String in_phoneNumber, ClientType in_clientType, int in_discountRate) {
         this.id = in_id;
         this.fullName = in_fullName;
         this.phoneNumber = in_phoneNumber;
-        this.type = ClientType.NEWCLIENT;
-        this.discountRate = 0;
+        this.type = in_clientType;
+        this.discountRate = in_discountRate;
         this.shoppingHistory = new LinkedHashMap<Integer, ShoppingCart>();
-        this.clientCode = this.hashCode();
+        //this.clientCode = this.hashCode();
     }
 
     public Client(Client client)
@@ -40,7 +40,7 @@ public abstract class Client {
         this.type = client.type;
         this.discountRate = client.discountRate;
         this.shoppingHistory = client.shoppingHistory;
-        this.clientCode = this.hashCode();
+        //this.clientCode = this.hashCode();
     }
 
     public int getId() {
@@ -103,9 +103,9 @@ public abstract class Client {
     }
 
     public static void main(String args[]){
-        Client cl1 = new Client(304989171,"Roy Bar","0506797973") {};
+        //Client cl1 = new Client(304989171,"Roy Bar","0506797973") {};
         //cl1 = new VipClient(cl1);
-        System.out.println(cl1);
+        //System.out.println(cl1);
     }
 }
 

@@ -1,10 +1,13 @@
 package ClientsPackage;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ShoppingCart {
     private Map<Integer, Product> cart;
+    //private int orderID;
+    //private list<Product> cart;
     private int branchCode;
     private int employeeCode;
     private int totalAmount;

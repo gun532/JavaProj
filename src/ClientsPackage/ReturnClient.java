@@ -9,14 +9,10 @@ public class ReturnClient extends Client {
     }
 
     public ReturnClient(int in_id, String in_fullName, String in_phoneNumber){
-        super(in_id, in_fullName, in_phoneNumber);
-        this.setType(ClientType.RETURNCLIENT);
-        this.setDiscountRate(10);
+        super(in_id, in_fullName, in_phoneNumber,ClientType.RETURNCLIENT,10);
     }
 
-    public ReturnClient(Client client) {
+    public ReturnClient(ReturnClient client) {
         super(client);
-        this.setType(ClientType.RETURNCLIENT);
-        this.setDiscountRate(10);
     }
 }
