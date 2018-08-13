@@ -8,7 +8,7 @@ public abstract class Client {
     private String fullName;
     private String phoneNumber;
     private ClientType type;
-    private double discountRate;
+    protected double discountRate;
     private Map <Integer, ShoppingCart> shoppingHistory;
     private int clientCode;
 
@@ -22,12 +22,12 @@ public abstract class Client {
         this.shoppingHistory = new LinkedHashMap<Integer, ShoppingCart>();
     }
 
-    public Client(int in_id, String in_fullName, String in_phoneNumber, ClientType in_clientType, int in_discountRate) {
+    public Client(int in_id, String in_fullName, String in_phoneNumber, ClientType in_clientType) {
         this.id = in_id;
         this.fullName = in_fullName;
         this.phoneNumber = in_phoneNumber;
         this.type = in_clientType;
-        this.discountRate = in_discountRate;
+        //this.discountRate = in_discountRate;
         this.shoppingHistory = new LinkedHashMap<Integer, ShoppingCart>();
         //this.clientCode = this.hashCode();
     }
