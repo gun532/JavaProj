@@ -10,8 +10,8 @@ public class ShoppingCart {
     //private list<Product> cart;
     private int branchCode;
     private int employeeCode;
-    private int totalAmount;
-    private int totalProducts;
+    private int totalAmount; //this is calculated from the Map
+    private int totalProducts; //this is calculated from the Map
     private Date cartDate;
 
     public ShoppingCart(){
