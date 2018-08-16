@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 public class ShoppingCart {
-    private int cartID;
     private Map<Integer, Product> cart;
+    //private int orderID;
     //private list<Product> cart;
     private int branchCode;
     private int employeeCode;
-    private int totalAmount; //total price - calc from map
-    private int totalProducts; //total items - calc from map
+    private int totalAmount; //this is calculated from the Map
+    private int totalProducts; //this is calculated from the Map
     private Date cartDate;
 
     public ShoppingCart(){
