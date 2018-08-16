@@ -1,32 +1,43 @@
 package ClientsPackage;
 
-//MAY NEED TO DISTINCT BETWEEN PRODUCT TO ITEM
 public class Product {
-    //private static int counter = 0;
-    private  int productCode;
+    //private int productCode;
     private String name;
     private double price;
     private int amount;
 
-    public Product(){}
-    public Product(String name, double price, int amount)
-    {
-        //this.productCode = counter++;
-        this.name = name;
-        this.price = price;
-        this.amount = amount;
+    public Product(){
+        this.name = null;
+        this.price = 0;
+        this.amount = 0;
+      //  this.productCode = hashCode();
+    }
+    public Product(String name, double price, int amount) throws Exception {
+        if(price >= 0 && amount >= 0) {
+            this.name = name;
+            this.price = price;
+            this.amount = amount;
+        //    this.productCode = hashCode();
+        }
+        else {
+            throw new Exception("Invalid input! price and amount can't be a negative number.");
+        }
     }
 
-    public Product(int productCode, int amount)
+    public Product(Product product)
     {
-        this.productCode = productCode;
-        this.name = name;
-        this.price = price;
-        this.amount = amount;
+        //this.productCode = product.productCode;
+        this.name = product.name;
+        this.price = product.price;
+        this.amount = product.amount;
     }
+
+//    public int getProductCode() {
+//        return productCode;
+//    }
 
     public int getProductCode() {
-        return productCode;
+        return this.hashCode();
     }
 
     public String getName() {
@@ -41,33 +52,53 @@ public class Product {
         return price;
     }
 
-    public void setProductCode(int productCode) {
-        this.productCode = productCode;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setPrice(double price) throws Exception {
+        if (price >= 0) {
+            this.price = price;
+        } else {
+            throw new Exception("Amount must be positive.");
+        }
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setAmount(int amount) throws Exception {
+        if(amount >=0){
+            this.amount = amount;
+        } else{
+            throw new Exception("Amount must be positive.");
+        }
     }
 
-    public void incAmount(){
-        this.amount++;
+    public void incAmount(int amount) throws Exception {
+        if(amount >=0){
+            this.amount+= amount;
+        } else{
+          throw new Exception("Amount must be positive.");
+        }
     }
 
-    public void decAmount(){
-        this.amount--;
+    public void decAmount(int amount) throws Exception {
+        if(amount >=0){
+            this.amount-= amount;
+        } else{
+            throw new Exception("Amount must be positive.");
+        }
     }
 
     @Override
     public String toString() {
-        return "Product code: " + this.productCode + ", Name: " + this.name + ", Price: " + this.price
-                + ", Amount: " + this.amount;
+        return "Product code" + "\nName: " + this.name + "\nPrice: " + this.price
+                + "\nAmount: " + this.amount + "\nTotal Value: " + this.price*this.amount + '\n';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 1;
+        hash = (int) (hash * 17 + this.price);
+        hash = hash * 31 + this.name.hashCode();
+        return hash;
     }
 }

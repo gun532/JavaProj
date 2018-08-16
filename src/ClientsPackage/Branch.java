@@ -1,11 +1,14 @@
 package ClientsPackage;
 
+import java.util.Map;
+
 public class Branch {
     private int branchNumber;
     private String location;
     private int numberOfEmployees;
     private String phone;
     private Inventory branchInventory;
+    //private Map<Integer,Employee> employeeMap;
 
     public Branch(){
         this.branchNumber = hashCode();
@@ -20,6 +23,7 @@ public class Branch {
         this.location = location;
         this.numberOfEmployees = numberOfEmployees;
         this.phone = phone;
+        this.branchInventory = new Inventory();
     }
 
     public int getBranchNumber() {
@@ -38,6 +42,8 @@ public class Branch {
         return phone;
     }
 
+    public Inventory getBranchInventory() { return branchInventory; }
+
     public void setLocation(String location) {
         this.location = location;
     }
@@ -48,5 +54,11 @@ public class Branch {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @Override
+    public String toString() {
+        return "\nBranch Details:" + "\nBranch Number: " + this.branchNumber + "\nLocation: " + this.location
+                + "\nPhone Number: " + this.phone + this.branchInventory.toString();
     }
 }

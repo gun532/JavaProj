@@ -8,13 +8,13 @@ public abstract class Client {
     private String fullName;
     private String phoneNumber;
     private ClientType type;
-    protected double discountRate;
+    private double discountRate;
     private Map <Integer, ShoppingCart> shoppingHistory;
-    private int clientCode;
+    //private int clientCode;
 
     public  Client(){
         this.id = 0;
-        this.clientCode = 0;
+        //this.clientCode = 0;
         this.fullName = null;
         this.phoneNumber = null;
         this.type = ClientType.NEWCLIENT;
@@ -22,12 +22,12 @@ public abstract class Client {
         this.shoppingHistory = new LinkedHashMap<Integer, ShoppingCart>();
     }
 
-    public Client(int in_id, String in_fullName, String in_phoneNumber, ClientType in_clientType) {
+    public Client(int in_id, String in_fullName, String in_phoneNumber) {
         this.id = in_id;
         this.fullName = in_fullName;
         this.phoneNumber = in_phoneNumber;
-        this.type = in_clientType;
-        //this.discountRate = in_discountRate;
+        this.type = ClientType.NEWCLIENT;
+        this.discountRate = 0;
         this.shoppingHistory = new LinkedHashMap<Integer, ShoppingCart>();
         //this.clientCode = this.hashCode();
     }
@@ -67,9 +67,8 @@ public abstract class Client {
         return shoppingHistory;
     }
 
-    public int getClientCode() { return clientCode; }
-
-    public void setClientCode(int clientCode) { this.clientCode = clientCode; }
+    //public int getClientCode() { return clientCode; }
+    public int getClientCode() { return this.hashCode(); }
 
     public void setId(int id) {
         this.id = id;
@@ -98,14 +97,22 @@ public abstract class Client {
 
     @Override
     public String toString() {
-        return "Client Code: " + this.clientCode + "\nClient id: " + this.id + "\nClient full name: " + this.fullName + "\nClient phone number: " + this.phoneNumber
+        return "\nClient Details:\n" + "Client Code: " + this.hashCode() + "\nClient id: " + this.id + "\nClient full name: " + this.fullName + "\nClient phone number: " + this.phoneNumber
         + "\nClient Type: " + this.type + "\nDiscount Rate: " + this.discountRate + "\nShopping History:\n" + this.shoppingHistory;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 1;
+        hash = (int) (hash * 17 + this.id%10000);
+        hash = hash * 31 + this.fullName.charAt(0);
+        return hash;
+    }
+
     public static void main(String args[]){
-        //Client cl1 = new Client(304989171,"Roy Bar","0506797973") {};
+        Client cl1 = new Client(304989171,"Roy Bar","0506797973") {};
         //cl1 = new VipClient(cl1);
-        //System.out.println(cl1);
+        System.out.println(cl1);
     }
 }
 
