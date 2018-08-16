@@ -57,13 +57,13 @@
         <counts>
           <entry key="java" value="4512" />
           <entry key="sql" value="249" />
-          <entry key="txt" value="393" />
+          <entry key="txt" value="428" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JAVA" value="4512" />
-          <entry key="PLAIN_TEXT" value="393" />
+          <entry key="PLAIN_TEXT" value="428" />
           <entry key="SQL" value="249" />
         </counts>
       </usages-collector>
@@ -126,8 +126,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ClientsPackage/ShoppingCart.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="395">
-              <caret line="98" column="41" selection-start-line="98" selection-start-column="41" selection-end-line="98" selection-end-column="41" />
+            <state relative-caret-position="175">
+              <caret line="88" column="55" lean-forward="true" selection-start-line="88" selection-start-column="55" selection-end-line="88" selection-end-column="55" />
             </state>
           </provider>
         </entry>
@@ -309,7 +309,7 @@
     <property name="SearchEverywhereHistoryKey" value="execute table &#9;null&#9;null" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1534428869269" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1534428933088" />
     <property name="database.console.LAST_STATE" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../demofirstdemo" />
     <property name="project.structure.last.edited" value="Libraries" />
@@ -381,7 +381,7 @@
       <updated>1533889909091</updated>
       <workItem from="1533889914838" duration="3114000" />
       <workItem from="1533893475181" duration="11491000" />
-      <workItem from="1534067287294" duration="25314000" />
+      <workItem from="1534067287294" duration="25916000" />
     </task>
     <task id="LOCAL-00001" summary="Guy - First commit, includes all the worker related classes">
       <created>1534066802226</created>
@@ -446,11 +446,18 @@
       <option name="project" value="LOCAL" />
       <updated>1534428384663</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Change DB and create new tables">
+      <created>1534428899907</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1534428899907</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39919000" />
+    <option name="totallyTimeSpent" value="40521000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -500,7 +507,8 @@
     <MESSAGE value="Guy - First commit, includes all the worker related classes&#10;&#10;Check 3" />
     <MESSAGE value="Check if it changed the commit" />
     <MESSAGE value="Changed classes of Employee and some Client" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed classes of Employee and some Client" />
+    <MESSAGE value="Change DB and create new tables" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change DB and create new tables" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/bff1c604-7764-40ad-9bd0-99dc423f3112/console.sql">
@@ -768,8 +776,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ClientsPackage/ShoppingCart.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="98" column="41" selection-start-line="98" selection-start-column="41" selection-end-line="98" selection-end-column="41" />
+        <state relative-caret-position="175">
+          <caret line="88" column="55" lean-forward="true" selection-start-line="88" selection-start-column="55" selection-end-line="88" selection-end-column="55" />
         </state>
       </provider>
     </entry>
