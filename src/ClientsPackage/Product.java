@@ -2,7 +2,7 @@ package ClientsPackage;
 
 //MAY NEED TO DISTINCT BETWEEN PRODUCT TO ITEM
 public class Product {
-    private static int counter = 0;
+    //private static int counter = 0;
     private  int productCode;
     private String name;
     private double price;
@@ -11,7 +11,7 @@ public class Product {
     public Product(){}
     public Product(String name, double price, int amount)
     {
-        this.productCode = counter++;
+        //this.productCode = counter++;
         this.name = name;
         this.price = price;
         this.amount = amount;

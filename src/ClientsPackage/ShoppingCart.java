@@ -1,14 +1,17 @@
 package ClientsPackage;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ShoppingCart {
     private Map<Integer, Product> cart;
+    //private int orderID;
+    //private list<Product> cart;
     private int branchCode;
     private int employeeCode;
-    private int totalAmount;
-    private int totalProducts;
+    private int totalAmount; //this is calculated from the Map
+    private int totalProducts; //this is calculated from the Map
     private Date cartDate;
 
     public ShoppingCart(){
@@ -88,7 +91,7 @@ public class ShoppingCart {
     }
 
     public static void main(String[] args) throws Exception {
-        Client cl1 = new Client(304989171,"Roy Bar","0506797973") {};
+        Client cl1 = new VipClient(304989171,"Roy Bar","0506797973");
         ShoppingCart testShopCart1 = new ShoppingCart();
         Product newProduct1 = new Product("shirt", 30, 1);
         Product newProduct2 = new Product("jeans", 120, 1);

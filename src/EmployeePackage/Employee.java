@@ -4,7 +4,6 @@ import java.sql.*;
 import java.util.Random;
 
 public abstract class Employee {
-    //private static int counter = 0;
     private String name;
     private int id;
     private int employeeNumber;
@@ -15,7 +14,7 @@ public abstract class Employee {
 
     public Employee(){    }
 
-    public Employee(String name, int id, String phone, int accountNum)
+    public Employee(String name, int id, String phone, int accountNum, int branchNumber, Profession profession)
     {
         //Random rand = new Random();
         this.name = name;
@@ -23,8 +22,9 @@ public abstract class Employee {
         //this.employeeNumber = counter++;
         this.phone = phone;
         this.accountNum = accountNum;
-        branchNumber = -1;
-        jobPos = Profession.NOTSET;
+        this.branchNumber = branchNumber;
+        //branchNumber = -1;
+        jobPos = profession;
     }
 
     public String getName() {
@@ -87,7 +87,8 @@ public abstract class Employee {
     public String toString() {
         //System.out.println("This is the details:");
         return "Employee name: " + this.name + ", Employee number: " +this.employeeNumber+
-                ", Employee ID:" + this.id + ", Employee phone:" + this.phone+ ", Employee Account Number:" +this.accountNum;
+                ", Employee ID:" + this.id + ", Employee phone:" + this.phone+ ", Employee Account Number:" +this.accountNum
+                +", Employee Branch:" +this.branchNumber + ", Employee's Profession: " + this.jobPos;
     }
 
 
