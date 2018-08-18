@@ -1,5 +1,7 @@
 package EmployeePackage;
 
+import ClientsPackage.*;
+
 import java.sql.*;
 
 
@@ -41,6 +43,20 @@ public class Manager extends Employee {
     Employee selectDetails(int empNum) {
         return managerUtility.selectDetails(empNum);
     }
+
+
+
+    //we will wrap this function with an on click changed event to make it run few times
+    //product code and amount will be generated from a textbox. when the gui is ready we will take the
+    //values from the textbox inside the function
+    void newOrder(int branchName, int productCode, int amount) throws Exception {
+        Inventory inventory = managerUtility.selectFromInventory(branchName);
+        Product p = inventory.takeFromInventory(productCode, amount);
+        ShoppingCart cart = new ShoppingCart();
+        cart.addToCart(p);
+        managerUtility.updateInventory(inventory);
+    }
+
 
     public static void main(String[] args) {
         Manager m = new Manager("Guy", 1243, "050-112211", 234532, 2);

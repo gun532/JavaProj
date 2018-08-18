@@ -1,13 +1,17 @@
 package ClientsPackage;
+import EmployeePackage.*;
+
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+
 
 public class ShoppingCart {
     private Map<Integer, Product> cart;
     private int branchCode;
     private int employeeCode;
-    private int totalPrice;
+    private double totalPrice;
     private int totalItems;
     private Date cartDate;
 
@@ -65,7 +69,7 @@ public class ShoppingCart {
         return cart;
     }
 
-    public int getTotalPrice() {
+    public double getTotalPrice() {
         return totalPrice;
     }
 
@@ -75,6 +79,22 @@ public class ShoppingCart {
 
     public Date getCartDate() {
         return cartDate;
+    }
+
+    public void setCart(Map<Integer, Product> cart) {
+        this.cart = cart;
+    }
+
+    public void setCartDate(Date cartDate) {
+        this.cartDate = cartDate;
+    }
+
+    public void setTotalItems(int totalItems) {
+        this.totalItems = totalItems;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     @Override
@@ -95,7 +115,7 @@ public class ShoppingCart {
         branch.getBranchInventory().addToInventory(p1);
         branch.getBranchInventory().addToInventory(p2);
         System.out.println(branch);
-        Client cl1 = new Client(304989171,"Roy Bar","0506797973") {};
+        Client cl1 = new Client(304989171,"Roy Bar","0506797973", ClientType.NEWCLIENT){};
         ShoppingCart testShopCart1 = new ShoppingCart(e1,cl1);
         Product p3 = branch.getBranchInventory().takeFromInventory(p1.getProductCode(),2);
         testShopCart1.addToCart(p3);
