@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a4c05ee2-8ec6-422d-8164-8d26246bc937" name="Default Changelist" comment="Change DB and create new tables">
-      <change afterPath="$PROJECT_DIR$/src/GUI/Login.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/Login.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/LoginPage.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Main$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Main$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/LoginPage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/Login.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Login.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Login.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="C:\Users\IBM_ADMIN\IdeaProjects\JavaFinalProj\.idea\shelf/" />
@@ -130,12 +126,12 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="27" />
-          <entry key="java" value="1795" />
+          <entry key="java" value="2699" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="1795" />
+          <entry key="JAVA" value="2699" />
           <entry key="PLAIN_TEXT" value="27" />
         </counts>
       </usages-collector>
@@ -233,25 +229,31 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/GUI/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="44" lean-forward="true" selection-start-line="9" selection-start-column="44" selection-end-line="9" selection-end-column="44" />
+            <state relative-caret-position="144">
+              <caret line="19" selection-start-line="19" selection-end-line="19" />
               <folding>
+                <element signature="e#149#150#0" expanded="true" />
                 <element signature="e#188#189#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/GUI/Login.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-17">
-              <caret line="16" column="26" lean-forward="true" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
+            <state relative-caret-position="408">
+              <caret line="60" column="73" lean-forward="true" selection-start-line="60" selection-start-column="73" selection-end-line="60" selection-end-column="73" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#1217#1580#0" expanded="true" />
+                <element signature="e#1579#1580#0" expanded="true" />
+                <element signature="e#1498#1664#0" expanded="true" />
+                <element signature="e#1663#1664#0" expanded="true" />
+                <element signature="e#3062#3063#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -338,7 +340,7 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="100" />
     <option name="y" value="20" />
     <option name="width" value="1400" />
@@ -403,7 +405,7 @@
     <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="239" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1534864631319" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1534931977093" />
     <property name="database.console.LAST_STATE" value="false" />
     <property name="last_opened_file_path" value="$USER_HOME$/Desktop/mysql-connector-java-5.1.46/mysql-connector-java-5.1.46.jar!/" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -520,7 +522,7 @@
       <workItem from="1533893475181" duration="11491000" />
       <workItem from="1534067287294" duration="26164000" />
       <workItem from="1534747512325" duration="5339000" />
-      <workItem from="1534768679139" duration="28453000" />
+      <workItem from="1534768679139" duration="37737000" />
     </task>
     <task id="LOCAL-00001" summary="Guy - First commit, includes all the worker related classes">
       <created>1534066802226</created>
@@ -610,13 +612,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="74561000" />
+    <option name="totallyTimeSpent" value="83845000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-6" y="-6" width="1293" height="733" extended-state="7" />
+    <frame x="-6" y="-6" width="1293" height="733" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23238866" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23238866" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -625,7 +627,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32890365" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.21096346" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.21096346" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3986711" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -667,10 +669,10 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/GUI/Main.java</url>
-          <line>17</line>
+          <url>file://$PROJECT_DIR$/src/GUI/Login.java</url>
+          <line>65</line>
           <properties />
-          <option name="timeStamp" value="1" />
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -897,25 +899,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUI/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+          <folding>
+            <element signature="e#149#150#0" expanded="true" />
+            <element signature="e#188#189#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/GUI/Login.form">
       <provider selected="true" editor-type-id="ui-designer" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/GUI/Login.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-17">
-          <caret line="16" column="26" lean-forward="true" selection-start-line="16" selection-start-column="26" selection-end-line="16" selection-end-column="26" />
+        <state relative-caret-position="408">
+          <caret line="60" column="73" lean-forward="true" selection-start-line="60" selection-start-column="73" selection-end-line="60" selection-end-column="73" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUI/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="44" lean-forward="true" selection-start-line="9" selection-start-column="44" selection-end-line="9" selection-end-column="44" />
-          <folding>
-            <element signature="e#188#189#0" expanded="true" />
+            <element signature="e#1217#1580#0" expanded="true" />
+            <element signature="e#1579#1580#0" expanded="true" />
+            <element signature="e#1498#1664#0" expanded="true" />
+            <element signature="e#1663#1664#0" expanded="true" />
+            <element signature="e#3062#3063#0" expanded="true" />
           </folding>
         </state>
       </provider>
