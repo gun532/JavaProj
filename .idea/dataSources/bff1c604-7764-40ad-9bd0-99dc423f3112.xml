@@ -1115,243 +1115,238 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="274" parent="234" name="ID">
+    <column id="274" parent="234" name="password">
       <Position>3</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="275" parent="234" name="ID">
+      <Position>4</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="275" parent="234" name="phoneNum">
-      <Position>4</Position>
+    <column id="276" parent="234" name="phoneNum">
+      <Position>5</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="276" parent="234" name="accountNumber">
-      <Position>5</Position>
-      <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="277" parent="234" name="branch">
+    <column id="277" parent="234" name="accountNumber">
       <Position>6</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="278" parent="234" name="profession">
+    <column id="278" parent="234" name="branch">
       <Position>7</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="279" parent="234" name="profession">
+      <Position>8</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="279" parent="234" name="employee_employeeCode_uindex">
+    <index id="280" parent="234" name="employee_employeeCode_uindex">
       <ColNames>employeeCode</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="280" parent="234" name="employee_ID_uindex">
+    <index id="281" parent="234" name="employee_ID_uindex">
       <ColNames>ID</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="281" parent="234" name="employee_accountNumber_uindex">
+    <index id="282" parent="234" name="employee_accountNumber_uindex">
       <ColNames>accountNumber</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="282" parent="234" name="employee_branch_branchNumber_fk">
+    <index id="283" parent="234" name="employee_branch_branchNumber_fk">
       <ColNames>branch</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="283" parent="234" name="PRIMARY">
+    <key id="284" parent="234" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>employeeCode</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="284" parent="234" name="employee_employeeCode_uindex">
+    <key id="285" parent="234" name="employee_employeeCode_uindex">
       <ColNames>employeeCode</ColNames>
       <UnderlyingIndexName>employee_employeeCode_uindex</UnderlyingIndexName>
     </key>
-    <key id="285" parent="234" name="employee_ID_uindex">
+    <key id="286" parent="234" name="employee_ID_uindex">
       <ColNames>ID</ColNames>
       <UnderlyingIndexName>employee_ID_uindex</UnderlyingIndexName>
     </key>
-    <key id="286" parent="234" name="employee_accountNumber_uindex">
+    <key id="287" parent="234" name="employee_accountNumber_uindex">
       <ColNames>accountNumber</ColNames>
       <UnderlyingIndexName>employee_accountNumber_uindex</UnderlyingIndexName>
     </key>
-    <foreign-key id="287" parent="234" name="employee_branch_branchNumber_fk">
+    <foreign-key id="288" parent="234" name="employee_branch_branchNumber_fk">
       <ColNames>branch</ColNames>
       <RefSchemaName>test_db</RefSchemaName>
       <RefTableName>branch</RefTableName>
       <RefColNames>branchNumber</RefColNames>
     </foreign-key>
-    <column id="288" parent="235" name="inventoryCode">
+    <column id="289" parent="235" name="inventory_code">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="289" parent="235" name="productCode">
+    <column id="290" parent="235" name="productCode">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="290" parent="235" name="numberOfItems">
+    <column id="291" parent="235" name="numberOfItems">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="291" parent="235" name="inventory_inventoryID_uindex">
-      <ColNames>inventoryCode</ColNames>
-      <Unique>1</Unique>
+    <index id="292" parent="235" name="inventory_branch_branchNumber_fk">
+      <ColNames>inventory_code</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="292" parent="235" name="inventory_productCode_uindex">
+    <index id="293" parent="235" name="inventory_product_productCode_fk">
       <ColNames>productCode</ColNames>
-      <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="293" parent="235" name="inventory_inventoryID_uindex">
-      <ColNames>inventoryCode</ColNames>
-      <UnderlyingIndexName>inventory_inventoryID_uindex</UnderlyingIndexName>
-    </key>
-    <key id="294" parent="235" name="inventory_productCode_uindex">
-      <ColNames>productCode</ColNames>
-      <UnderlyingIndexName>inventory_productCode_uindex</UnderlyingIndexName>
-    </key>
-    <foreign-key id="295" parent="235" name="inventory_branch_branchNumber_fk">
-      <ColNames>inventoryCode</ColNames>
+    <foreign-key id="294" parent="235" name="inventory_branch_branchNumber_fk">
+      <ColNames>inventory_code</ColNames>
       <RefSchemaName>test_db</RefSchemaName>
       <RefTableName>branch</RefTableName>
       <RefColNames>branchNumber</RefColNames>
     </foreign-key>
-    <foreign-key id="296" parent="235" name="inventory_product_productCode_fk">
+    <foreign-key id="295" parent="235" name="inventory_product_productCode_fk">
       <ColNames>productCode</ColNames>
       <RefSchemaName>test_db</RefSchemaName>
       <RefTableName>product</RefTableName>
       <RefColNames>productCode</RefColNames>
     </foreign-key>
-    <column id="297" parent="236" name="productCode">
+    <column id="296" parent="236" name="productCode">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="298" parent="236" name="name">
+    <column id="297" parent="236" name="name">
       <Position>2</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="299" parent="236" name="price">
+    <column id="298" parent="236" name="price">
       <Position>3</Position>
       <DataType>double|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="300" parent="236" name="product_productCode_uindex">
+    <index id="299" parent="236" name="product_productCode_uindex">
       <ColNames>productCode</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="301" parent="236" name="PRIMARY">
+    <key id="300" parent="236" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>productCode</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="302" parent="236" name="product_productCode_uindex">
+    <key id="301" parent="236" name="product_productCode_uindex">
       <ColNames>productCode</ColNames>
       <UnderlyingIndexName>product_productCode_uindex</UnderlyingIndexName>
     </key>
-    <column id="303" parent="237" name="cartCode">
+    <column id="302" parent="237" name="cartCode">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="304" parent="237" name="productCode">
+    <column id="303" parent="237" name="productCode">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="305" parent="237" name="numOfItems">
+    <column id="304" parent="237" name="numOfItems">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="306" parent="237" name="shopping_cart_cartCode_uindex">
+    <index id="305" parent="237" name="shopping_cart_cartCode_uindex">
       <ColNames>cartCode</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="307" parent="237" name="shopping_cart_productCode_uindex">
+    <index id="306" parent="237" name="shopping_cart_productCode_uindex">
       <ColNames>productCode</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="308" parent="237" name="PRIMARY">
+    <key id="307" parent="237" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>cartCode</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="309" parent="237" name="shopping_cart_cartCode_uindex">
+    <key id="308" parent="237" name="shopping_cart_cartCode_uindex">
       <ColNames>cartCode</ColNames>
       <UnderlyingIndexName>shopping_cart_cartCode_uindex</UnderlyingIndexName>
     </key>
-    <key id="310" parent="237" name="shopping_cart_productCode_uindex">
+    <key id="309" parent="237" name="shopping_cart_productCode_uindex">
       <ColNames>productCode</ColNames>
       <UnderlyingIndexName>shopping_cart_productCode_uindex</UnderlyingIndexName>
     </key>
-    <foreign-key id="311" parent="237" name="shopping_cart_product_productCode_fk">
+    <foreign-key id="310" parent="237" name="shopping_cart_product_productCode_fk">
       <ColNames>productCode</ColNames>
       <RefSchemaName>test_db</RefSchemaName>
       <RefTableName>product</RefTableName>
       <RefColNames>productCode</RefColNames>
     </foreign-key>
-    <column id="312" parent="238" name="clientNumber">
+    <column id="311" parent="238" name="clientNumber">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="313" parent="238" name="cartID">
+    <column id="312" parent="238" name="cartID">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="314" parent="238" name="shopping_history_clientNumber_uindex">
+    <index id="313" parent="238" name="shopping_history_clientNumber_uindex">
       <ColNames>clientNumber</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="315" parent="238" name="shopping_history_shopping_cart_cartCode_fk">
+    <index id="314" parent="238" name="shopping_history_shopping_cart_cartCode_fk">
       <ColNames>cartID</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="316" parent="238" name="PRIMARY">
+    <key id="315" parent="238" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>clientNumber</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="317" parent="238" name="shopping_history_clientNumber_uindex">
+    <key id="316" parent="238" name="shopping_history_clientNumber_uindex">
       <ColNames>clientNumber</ColNames>
       <UnderlyingIndexName>shopping_history_clientNumber_uindex</UnderlyingIndexName>
     </key>
-    <foreign-key id="318" parent="238" name="shopping_history_clients_clientNumber_fk">
+    <foreign-key id="317" parent="238" name="shopping_history_clients_clientNumber_fk">
       <ColNames>clientNumber</ColNames>
       <RefSchemaName>test_db</RefSchemaName>
       <RefTableName>clients</RefTableName>
       <RefColNames>clientNumber</RefColNames>
     </foreign-key>
-    <foreign-key id="319" parent="238" name="shopping_history_shopping_cart_cartCode_fk">
+    <foreign-key id="318" parent="238" name="shopping_history_shopping_cart_cartCode_fk">
       <ColNames>cartID</ColNames>
       <RefSchemaName>test_db</RefSchemaName>
       <RefTableName>shopping_cart</RefTableName>
