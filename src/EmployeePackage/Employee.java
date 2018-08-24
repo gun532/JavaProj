@@ -23,7 +23,6 @@ public abstract class Employee {
         this.phone = phone;
         this.accountNum = accountNum;
         this.branchNumber = branchNumber;
-        //branchNumber = -1;
         jobPos = profession;
     }
 
