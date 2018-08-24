@@ -10,6 +10,14 @@ public class ManagerUtility {
     private final Connection myConn = DriverManager.getConnection
             ("jdbc:mysql://localhost:3306/test_db", "root", "12345");
 
+    public ManagerUtility() throws SQLException {
+        try {
+
+        } catch (Exception e) {
+            throw new IllegalStateException("Cannot connect the database!", e);
+        }
+    }
+
     public void addEmployee(Employee emp) {
         try {
 
@@ -105,14 +113,6 @@ public class ManagerUtility {
         return e1;
     }
 
-    public ManagerUtility() throws SQLException {
-        try {
-
-        } catch (Exception e) {
-            throw new IllegalStateException("Cannot connect the database!", e);
-        }
-    }
-
 
     Inventory selectFromInventory(int branchNum) {
         Inventory inventory = new Inventory();
@@ -204,6 +204,18 @@ public class ManagerUtility {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+
+    //we will wrap this function with an on click changed event to make it run few times
+    //product code and amount will be generated from a textbox. when the gui is ready we will take the
+    //values from the textbox inside the function
+    void newOrder(int branchName, int productCode, int amount) throws Exception {
+        Inventory inventory = this.selectFromInventory(branchName);
+        Product p = inventory.takeFromInventory(productCode, amount);
+        ShoppingCart cart = new ShoppingCart();
+        cart.addToCart(p);
+        this .updateInventory(inventory);
     }
 }
 

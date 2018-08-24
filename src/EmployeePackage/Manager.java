@@ -45,17 +45,11 @@ public class Manager extends Employee {
     }
 
 
-
-    //we will wrap this function with an on click changed event to make it run few times
-    //product code and amount will be generated from a textbox. when the gui is ready we will take the
-    //values from the textbox inside the function
     void newOrder(int branchName, int productCode, int amount) throws Exception {
-        Inventory inventory = managerUtility.selectFromInventory(branchName);
-        Product p = inventory.takeFromInventory(productCode, amount);
-        ShoppingCart cart = new ShoppingCart();
-        cart.addToCart(p);
-        managerUtility.updateInventory(inventory);
+        managerUtility.newOrder(branchName,productCode,amount);
     }
+
+
 
 
     public static void main(String[] args) {
