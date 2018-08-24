@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class Inventory {
     private Map<Integer, Product> myInventory;
+    private int inventoryNumber;
     private int totalProducts;
     private int totalItems;
     private double totalValue;
@@ -14,32 +15,32 @@ public class Inventory {
         this.totalProducts = 0;
     }
 
-    public void addToInventory(Product product) throws Exception {
+//    public void addToInventory(Product product) throws Exception {
+//
+//        //Check if inventory already has this product.
+//        if(this.myInventory.containsValue(product)) {
+//            throw new Exception("The product is already in the store's inventory.");
+//            //possible to ask if admin wants to update
+//        }
+//        //else add a new product to inventory
+//        this.myInventory.put(product.hashCode(), product);
+//        this.totalProducts++;
+//        this.totalItems += product.getAmount();
+//        this.totalValue += product.getPrice()*product.getAmount();
+//    }
 
-        //Check if inventory already has this product.
-        if(this.myInventory.containsValue(product)) {
-            throw new Exception("The product is already in the store's inventory.");
-            //possible to ask if admin wants to update
-        }
-        //else add a new product to inventory
-        this.myInventory.put(product.hashCode(), product);
-        this.totalProducts++;
-        this.totalItems += product.getAmount();
-        this.totalValue += product.getPrice()*product.getAmount();
-    }
-
-    public void removeFromInventory(Product product) throws Exception {
-        Product refProduct = this.myInventory.get(product.getProductCode());
-        if(refProduct != null){
-            this.totalProducts--;
-            this.totalItems -= product.getAmount();
-            this.totalValue += product.getPrice()*product.getAmount();
-            this.myInventory.remove(refProduct.getProductCode());
-        }
-        else{
-            throw new Exception("The product is not in the inventory.");
-        }
-    }
+//    public void removeFromInventory(Product product) throws Exception {
+//        Product refProduct = this.myInventory.get(product.getProductCode());
+//        if(refProduct != null){
+//            this.totalProducts--;
+//            this.totalItems -= product.getAmount();
+//            this.totalValue += product.getPrice()*product.getAmount();
+//            this.myInventory.remove(refProduct.getProductCode());
+//        }
+//        else{
+//            throw new Exception("The product is not in the inventory.");
+//        }
+//    }
 
     public void returnToInventory(int productCode, int amount) throws Exception {
         if(amount >= 0) {
@@ -80,6 +81,14 @@ public class Inventory {
         return myInventory;
     }
 
+    public int getInventoryNumber() {
+        return inventoryNumber;
+    }
+
+    public void setInventoryNumber(int inventoryNumber) {
+        this.inventoryNumber = inventoryNumber;
+    }
+
     public int getTotalProducts() {
         return totalProducts;
     }
@@ -90,6 +99,22 @@ public class Inventory {
 
     public int getTotalItems() {
         return totalItems;
+    }
+
+    public void setTotalItems(int totalItems) {
+        this.totalItems = totalItems;
+    }
+
+    public void setTotalProducts(int totalProducts) {
+        this.totalProducts = totalProducts;
+    }
+
+    public void setTotalValue(double totalValue) {
+        this.totalValue = totalValue;
+    }
+
+    public void setMyInventory(Map<Integer, Product> myInventory) {
+        this.myInventory = myInventory;
     }
 
     @Override

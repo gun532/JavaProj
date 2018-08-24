@@ -1,5 +1,7 @@
 package EmployeePackage;
 
+import ClientsPackage.*;
+
 import java.sql.*;
 
 
@@ -41,6 +43,14 @@ public class Manager extends Employee {
     Employee selectDetails(int empNum) {
         return managerUtility.selectDetails(empNum);
     }
+
+
+    void newOrder(int branchName, int productCode, int amount) throws Exception {
+        managerUtility.newOrder(branchName,productCode,amount);
+    }
+
+
+
 
     public static void main(String[] args) {
         Manager m = new Manager("Guy", 1243, "050-112211", 234532, 2);

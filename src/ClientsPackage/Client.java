@@ -1,5 +1,7 @@
 package ClientsPackage;
 
+import EmployeePackage.Profession;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -8,7 +10,7 @@ public abstract class Client {
     private String fullName;
     private String phoneNumber;
     private ClientType type;
-    private double discountRate;
+    protected double discountRate;
     private Map <Integer, ShoppingCart> shoppingHistory;
     //private int clientCode;
 
@@ -22,11 +24,11 @@ public abstract class Client {
         this.shoppingHistory = new LinkedHashMap<Integer, ShoppingCart>();
     }
 
-    public Client(int in_id, String in_fullName, String in_phoneNumber) {
+    public Client(int in_id, String in_fullName, String in_phoneNumber, ClientType type) {
         this.id = in_id;
         this.fullName = in_fullName;
         this.phoneNumber = in_phoneNumber;
-        this.type = ClientType.NEWCLIENT;
+        this.type = type;
         this.discountRate = 0;
         this.shoppingHistory = new LinkedHashMap<Integer, ShoppingCart>();
         //this.clientCode = this.hashCode();
@@ -108,7 +110,7 @@ public abstract class Client {
     }
 
     public static void main(String args[]){
-        Client cl1 = new Client(304989171,"Roy Bar","0506797973") {};
+        Client cl1 = new Client(304989171,"Roy Bar","0506797973", ClientType.NEWCLIENT) {};
         //cl1 = new VipClient(cl1);
         System.out.println(cl1);
     }

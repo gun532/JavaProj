@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a4c05ee2-8ec6-422d-8164-8d26246bc937" name="Default Changelist" comment="Change DB and create new tables">
+    <list default="true" id="a4c05ee2-8ec6-422d-8164-8d26246bc937" name="Default Changelist" comment="added some date to some of the table and created basic chat application that needs to be approve">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/bff1c604-7764-40ad-9bd0-99dc423f3112.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/bff1c604-7764-40ad-9bd0-99dc423f3112.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/EmployeePackage/Cashier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/EmployeePackage/Cashier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/EmployeePackage/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/EmployeePackage/Manager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/EmployeePackage/ManagerUtility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/EmployeePackage/ManagerUtility.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/GUI/CJButton.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/GUI/EmployeesMenuPage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -17,6 +22,14 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/JavaFinalProj$ChatClientGUI.ic" NAME="ChatClientGUI Coverage Results" MODIFIED="1534677645459" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>EmployeePackage.*</FILTER>
+    </SUITE>
+  </component>
+  <component name="CoverageViewManager">
+    <option name="myElementSize" value="214" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -62,47 +75,54 @@
           <entry key="project.closed" value="1" />
           <entry key="project.open.time.16" value="1" />
           <entry key="project.open.time.19" value="1" />
+          <entry key="project.open.time.32" value="1" />
           <entry key="project.open.time.6" value="1" />
-          <entry key="project.opened" value="3" />
+          <entry key="project.opened" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="4512" />
-          <entry key="sql" value="249" />
-          <entry key="txt" value="428" />
+          <entry key="dummy" value="3" />
+          <entry key="java" value="14024" />
+          <entry key="sql" value="287" />
+          <entry key="txt" value="688" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="4512" />
-          <entry key="PLAIN_TEXT" value="428" />
-          <entry key="SQL" value="249" />
+          <entry key="JAVA" value="14024" />
+          <entry key="PLAIN_TEXT" value="691" />
+          <entry key="SQL" value="287" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="branch" value="3" />
+          <entry key="cart_details" value="2" />
           <entry key="clients" value="5" />
-          <entry key="employee" value="3" />
-          <entry key="form" value="3" />
+          <entry key="employee" value="5" />
+          <entry key="form" value="4" />
           <entry key="iml" value="1" />
-          <entry key="inventory" value="4" />
-          <entry key="java" value="33" />
-          <entry key="product" value="5" />
-          <entry key="shopping_cart" value="3" />
+          <entry key="inventory" value="8" />
+          <entry key="java" value="54" />
+          <entry key="png" value="1" />
+          <entry key="product" value="6" />
+          <entry key="shopping_cart" value="4" />
+          <entry key="shopping_history" value="1" />
+          <entry key="shoppingcart" value="3" />
           <entry key="sql" value="7" />
-          <entry key="xml" value="8" />
+          <entry key="xml" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Database Element" value="23" />
-          <entry key="GUI_DESIGNER_FORM" value="3" />
+          <entry key="Database Element" value="37" />
+          <entry key="GUI_DESIGNER_FORM" value="4" />
           <entry key="IDEA_MODULE" value="1" />
-          <entry key="JAVA" value="33" />
+          <entry key="Image" value="1" />
+          <entry key="JAVA" value="54" />
           <entry key="SQL" value="7" />
-          <entry key="XML" value="8" />
+          <entry key="XML" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages">
@@ -159,10 +179,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ClientsPackage/Client.java">
+        <entry file="file://$PROJECT_DIR$/src/EmployeePackage/Employee.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="969">
-              <caret line="70" selection-start-line="70" selection-end-line="70" />
+            <state relative-caret-position="462">
+              <caret line="21" column="20" selection-start-line="21" selection-start-column="20" selection-end-line="21" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -171,12 +191,13 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/EmployeePackage/Employee.java">
+        <entry file="file://$PROJECT_DIR$/src/EmployeePackage/Cashier.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="6" selection-start-line="6" selection-end-line="6" />
+            <state relative-caret-position="277">
+              <caret line="41" selection-start-line="41" selection-end-line="41" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="method#newOrder#0;class#Cashier#0" />
               </folding>
             </state>
           </provider>
@@ -185,23 +206,21 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/EmployeePackage/Manager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" selection-start-line="10" selection-end-line="10" />
+            <state relative-caret-position="308">
+              <caret line="47" column="80" lean-forward="true" selection-start-line="47" selection-start-column="80" selection-end-line="47" selection-end-column="80" />
               <folding>
-                <element signature="e#502#503#0" expanded="true" />
-                <element signature="e#549#550#0" expanded="true" />
-                <element signature="e#595#596#0" expanded="true" />
-                <element signature="e#647#648#0" expanded="true" />
-                <element signature="e#687#688#0" expanded="true" />
-                <element signature="e#737#738#0" expanded="true" />
-                <element signature="e#1027#1028#0" expanded="true" />
-                <element signature="e#1086#1087#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="method#newOrder#0;class#Manager#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ClientsPackage/ClientType.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="66">
+              <caret line="3" column="38" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="38" />
         <entry file="file://$PROJECT_DIR$/src/EmployeePackage/ManagerUtility.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="170">
@@ -214,6 +233,13 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/EmployeePackage/ManagerUtility.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="110">
+              <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
         <entry file="das://bff1c604-7764-40ad-9bd0-99dc423f3112/schema/test_db/table/branch">
           <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
             <state>
@@ -225,8 +251,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/GUI/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="19" selection-start-line="19" selection-end-line="19" />
+            <state relative-caret-position="264">
+              <caret line="14" column="14" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -245,6 +271,13 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/EmployeePackage/ChatClientGUI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="242">
+              <caret line="264" column="10" lean-forward="true" selection-start-line="264" selection-start-column="10" selection-end-line="264" selection-end-column="10" />
+              <folding>
+                <element signature="imports" expanded="true" />
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/GUI/EmployeesMenuPage.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -260,6 +293,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/EmployeePackage/ChatServer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret lean-forward="true" />
         <entry file="file://$PROJECT_DIR$/src/GUI/CJButton.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="308">
@@ -285,6 +322,17 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>CONNECT</find>
+      <find>build</find>
+      <find>userN</find>
+      <find>test</find>
+      <find>JL</find>
+      <find>Arraus</find>
+      <find>Arrays</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="PREVIOUS_COMMIT_AUTHORS">
@@ -328,6 +376,19 @@
         <option value="$PROJECT_DIR$/src/Chat/serverChat.form" />
         <option value="$PROJECT_DIR$/src/Chat/clientChat.form" />
         <option value="bff1c604-7764-40ad-9bd0-99dc423f3112/schema/test_db/table/shopping_cart.sql" />
+        <option value="$PROJECT_DIR$/src/ClientsPackage/NewClient.java" />
+        <option value="$PROJECT_DIR$/src/ClientsPackage/Client.java" />
+        <option value="$PROJECT_DIR$/src/EmployeePackage/chat_server_return.java" />
+        <option value="$PROJECT_DIR$/src/ClientsPackage/ShoppingCart.java" />
+        <option value="$PROJECT_DIR$/src/EmployeePackage/ChatServer.java" />
+        <option value="$PROJECT_DIR$/src/EmployeePackage/ChatClientGUI.java" />
+        <option value="$PROJECT_DIR$/src/EmployeePackage/ChatClient.java" />
+        <option value="$PROJECT_DIR$/src/EmployeePackage/Profession.java" />
+        <option value="$PROJECT_DIR$/src/GUI/Main.java" />
+        <option value="$PROJECT_DIR$/src/EmployeePackage/ManagerUtility.java" />
+        <option value="$PROJECT_DIR$/src/EmployeePackage/GUIDBUtility.java" />
+        <option value="$PROJECT_DIR$/src/GUI/GUIDBUtility.java" />
+        <option value="$PROJECT_DIR$/src/GUI/Login.java" />
         <option value="$PROJECT_DIR$/src/ClientsPackage/ShoppingCart.java" />
         <option value="$PROJECT_DIR$/src/GUI/GUI_IN_THREAD.java" />
         <option value="$PROJECT_DIR$/src/ClientsPackage/NewClient.java" />
@@ -349,6 +410,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
+
   <component name="MavenProjectNavigator">
     <treeState>
       <expand />
@@ -367,18 +429,19 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+
       <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="JavaProj" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaProj" type="462c0819:PsiDirectoryNode" />
+              <item name="JavaFinalProj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JavaFinalProj" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="JavaProj" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaProj" type="462c0819:PsiDirectoryNode" />
+              <item name="JavaFinalProj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JavaFinalProj" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -404,29 +467,40 @@
               <item name="JavaProj" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="GUI" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="JavaProj" type="b2602c69:ProjectViewProjectNode" />
+              <item name="JavaProj" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="GUI" type="462c0819:PsiDirectoryNode" />
               <item name="Login" type="e9f4de52:FormNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="mysql" />
-    <property name="SearchEverywhereHistoryKey" value="execute table &#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="addToInventory&#9;PSI&#9;JAVA://EmployeePackage.ManagerUtility#addToInventory&#10;execute table &#9;null&#9;null" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535096370732" />
     <property name="UI_DESIGNER_EDITOR_MODE.PaletteManager.WIDTH" value="150" />
     <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="239" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535095265257" />
     <property name="database.console.LAST_STATE" value="false" />
     <property name="last_opened_file_path" value="$USER_HOME$/Desktop/mysql-connector-java-5.1.46/mysql-connector-java-5.1.46.jar!/" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.27931035" />
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\IBM_ADMIN\IdeaProjects\JavaFinalProj\src" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -440,6 +514,13 @@
       </list>
     </option>
   </component>
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="ChatClientGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="EmployeePackage.ChatClientGUI" />
+      <module name="JavaFinalProj" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="GUI.*" />
   <component name="RunManager" selected="Application.EmployeesMenuPage">
     <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ClientsPackage.Client" />
@@ -454,6 +535,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ChatServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="EmployeePackage.ChatServer" />
     <configuration name="EmployeesMenuPage" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="GUI.EmployeesMenuPage" />
       <module name="JavaFinalProj" />
@@ -493,6 +576,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="GUI.Main" />
+      <module name="JavaFinalProj" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="GUI.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ShoppingCart" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ClientsPackage.ShoppingCart" />
       <module name="JavaFinalProj" />
@@ -507,6 +603,15 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.Manager" />
+      <item itemvalue="Application.ChatServer" />
+      <item itemvalue="Application.ChatClientGUI" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.ChatClientGUI" />
+        <item itemvalue="Application.ChatServer" />
+        <item itemvalue="Application.Manager" />
       <item itemvalue="Application.Client" />
       <item itemvalue="Application.ShoppingCart" />
       <item itemvalue="Application.Main" />
@@ -535,8 +640,8 @@
       <updated>1533889909091</updated>
       <workItem from="1533889914838" duration="3114000" />
       <workItem from="1533893475181" duration="11491000" />
-      <workItem from="1534067287294" duration="26164000" />
-      <workItem from="1534747512325" duration="5339000" />
+      <workItem from="1534067287294" duration="53779000" />
+      <workItem from="1535017670750" duration="9982000" />
       <workItem from="1534768679139" duration="47081000" />
       <workItem from="1535049131759" duration="19034000" />
     </task>
@@ -624,7 +729,49 @@
       <option name="project" value="LOCAL" />
       <updated>1534429682798</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Change DB and create new tables">
+      <created>1534429720121</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1534429720121</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Change functionality to classes and connected them to DB">
+      <created>1534598993474</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1534598993474</updated>
+    </task>
+    <task id="LOCAL-00015" summary="added some date to some of the table and created basic chat application that needs to be approve">
+      <created>1535018504847</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1535018504847</updated>
+    </task>
+    <task id="LOCAL-00016" summary="added some date to some of the table and created basic chat application that needs to be approve">
+      <created>1535018651918</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1535018651918</updated>
+    </task>
+    <task id="LOCAL-00017" summary="added some date to some of the table and created basic chat application that needs to be approve">
+      <created>1535018687285</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1535018687285</updated>
+    </task>
+    <task id="LOCAL-00018" summary="added some date to some of the table and created basic chat application that needs to be approve">
+      <created>1535018773164</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1535018773164</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -634,7 +781,7 @@
     <frame x="-7" y="-7" width="1295" height="735" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.23643725" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22365038" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -662,7 +809,9 @@
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="right" id="Theme Preview" order="5" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
-      <window_info anchor="right" id="Database" order="7" weight="0.16680162" />
+      <window_info anchor="right" id="Database" order="7" weight="0.22686376" />
+      <window_info anchor="right" id="Maven Projects" order="8" />
+      <window_info anchor="right" id="Coverage" order="9" side_tool="true" weight="0.32969153" />
       <window_info anchor="right" id="Maven Projects" order="8" weight="0.32955465" />
     </layout>
   </component>
@@ -679,7 +828,55 @@
     <MESSAGE value="Check if it changed the commit" />
     <MESSAGE value="Changed classes of Employee and some Client" />
     <MESSAGE value="Change DB and create new tables" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change DB and create new tables" />
+    <MESSAGE value="Change functionality to classes and connected them to DB" />
+    <MESSAGE value="added some date to some of the table and created basic chat application that needs to be approve" />
+    <option name="LAST_COMMIT_MESSAGE" value="added some date to some of the table and created basic chat application that needs to be approve" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/EmployeePackage/ChatServer.java</url>
+          <line>19</line>
+          <properties />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/EmployeePackage/ChatServer.java</url>
+          <line>22</line>
+          <properties />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/EmployeePackage/ChatClientGUI.java</url>
+          <line>222</line>
+          <properties />
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/EmployeePackage/ChatClientGUI.java</url>
+          <line>55</line>
+          <properties />
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/EmployeePackage/ChatClient.java</url>
+          <line>56</line>
+          <properties />
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/GUI/Login.java</url>
+          <line>81</line>
+          <properties />
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -713,9 +910,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/dataSources/bff1c604-7764-40ad-9bd0-99dc423f3112.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2420">
@@ -741,11 +935,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.base/java/util/Map.java" />
-    <entry file="file://$PROJECT_DIR$/src/EmployeePackage/Profession.java">
+    <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.base/java/util/Map.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+        <state relative-caret-position="157">
+          <caret line="158" column="17" selection-start-line="158" selection-start-column="17" selection-end-line="158" selection-end-column="17" />
         </state>
       </provider>
     </entry>
@@ -759,29 +952,124 @@
     <entry file="file://$PROJECT_DIR$/JavaFinalProj.iml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/EmployeePackage/Cashier.java">
+    <entry file="file://$PROJECT_DIR$/src/GUI/ManagerTest.java" />
+    <entry file="file://$PROJECT_DIR$/src/GUI/ManagerTest.form" />
+    <entry file="file://$PROJECT_DIR$/src/Chat/serverChat.java" />
+    <entry file="file://$PROJECT_DIR$/src/Chat/clientChat.java" />
+    <entry file="file://$PROJECT_DIR$/src/Chat/clientChat.form" />
+    <entry file="file://$PROJECT_DIR$/src/Chat/serverChat.form" />
+    <entry file="das://bff1c604-7764-40ad-9bd0-99dc423f3112/schema/test_db/table/shopping_cart.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="8" selection-start-line="8" selection-start-column="2" selection-end-line="13" selection-end-column="7" />
+        <state relative-caret-position="302">
+          <caret line="15" column="18" lean-forward="true" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ClientsPackage/ClientType.java">
+    <entry file="das://bff1c604-7764-40ad-9bd0-99dc423f3112/schema/test_db/table/clients.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+        <state relative-caret-position="396">
+          <caret line="18" column="50" selection-start-line="18" selection-start-column="49" selection-end-line="18" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://bff1c604-7764-40ad-9bd0-99dc423f3112/schema/test_db/table/branch">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://bff1c604-7764-40ad-9bd0-99dc423f3112/schema/test_db/table/clients">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://bff1c604-7764-40ad-9bd0-99dc423f3112/schema/test_db/table/inventory.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="6" column="40" selection-start-line="6" selection-start-column="40" selection-end-line="6" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/uiDesigner.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ClientsPackage/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="395">
+          <caret line="114" column="86" selection-start-line="114" selection-start-column="86" selection-end-line="114" selection-end-column="86" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ClientsPackage/ReturnClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="12" column="31" selection-start-line="12" selection-start-column="31" selection-end-line="12" selection-end-column="31" />
+        <state relative-caret-position="418">
+          <caret line="19" column="5" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ClientsPackage/VipClient.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="19" column="28" selection-start-line="19" selection-start-column="28" selection-end-line="19" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ClientsPackage/NewClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://bff1c604-7764-40ad-9bd0-99dc423f3112/schema/test_db/table/shopping_cart">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://bff1c604-7764-40ad-9bd0-99dc423f3112/schema/test_db/table/product">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ClientsPackage/Product.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="60" column="31" lean-forward="true" selection-start-line="60" selection-start-column="31" selection-end-line="60" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ClientsPackage/Inventory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="211">
+          <caret line="31" selection-start-line="31" selection-start-column="2" selection-end-line="42" selection-end-column="7" />
+          <folding>
+            <element signature="e#3050#3051#0" expanded="true" />
+            <element signature="e#3088#3089#0" expanded="true" />
+            <element signature="e#3147#3148#0" expanded="true" />
+            <element signature="e#3201#3202#0" expanded="true" />
+            <element signature="e#3237#3238#0" expanded="true" />
+            <element signature="e#3281#3282#0" expanded="true" />
+            <element signature="e#3336#3337#0" expanded="true" />
+            <element signature="e#3386#3387#0" expanded="true" />
+            <element signature="e#3438#3439#0" expanded="true" />
+            <element signature="e#3482#3483#0" expanded="true" />
+            <element signature="e#3551#3552#0" expanded="true" />
+            <element signature="e#3597#3598#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ClientsPackage/ShoppingCart.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="568">
+          <caret line="120" column="52" lean-forward="true" selection-start-line="120" selection-start-column="52" selection-end-line="120" selection-end-column="52" />
         <state relative-caret-position="242">
           <caret line="11" column="58" selection-start-line="11" selection-start-column="58" selection-end-line="11" selection-end-column="58" />
         </state>
@@ -865,18 +1153,43 @@
         <state relative-caret-position="170">
           <caret line="10" selection-start-line="10" selection-end-line="10" />
           <folding>
-            <element signature="e#502#503#0" expanded="true" />
-            <element signature="e#549#550#0" expanded="true" />
-            <element signature="e#595#596#0" expanded="true" />
-            <element signature="e#647#648#0" expanded="true" />
-            <element signature="e#687#688#0" expanded="true" />
-            <element signature="e#737#738#0" expanded="true" />
-            <element signature="e#1027#1028#0" expanded="true" />
-            <element signature="e#1086#1087#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#2203#2204#0" expanded="true" />
+            <element signature="e#2230#2231#0" expanded="true" />
+            <element signature="e#2264#2265#0" expanded="true" />
+            <element signature="e#2297#2298#0" expanded="true" />
+            <element signature="e#2331#2332#0" expanded="true" />
+            <element signature="e#2364#2365#0" expanded="true" />
+            <element signature="e#2397#2398#0" expanded="true" />
+            <element signature="e#2428#2429#0" expanded="true" />
+            <element signature="e#2550#2551#0" expanded="true" />
+            <element signature="e#2582#2583#0" expanded="true" />
+            <element signature="e#2628#2629#0" expanded="true" />
+            <element signature="e#2668#2669#0" expanded="true" />
+            <element signature="e#2685#2686#0" expanded="true" />
+            <element signature="e#2729#2730#0" expanded="true" />
+            <element signature="e#2810#2811#0" expanded="true" />
+            <element signature="e#2854#2855#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/EmployeePackage/ChatClientGUI.form">
+      <provider selected="true" editor-type-id="ui-designer" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/EmployeePackage/Profession.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/EmployeePackage/ChatClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1078">
+          <caret line="56" selection-start-line="56" selection-end-line="56" />
+          <folding>
+            <element signature="imports" expanded="true" />
     <entry file="file://$PROJECT_DIR$/src/EmployeePackage/ManagerUtility.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -887,13 +1200,82 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://bff1c604-7764-40ad-9bd0-99dc423f3112/schema/test_db/table/branch">
+    <entry file="das://bff1c604-7764-40ad-9bd0-99dc423f3112/schema/test_db/table/employee">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
         </state>
       </provider>
     </entry>
+    <entry file="das://bff1c604-7764-40ad-9bd0-99dc423f3112/schema/test_db/table/inventory">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/EmployeePackage/chat_server_return.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="23" column="49" lean-forward="true" selection-start-line="23" selection-start-column="49" selection-end-line="23" selection-end-column="49" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/EmployeePackage/Employee.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="21" column="20" selection-start-line="21" selection-start-column="20" selection-end-line="21" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://bff1c604-7764-40ad-9bd0-99dc423f3112/schema/test_db/table/shoppingcart">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://bff1c604-7764-40ad-9bd0-99dc423f3112/schema/test_db/table/cart_details">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://bff1c604-7764-40ad-9bd0-99dc423f3112/schema/test_db/table/shopping_history">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/EmployeePackage/Cashier.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="277">
+          <caret line="41" selection-start-line="41" selection-end-line="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#newOrder#0;class#Cashier#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUI/appLogo.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/EmployeePackage/ChatServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret lean-forward="true" />
     <entry file="file://$PROJECT_DIR$/src/GUI/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -911,6 +1293,12 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/EmployeePackage/ChatClientGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="264" column="10" lean-forward="true" selection-start-line="264" selection-start-column="10" selection-end-line="264" selection-end-column="10" />
+          <folding>
+            <element signature="imports" expanded="true" />
     <entry file="file://$PROJECT_DIR$/src/GUI/Login.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="155">
@@ -920,6 +1308,48 @@
             <element signature="e#1956#3542#0" expanded="true" />
             <element signature="e#3541#3542#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ClientsPackage/ClientType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="66">
+          <caret line="3" column="38" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/EmployeePackage/ManagerUtility.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/EmployeePackage/Manager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="47" column="80" lean-forward="true" selection-start-line="47" selection-start-column="80" selection-end-line="47" selection-end-column="80" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#newOrder#0;class#Manager#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUI/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="14" column="14" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUI/GUIDBUtility.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="387">
+          <caret line="29" column="34" lean-forward="true" selection-start-line="29" selection-start-column="34" selection-end-line="29" selection-end-column="34" />
         </state>
       </provider>
     </entry>
@@ -1007,6 +1437,17 @@
             <option name="proportions">
               <list>
                 <option value="0.27931035" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
               </list>
             </option>
           </splitter-proportions>

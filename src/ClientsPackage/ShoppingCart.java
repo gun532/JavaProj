@@ -1,16 +1,19 @@
 package ClientsPackage;
+import EmployeePackage.*;
+
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import EmployeePackage.Cashier;
-import EmployeePackage.Employee;
+
+//import EmployeePackage.Cashier;
+//import EmployeePackage.Employee;
 
 public class ShoppingCart {
     private Map<Integer, Product> cart;
     private int branchCode;
     private int employeeCode;
-    private int totalPrice;
+    private double totalPrice;
     private int totalItems;
     private Date cartDate;
 
@@ -68,7 +71,7 @@ public class ShoppingCart {
         return cart;
     }
 
-    public int getTotalPrice() {
+    public double getTotalPrice() {
         return totalPrice;
     }
 
@@ -78,6 +81,22 @@ public class ShoppingCart {
 
     public Date getCartDate() {
         return cartDate;
+    }
+
+    public void setCart(Map<Integer, Product> cart) {
+        this.cart = cart;
+    }
+
+    public void setCartDate(Date cartDate) {
+        this.cartDate = cartDate;
+    }
+
+    public void setTotalItems(int totalItems) {
+        this.totalItems = totalItems;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     @Override
@@ -92,13 +111,16 @@ public class ShoppingCart {
 
     public static void main(String[] args) throws Exception {
         Branch branch = new Branch("Tel-Aviv", 6, "03-690370");
+        ManagerUtility managerUtility = new ManagerUtility();
         Cashier e1 = new Cashier("Dani", 302343567, "052343567", 6, branch.getBranchNumber());
         Product p1 = new Product("shirt", 30, 100);
         Product p2 = new Product("jeans", 120, 12);
-        branch.getBranchInventory().addToInventory(p1);
-        branch.getBranchInventory().addToInventory(p2);
+        managerUtility.addToInventory(p1, branch.getBranchNumber());
+        managerUtility.addToInventory(p2, branch.getBranchNumber());
+        //branch.getBranchInventory().addToInventory(p1);
+        //branch.getBranchInventory().addToInventory(p2);
         System.out.println(branch);
-        Client cl1 = new Client(304989171,"Roy Bar","0506797973") {};
+        Client cl1 = new Client(304989171,"Roy Bar","0506797973", ClientType.NEWCLIENT){};
         ShoppingCart testShopCart1 = new ShoppingCart(e1,cl1);
         Product p3 = branch.getBranchInventory().takeFromInventory(p1.getProductCode(),2);
         testShopCart1.addToCart(p3);
