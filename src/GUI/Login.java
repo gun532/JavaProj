@@ -17,12 +17,12 @@ public class Login extends JFrame {
     private JLabel labelEmployee;
 
     public Login(){
-        //Build page frame
 
+        //Build page frame
         setTitle("Login");
 
-        URL iconURL = getClass().getResource("appLogo.png");
-        // iconURL is null when not found
+        //Get logo icon
+        URL iconURL = getClass().getResource("appLogo.png"); // iconURL is null when not found
         ImageIcon icon = new ImageIcon(iconURL);
         setIconImage(icon.getImage());
 
@@ -71,8 +71,13 @@ public class Login extends JFrame {
 
                         //change to DB check
                         if(employeeInputId.equals("304989171") && Arrays.equals(exmp,passwordInput)){
-                            JOptionPane.showMessageDialog(new JFrame(),"Successful login!");
+                            //JOptionPane.showMessageDialog(null,"Successful login!","Login Information",JOptionPane.INFORMATION_MESSAGE);
+
                             //Go to main employees page.
+                            setVisible(false);
+                            dispose();
+                            EmployeesMenuPage emp = new EmployeesMenuPage();
+
                         }
 
                         else {
