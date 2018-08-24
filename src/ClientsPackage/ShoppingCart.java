@@ -3,6 +3,9 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import EmployeePackage.Cashier;
+import EmployeePackage.Employee;
+
 public class ShoppingCart {
     private Map<Integer, Product> cart;
     private int branchCode;
@@ -105,7 +108,7 @@ public class ShoppingCart {
         branch.getBranchInventory().returnToInventory(p1Return.getProductCode(),p1Return.getAmount());
         cl1.addNewCartToHistory(testShopCart1);
 
-        //System.out.println(testShopCart1);
+        System.out.println(testShopCart1);
         System.out.println(cl1);
         System.out.println(branch);
     }

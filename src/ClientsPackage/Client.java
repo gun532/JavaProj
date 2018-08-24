@@ -68,6 +68,7 @@ public abstract class Client {
     }
 
     //public int getClientCode() { return clientCode; }
+
     public int getClientCode() { return this.hashCode(); }
 
     public void setId(int id) {
@@ -103,10 +104,7 @@ public abstract class Client {
 
     @Override
     public int hashCode() {
-        int hash = 1;
-        hash = (int) (hash * 17 + this.id%10000);
-        hash = hash * 31 + this.fullName.charAt(0);
-        return hash;
+        return (int) (this.id / 47);
     }
 
     public static void main(String args[]){
