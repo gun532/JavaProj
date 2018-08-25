@@ -1,5 +1,7 @@
 package GUI;
 
+import BL.AuthService;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,11 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-import java.util.Arrays;
 
 public class Login extends JFrame {
     private JPanel LoginPanel;
@@ -20,17 +17,8 @@ public class Login extends JFrame {
     private JPasswordField passwordField;
     private JLabel labelEmployee;
 
-    private Controller controller = null;
+    private Controller controller;
 
-    private GUIUtility guiUtility;
-
-    {
-        try {
-            guiUtility = new GUIUtility();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     public Login(Controller in_controller) {
 
@@ -80,7 +68,7 @@ public class Login extends JFrame {
 
                     @Override
                     protected Object doInBackground() throws Exception {
-                        checkLogin();
+                        login();
                         return null;
                     }
                 }.execute();
@@ -88,27 +76,20 @@ public class Login extends JFrame {
         });
     }
 
-    private void checkLogin() throws NoSuchAlgorithmException {
+    private void login()  {
 
-        String employeeInputId = employeeIDFormattedTextField.getText();
+        int employeeInputId = Integer.parseInt(employeeIDFormattedTextField.getText());
         String passwordInput = String.valueOf(passwordField.getPassword());
 
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hash = digest.digest(passwordInput.getBytes());
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < hash.length; i++) {
-            sb.append(Integer.toString((hash[i] & 0xff) + 0x100, 16).substring(1));
-        }
-        String hasedPass = sb.toString().toUpperCase();
 
-        //String hasedPass = String.valueOf(hash);
-        String DBPass = guiUtility.checkPass(Integer.parseInt(employeeInputId));
+        boolean isLoggedIn = AuthService.getInstance().login(employeeInputId, passwordInput);
 
-        if (hasedPass.equals(DBPass)) {
+        if (isLoggedIn) {
             setVisible(false);
             dispose();
             controller.getAppFrame().setVisible(true);
             controller.showEmployeesMenuPage();
+
         } else {
             JOptionPane.showMessageDialog(new JFrame(), "Unsuccessful login, please try again.", "Invalid input", JOptionPane.ERROR_MESSAGE);
         }

@@ -1,5 +1,9 @@
 package GUI;
 
+import BL.AuthService;
+import Entities.Employee.Employee;
+import Entities.Employee.Profession;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,7 +21,10 @@ public class EmployeesMenuPage extends CJPanel {
     private CJButton btnChat;
     private CJButton btnNewOrder;
     private Font font = new Font("Candara",0,50);
-    private Controller controller = null;
+    private Controller controller;
+
+    private Employee emp = AuthService.getInstance().getCurrentEmployee();
+
 
     public EmployeesMenuPage(Controller in_controller) {
 
@@ -73,5 +80,13 @@ public class EmployeesMenuPage extends CJPanel {
 
         theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnNewOrder, 0, SpringLayout.HORIZONTAL_CENTER, this);
         theLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnNewOrder, 200, SpringLayout.VERTICAL_CENTER, this);
+
+
+        if (emp.getJobPos() == Profession.SELLER)
+        {
+            btnNewOrder.setEnabled(false);
+        }
+
+
     }
 }
