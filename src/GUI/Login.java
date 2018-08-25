@@ -86,8 +86,16 @@ public class Login extends JFrame {
     //
 
 
+<<<<<<< HEAD
     private void checkLogin() throws NoSuchAlgorithmException {
         //get login information and search for a match in DB
+=======
+                            //Go to main employees page.
+                            setVisible(false);
+                            dispose();
+                            //add controller and go to employee page with it.
+                            //EmployeesMenuPage emp = new EmployeesMenuPage();
+>>>>>>> GUI_Branch
 
         String employeeInputId = employeeIDFormattedTextField.getText();
         String passwordInput = String.valueOf(passwordField.getPassword());
