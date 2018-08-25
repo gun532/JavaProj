@@ -76,7 +76,8 @@ public class Login extends JFrame {
                             //Go to main employees page.
                             setVisible(false);
                             dispose();
-                            EmployeesMenuPage emp = new EmployeesMenuPage();
+                            //add controller and go to employee page with it.
+                            //EmployeesMenuPage emp = new EmployeesMenuPage();
 
                         }
 

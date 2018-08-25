@@ -2,48 +2,39 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class EmployeesMenuPage extends JFrame {
-    private JPanel mainPanel;
+public class EmployeesMenuPage extends CJPanel {
     private CJButton btnInventory;
     private CJButton btnClients;
     private CJButton btnBranch;
+    private CJButton btnChat;
     private CJButton btnNewOrder;
-    private Color backgroundColor = new Color(155, 187, 180);
-    private Font font = new Font("Candara",0,90);
+    private Font font = new Font("Candara",0,50);
+    private Controller controller = null;
 
-    public EmployeesMenuPage() {
-        int screenSizeWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().width;
-        int screenSizeHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().height;
+    public EmployeesMenuPage(Controller in_controller) {
 
-        //Build the frame
-        setTitle("Employees Menu Page");
-        int frameSizeWidth = (int)(screenSizeWidth*0.5);
-        int frameSizeHeight = (int)(screenSizeHeight*0.8);
-        setSize(frameSizeWidth,frameSizeHeight);
-        setLocationRelativeTo(null);
-        setResizable(false);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.controller = in_controller;
 
-        //Get logo icon
-        URL iconURL = getClass().getResource("appLogo.png"); // iconURL is null when not found
-        ImageIcon icon = new ImageIcon(iconURL);
-        setIconImage(icon.getImage());
+        //Get frame size
+        int frameSizeWidth = (int)(controller.getAppFrame().getWidth());
+        int frameSizeHeight = (int)(controller.getAppFrame().getHeight());
 
-        //Build the main panel
+        //Set the panel layout
         SpringLayout theLayout = new SpringLayout();
-        mainPanel = new JPanel(theLayout);
-        mainPanel.setBackground(backgroundColor);
+        setLayout(theLayout);
 
         //Second sub panel
-        JPanel subPanel = new JPanel(new GridLayout(1,3,50,0));
-        subPanel.setPreferredSize(new Dimension((int)(frameSizeWidth*0.9),(int)(frameSizeHeight*0.3)));
-        subPanel.setBackground(backgroundColor);
+        CJPanel subPanel = new CJPanel(new GridLayout(2,2,50,50),(int)(frameSizeWidth*0.8),(int)(frameSizeHeight*0.4));
 
-        //Build components
+        //Build page components
         btnInventory = new CJButton("Inventory", font);
         subPanel.add(btnInventory);
 
@@ -53,25 +44,34 @@ public class EmployeesMenuPage extends JFrame {
         btnBranch = new CJButton("Branch", font);
         subPanel.add(btnBranch);
 
-        mainPanel.add(subPanel);
+        btnChat = new CJButton("Chat", font);
+        subPanel.add(btnChat);
+        btnChat.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //go to chat page use the controller
+            }
+        });
+
+        add(subPanel);
 
         btnNewOrder = new CJButton("New Order", font);
         btnNewOrder.setPreferredSize(new Dimension((int)(frameSizeWidth*0.5),(int)(frameSizeHeight*0.3)));
+        btnNewOrder.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Go to New Order page using the Controller
+                setVisible(false);
+                controller.showNewOrderPanel();
+            }
+        });
 
-        mainPanel.add(btnNewOrder);
+        add(btnNewOrder);
 
-        theLayout.putConstraint(SpringLayout.NORTH, subPanel, 100, SpringLayout.NORTH, mainPanel);
-        theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, subPanel, 0, SpringLayout.HORIZONTAL_CENTER, mainPanel);
+        theLayout.putConstraint(SpringLayout.NORTH, subPanel, 50, SpringLayout.NORTH, this);
+        theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, subPanel, 0, SpringLayout.HORIZONTAL_CENTER, this);
 
-        theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnNewOrder, 0, SpringLayout.HORIZONTAL_CENTER, mainPanel);
-        theLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnNewOrder, 300, SpringLayout.VERTICAL_CENTER, mainPanel);
-
-        setContentPane(mainPanel);
-        //pack();
-        setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        EmployeesMenuPage employeesMenuPage = new EmployeesMenuPage();
+        theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnNewOrder, 0, SpringLayout.HORIZONTAL_CENTER, this);
+        theLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnNewOrder, 200, SpringLayout.VERTICAL_CENTER, this);
     }
 }
