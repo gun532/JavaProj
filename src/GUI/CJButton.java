@@ -7,7 +7,6 @@ import java.awt.event.MouseEvent;
 
 public class CJButton extends JButton {
     private Font font;
-    //private Color color;
     
     public CJButton(String title, Font font){
         super(title);
