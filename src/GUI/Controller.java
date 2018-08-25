@@ -18,24 +18,30 @@ public class Controller {
         buildAppFrame();
 
         login = new Login(this);
-        employeesMenuPage = new EmployeesMenuPage(this);
-        newOrderPanel = new NewOrderPanel(this);
-
         appFrame.setVisible(false);
     }
 
     public void showEmployeesMenuPage()
     {
+        employeesMenuPage = new EmployeesMenuPage(this);
         appFrame.setTitle("Employees Menu Page");
         employeesMenuPage.setVisible(true);
         appFrame.setContentPane(employeesMenuPage);
     }
 
-    public void showNewOrderPanel()
-    {
-        appFrame.setTitle("New Order" + "                 " + new SimpleDateFormat("dd/MM/yy" + "           " + "HH:mm").format(new Date()));
-        newOrderPanel.setVisible(true);
-        appFrame.setContentPane(newOrderPanel);
+    public void showNewOrderPanel() {
+        try{
+            newOrderPanel = new NewOrderPanel(this);
+            appFrame.setTitle("New Order" + "                 " + new SimpleDateFormat("dd/MM/yy" + "           " + "HH:mm").format(new Date()));
+            newOrderPanel.setVisible(true);
+            appFrame.setContentPane(newOrderPanel);
+        }
+        catch (Exception e)
+        {
+            //TODO:write to logger
+            e.printStackTrace();
+        }
+
     }
 
     public void buildAppFrame(){
