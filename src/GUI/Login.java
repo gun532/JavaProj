@@ -7,6 +7,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 public class Login extends JFrame {
@@ -15,6 +19,15 @@ public class Login extends JFrame {
     private JFormattedTextField employeeIDFormattedTextField;
     private JPasswordField passwordField;
     private JLabel labelEmployee;
+
+    private GUIUtility guiUtility;
+    {
+        try {
+            guiUtility = new GUIUtility();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public Login(){
 
@@ -62,38 +75,52 @@ public class Login extends JFrame {
 
                     @Override
                     protected Object doInBackground() throws Exception {
-                        //get login information and search for a match in DB
-                        String employeeInputId = employeeIDFormattedTextField.getText();
-                        char[] passwordInput = passwordField.getPassword();
-
-                        //Example check
-                        char[] exmp = {'1','2','3','4','5','6','7','8'};
-
-                        //change to DB check
-                        if(employeeInputId.equals("304989171") && Arrays.equals(exmp,passwordInput)){
-                            //JOptionPane.showMessageDialog(null,"Successful login!","Login Information",JOptionPane.INFORMATION_MESSAGE);
-
-                            //Go to main employees page.
-                            setVisible(false);
-                            dispose();
-                            EmployeesMenuPage emp = new EmployeesMenuPage();
-
-                        }
-
-                        else {
-                            JOptionPane.showMessageDialog(new JFrame(),"Unsuccessful login, please try again.","Invalid input",JOptionPane.ERROR_MESSAGE);
-                        }
-
-                        //Clear password field for security reasons
-                        Arrays.fill(passwordInput,'0');
-                        passwordField.selectAll();
-                        passwordField.setText(null);
-
+                        checkLogin();
                         return null;
                     }
                 }.execute();
             }
         });
+    }
+
+    //
+
+
+    private void checkLogin() throws NoSuchAlgorithmException {
+        //get login information and search for a match in DB
+
+        String employeeInputId = employeeIDFormattedTextField.getText();
+        String passwordInput = String.valueOf(passwordField.getPassword());
+
+
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(passwordInput.getBytes());
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i< hash.length ;i++)
+        {
+            sb.append(Integer.toString((hash[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        String hasedPass = sb.toString().toUpperCase();
+
+
+        //String hasedPass = String.valueOf(hash);
+        String DBPass = guiUtility.checkPass(Integer.parseInt(employeeInputId));
+
+
+        //Example check
+        //char[] exmp = {'1','2','3','4','5','6','7','8'};
+
+        if (hasedPass.equals(DBPass)) {
+            setVisible(false);
+            dispose();
+            EmployeesMenuPage emp = new EmployeesMenuPage();
+        } else {
+            JOptionPane.showMessageDialog(new JFrame(), "Unsuccessful login, please try again.", "Invalid input", JOptionPane.ERROR_MESSAGE);
+        }
+
+        passwordField.selectAll();
+        passwordField.setText(null);
+
     }
 
     public static void main(String[] args) {
