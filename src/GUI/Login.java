@@ -20,7 +20,10 @@ public class Login extends JFrame {
     private JPasswordField passwordField;
     private JLabel labelEmployee;
 
+    private Controller controller = null;
+
     private GUIUtility guiUtility;
+
     {
         try {
             guiUtility = new GUIUtility();
@@ -29,7 +32,9 @@ public class Login extends JFrame {
         }
     }
 
-    public Login(){
+    public Login(Controller in_controller) {
+
+        this.controller = in_controller;
 
         //Build page frame
         setTitle("Login");
@@ -53,7 +58,7 @@ public class Login extends JFrame {
 
         employeeIDFormattedTextField.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
-                if (employeeIDFormattedTextField.getText().length() >= 9 ) // limits text field to 9 characters
+                if (employeeIDFormattedTextField.getText().length() >= 9) // limits text field to 9 characters
                     e.consume();
             }
         });
@@ -61,7 +66,7 @@ public class Login extends JFrame {
         passwordField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if(passwordField.getPassword().length >= 20) // limits password field to 20 characters
+                if (passwordField.getPassword().length >= 20) // limits password field to 20 characters
                     e.consume();
             }
         });
@@ -71,7 +76,7 @@ public class Login extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                new SwingWorker(){ //Open a login input check in a new thread.
+                new SwingWorker() { //Open a login input check in a new thread.
 
                     @Override
                     protected Object doInBackground() throws Exception {
@@ -83,52 +88,33 @@ public class Login extends JFrame {
         });
     }
 
-    //
-
-
-<<<<<<< HEAD
     private void checkLogin() throws NoSuchAlgorithmException {
-        //get login information and search for a match in DB
-=======
-                            //Go to main employees page.
-                            setVisible(false);
-                            dispose();
-                            //add controller and go to employee page with it.
-                            //EmployeesMenuPage emp = new EmployeesMenuPage();
->>>>>>> GUI_Branch
 
         String employeeInputId = employeeIDFormattedTextField.getText();
         String passwordInput = String.valueOf(passwordField.getPassword());
 
-
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(passwordInput.getBytes());
         StringBuilder sb = new StringBuilder();
-        for(int i=0; i< hash.length ;i++)
-        {
+        for (int i = 0; i < hash.length; i++) {
             sb.append(Integer.toString((hash[i] & 0xff) + 0x100, 16).substring(1));
         }
         String hasedPass = sb.toString().toUpperCase();
 
-
         //String hasedPass = String.valueOf(hash);
         String DBPass = guiUtility.checkPass(Integer.parseInt(employeeInputId));
-
-
-        //Example check
-        //char[] exmp = {'1','2','3','4','5','6','7','8'};
 
         if (hasedPass.equals(DBPass)) {
             setVisible(false);
             dispose();
-            EmployeesMenuPage emp = new EmployeesMenuPage();
+            controller.getAppFrame().setVisible(true);
+            controller.showEmployeesMenuPage();
         } else {
             JOptionPane.showMessageDialog(new JFrame(), "Unsuccessful login, please try again.", "Invalid input", JOptionPane.ERROR_MESSAGE);
         }
 
         passwordField.selectAll();
         passwordField.setText(null);
-
     }
 
     public static void main(String[] args) {

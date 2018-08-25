@@ -10,16 +10,18 @@ public class Controller {
     private JFrame appFrame;
     private EmployeesMenuPage employeesMenuPage;
     private NewOrderPanel newOrderPanel;
+    private Login login;
 
     // Controller constructor holds all the app pages (panels)
     public Controller() throws Exception {
         appFrame = new JFrame();
         buildAppFrame();
 
+        login = new Login(this);
         employeesMenuPage = new EmployeesMenuPage(this);
         newOrderPanel = new NewOrderPanel(this);
 
-        appFrame.setVisible(true);
+        appFrame.setVisible(false);
     }
 
     public void showEmployeesMenuPage()
@@ -58,7 +60,6 @@ public class Controller {
 
     public static void main(String[] args) throws Exception {
         Controller controller = new Controller();
-        controller.showEmployeesMenuPage();
     }
 
     public JFrame getAppFrame() {
