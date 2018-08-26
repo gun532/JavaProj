@@ -106,11 +106,19 @@ public class NewOrderPanel extends CJPanel {
             public void actionPerformed(ActionEvent e) {
                 addToCart(Integer.parseInt(productCodeField.getText()),
                         Integer.parseInt(amountField.getText()));
+
             }
         });
 
 
 
+        btnRemoveProduct.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                removeFromCart(Integer.parseInt(productCodeField.getText()),
+                        Integer.parseInt(amountField.getText()));
+            }
+        });
 
 
 
@@ -137,12 +145,26 @@ public class NewOrderPanel extends CJPanel {
         add(subPanel3);
     }
 
+    private void removeFromCart(int productCode, int amount) {
+        try {
+            Product p = inventory.returnToInventory(productCode, amount);
+            shoppingCart.removeFromCart(p);
+            pData.remove(p);
+            buildTable(p);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "Invalid input", JOptionPane.ERROR_MESSAGE);
+            //e.printStackTrace();
+        }
+
+    }
+
 
     private void addToCart(int productCode, int amount) {
             try {
 
                 Product p = inventory.takeFromInventory(productCode, amount);
                 shoppingCart.addToCart(p);
+
                 buildTable(p);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "Invalid input", JOptionPane.ERROR_MESSAGE);
@@ -150,9 +172,14 @@ public class NewOrderPanel extends CJPanel {
             }
     }
 
+
+    private void removeFromTable()
+    {
+
+    }
+
     private void buildTable(Product p)
     {
-        pData.add(p);
 
         //Defining table headers and columns type
         String[] colNames = {"Product Code", "Product Name", "Number of Items", "Price", "Total"};
@@ -166,6 +193,9 @@ public class NewOrderPanel extends CJPanel {
 
         theLayout.putConstraint(SpringLayout.NORTH, subPanel4, 0, SpringLayout.NORTH, this);
         theLayout.putConstraint(SpringLayout.EAST, subPanel4, 0, SpringLayout.EAST, this);
+
+        pData.add(shoppingCart.getCart().get(p.getProductCode()));
+
 
         add(subPanel4);
     }

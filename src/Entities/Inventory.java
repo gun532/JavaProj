@@ -48,14 +48,17 @@ public class Inventory {
 //        }
 //    }
 
-    public void returnToInventory(int productCode, int amount) throws Exception {
+    public Product returnToInventory(int productCode, int amount) throws Exception {
         if(amount >= 0) {
             Product refProduct = this.myInventory.get(productCode);
+            Product product = new Product(refProduct.getName(),refProduct.getPrice(),amount,productCode);
             if (refProduct != null) {
                 //update new data
                 refProduct.setAmount(refProduct.getAmount() + amount);
                 this.totalItems += amount;
                 this.totalValue += refProduct.getPrice()*amount;
+
+                return product;
             } else {
                 throw new Exception("The product is not in the inventory.");
             }

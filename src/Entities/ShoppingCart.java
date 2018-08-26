@@ -40,7 +40,7 @@ public class ShoppingCart {
     }
 
     public void addToCart(Product product) throws Exception {
-            if (cart.containsValue(product)) {
+            if (cart.containsKey(product.getProductCode())) {
                 this.cart.get(product.getProductCode()).incAmount(product.getAmount());
             } else {
                 this.cart.put(product.getProductCode(), product);
@@ -113,28 +113,28 @@ public class ShoppingCart {
     }
 
     public static void main(String[] args) throws Exception {
-        Branch branch = new Branch("Tel-Aviv", 6, "03-690370");
-        InventoryDataAccess inventoryDataAccess = new InventoryDataAccess();
-        Cashier e1 = new Cashier("Dani", 302343567, "052343567", 6, branch.getBranchNumber());
-        Product p1 = new Product("shirt", 30, 100);
-        //Product p2 = new Product("jeans", 120, 12);
-        //inventoryDataAccess.addToInventory(p1, branch.getBranchNumber());
-        //inventoryDataAccess.addToInventory(p2, branch.getBranchNumber());
-        //branch.getBranchInventory().addToInventory(p1);
-        //branch.getBranchInventory().addToInventory(p2);
-        System.out.println(branch);
-        Client cl1 = new Client(304989171,"Roy Bar","0506797973", ClientType.NEWCLIENT){};
-        ShoppingCart testShopCart1 = new ShoppingCart(e1,cl1);
-        Product p3 = branch.getBranchInventory().takeFromInventory(p1.getProductCode(),2);
-        testShopCart1.addToCart(p3);
-        System.out.println(branch);
-        Product p1Return = new Product("shirt", 30, 1);
-        testShopCart1.removeFromCart(p1Return);
-        branch.getBranchInventory().returnToInventory(p1Return.getProductCode(),p1Return.getAmount());
-        cl1.addNewCartToHistory(testShopCart1);
-
-        System.out.println(testShopCart1);
-        System.out.println(cl1);
-        System.out.println(branch);
+//        Branch branch = new Branch("Tel-Aviv", 6, "03-690370");
+//        InventoryDataAccess inventoryDataAccess = new InventoryDataAccess();
+//        Cashier e1 = new Cashier("Dani", 302343567, "052343567", 6, branch.getBranchNumber());
+//        //Product p1 = new Product("shirt", 30, 100);
+//        //Product p2 = new Product("jeans", 120, 12);
+//        //inventoryDataAccess.addToInventory(p1, branch.getBranchNumber());
+//        //inventoryDataAccess.addToInventory(p2, branch.getBranchNumber());
+//        //branch.getBranchInventory().addToInventory(p1);
+//        //branch.getBranchInventory().addToInventory(p2);
+//        System.out.println(branch);
+//        Client cl1 = new Client(304989171,"Roy Bar","0506797973", ClientType.NEWCLIENT){};
+//        ShoppingCart testShopCart1 = new ShoppingCart(e1,cl1);
+//        Product p3 = branch.getBranchInventory().takeFromInventory(p1.getProductCode(),2);
+//        testShopCart1.addToCart(p3);
+//        System.out.println(branch);
+//        //Product p1Return = new Product("shirt", 30, 1);
+//        testShopCart1.removeFromCart(p1Return);
+//        branch.getBranchInventory().returnToInventory(p1Return.getProductCode(),p1Return.getAmount());
+//        cl1.addNewCartToHistory(testShopCart1);
+//
+//        System.out.println(testShopCart1);
+//        System.out.println(cl1);
+//        System.out.println(branch);
     }
 }
