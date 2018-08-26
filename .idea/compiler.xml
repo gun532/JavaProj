@@ -5,4 +5,9 @@
       <module name="JavaFinalProj" target="" />
     </bytecodeTargetLevel>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="JavaFinalProj" options="--add-exports=java.xml/com.sun.org.apache.xpath.internal.operations=ALL-UNNAMED" />
+    </option>
+  </component>
 </project>

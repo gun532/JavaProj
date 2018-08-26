@@ -1,6 +1,6 @@
 package GUI;
 
-import ClientsPackage.Product;
+import Entities.Product;
 import com.sun.org.apache.xpath.internal.operations.String;
 
 import javax.swing.table.AbstractTableModel;
