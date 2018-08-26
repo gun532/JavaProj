@@ -86,7 +86,5 @@ public class EmployeesMenuPage extends CJPanel {
         {
             btnNewOrder.setEnabled(false);
         }
-
-
     }
 }

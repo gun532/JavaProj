@@ -56,6 +56,17 @@ public class Login extends JFrame {
             public void keyTyped(KeyEvent e) {
                 if (passwordField.getPassword().length >= 20) // limits password field to 20 characters
                     e.consume();
+                if(e.getKeyChar() == KeyEvent.VK_ENTER)
+                {
+                    // TODO: make a single method for login SwingWork (duplicated at login button below)
+                    new SwingWorker() { //Open a login input check in a new thread.
+                        @Override
+                        protected Object doInBackground() throws Exception {
+                            login();
+                            return null;
+                        }
+                    }.execute();
+                }
             }
         });
 
@@ -65,7 +76,6 @@ public class Login extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 new SwingWorker() { //Open a login input check in a new thread.
-
                     @Override
                     protected Object doInBackground() throws Exception {
                         login();
@@ -85,15 +95,17 @@ public class Login extends JFrame {
         boolean isLoggedIn = AuthService.getInstance().login(employeeInputId, passwordInput);
 
         if (isLoggedIn) {
+            //get rid from login page
             setVisible(false);
             dispose();
-            controller.getAppFrame().setVisible(true);
-            controller.showEmployeesMenuPage();
 
+            //load the app
+            controller.loadApp();
         } else {
             JOptionPane.showMessageDialog(new JFrame(), "Unsuccessful login, please try again.", "Invalid input", JOptionPane.ERROR_MESSAGE);
         }
 
+        //clear password field
         passwordField.selectAll();
         passwordField.setText(null);
     }

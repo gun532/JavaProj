@@ -8,23 +8,30 @@ import java.util.Date;
 
 public class Controller {
     private JFrame appFrame;
-    private EmployeesMenuPage employeesMenuPage;
-    private NewOrderPanel newOrderPanel;
+    private EmployeesMenuPage employeesMenuPage = null;
+    private NewOrderPanel newOrderPanel = null;
     private Login login;
 
     // Controller constructor holds all the app pages (panels)
     public Controller() throws Exception {
+
+        login = new Login(this);
+    }
+
+    public void loadApp() {
+
         appFrame = new JFrame();
         buildAppFrame();
 
-        login = new Login(this);
-        appFrame.setVisible(false);
+        employeesMenuPage = new EmployeesMenuPage(this);
+        showEmployeesMenuPage();
+
+        appFrame.setVisible(true);
     }
 
-    public void showEmployeesMenuPage()
-    {
-        employeesMenuPage = new EmployeesMenuPage(this);
+    public void showEmployeesMenuPage() {
         appFrame.setTitle("Employees Menu Page");
+
         employeesMenuPage.setVisible(true);
         appFrame.setContentPane(employeesMenuPage);
     }
@@ -65,7 +72,18 @@ public class Controller {
     }
 
     public static void main(String[] args) throws Exception {
-        Controller controller = new Controller();
+
+        //Run GUI in a thread
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Controller controller = new Controller();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public JFrame getAppFrame() {

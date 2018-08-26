@@ -1,20 +1,17 @@
 package GUI;
 
 import BL.AuthService;
-import BL.ShoppingCartBL;
 import Entities.Inventory;
 import Entities.Product;
 import Entities.Employee.Employee;
 import BL.InventoryBL;
 import DAL.InventoryDataAccess;
-import Entities.Employee.Profession;
 import Entities.ShoppingCart;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 
 public class NewOrderPanel extends CJPanel {
     private JLabel labelProduct;
@@ -25,6 +22,7 @@ public class NewOrderPanel extends CJPanel {
 
     private CJButton btnAddProduct;
     private CJButton btnRemoveProduct;
+    private CJButton btnChooseClient;
 
     private CJButton btnFinish;
 
@@ -33,14 +31,10 @@ public class NewOrderPanel extends CJPanel {
 
     private InventoryBL inventoryBL = new InventoryBL(new InventoryDataAccess());
 
-    //private ShoppingCartBL shoppingCartBL;
-
     private SpringLayout theLayout = new SpringLayout();
 
-
-
-    private Vector<Product> pData = new Vector<Product>();
-
+    private ProductTableModel pTableModel;
+    private JTable productTable;
 
     private Employee emp = AuthService.getInstance().getCurrentEmployee();
     private Inventory inventory = inventoryBL.selectFromInventory(emp.getBranchNumber());;
@@ -79,7 +73,7 @@ public class NewOrderPanel extends CJPanel {
         labelAmount.setLabelFor(amountField);
         subPanel1.add(amountField);
 
-        //Lay out the sub panel.
+        //Lay out sub panel #1.
         SpringUtilities.makeCompactGrid(subPanel1,
                 2, 2, //rows, cols
                 6, 6,        //initX, initY
@@ -99,30 +93,57 @@ public class NewOrderPanel extends CJPanel {
         btnAddProduct = new CJButton("Add", font);
         subPanel2.add(btnAddProduct);
 
-
-
+        //Add to cart button pressed
         btnAddProduct.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                addToCart(Integer.parseInt(productCodeField.getText()),
-                        Integer.parseInt(amountField.getText()));
 
+                new SwingWorker() { //Open a new thread for add to cart.
+
+                    @Override
+                    protected Object doInBackground() throws Exception {
+                        addToCart(Integer.parseInt(productCodeField.getText()),
+                                Integer.parseInt(amountField.getText()));
+                        return null;
+                    }
+                }.execute();
             }
         });
 
-
-
+        //Remove product button pressed
         btnRemoveProduct.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                new SwingWorker() { //Open a new thread.
+
+                    @Override
+                    protected Object doInBackground() throws Exception {
                 removeFromCart(Integer.parseInt(productCodeField.getText()),
                         Integer.parseInt(amountField.getText()));
+                        return null;
+                    }
+                }.execute();
             }
         });
 
-
-
         SpringUtilities.makeGrid(subPanel2, 1, 2, 50, 20, 30, 6);
+
+        //Create "Choose a Client" button
+        btnChooseClient = new CJButton("Choose a Client",font);
+        btnChooseClient.setSize(50,50);
+
+        theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnChooseClient, 0, SpringLayout.HORIZONTAL_CENTER, subPanel2);
+        theLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnChooseClient, 0, SpringLayout.VERTICAL_CENTER, subPanel2);
+
+        btnChooseClient.addActionListener(new ActionListener() {
+            @Override
+            // TODO: add a thread and make it a singleton page
+            public void actionPerformed(ActionEvent e) {
+                ClientPage clientPage = new ClientPage(controller);
+            }
+        });
+
+        add(btnChooseClient);
 
         add(subPanel2);
 
@@ -133,6 +154,7 @@ public class NewOrderPanel extends CJPanel {
         btnFinish = new CJButton("Finish", new Font("Candara", 0, 50));
         subPanel3.add(btnFinish, BorderLayout.CENTER);
 
+        //Finish button was pressed
         btnFinish.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -143,14 +165,19 @@ public class NewOrderPanel extends CJPanel {
         });
 
         add(subPanel3);
+
+        buildTable();
     }
+
+    //Class functions
 
     private void removeFromCart(int productCode, int amount) {
         try {
             Product p = inventory.returnToInventory(productCode, amount);
             shoppingCart.removeFromCart(p);
-            pData.remove(p);
-            buildTable(p);
+
+            updateTable();
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "Invalid input", JOptionPane.ERROR_MESSAGE);
             //e.printStackTrace();
@@ -158,35 +185,46 @@ public class NewOrderPanel extends CJPanel {
 
     }
 
-
     private void addToCart(int productCode, int amount) {
             try {
 
                 Product p = inventory.takeFromInventory(productCode, amount);
                 shoppingCart.addToCart(p);
 
-                buildTable(p);
+                updateTable();
+
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "Invalid input", JOptionPane.ERROR_MESSAGE);
                 //e.printStackTrace();
             }
     }
 
-
-    private void removeFromTable()
+    private void updateTable()
     {
+        //Clear old data stored in table
+        pTableModel.clearDate();
 
+        //Get new data from shopping cart and send it into table modal data vector.
+        shoppingCart.getCart().entrySet().forEach(entry -> {
+            pTableModel.addToVectorM_Data(entry.getValue());
+        });
+
+        //update table graphics
+        pTableModel.fireTableDataChanged();
+
+        productTable.validate();
+        productTable.repaint();
     }
 
-    private void buildTable(Product p)
+    private void buildTable()
     {
-
         //Defining table headers and columns type
         String[] colNames = {"Product Code", "Product Name", "Number of Items", "Price", "Total"};
         Class[] colClasses = {Integer.class, String.class, Integer.class, Integer.class, Integer.class};
 
-        TableModel pTableModel = new TableModel(pData, colNames, colClasses);
-        JTable productTable = new JTable(pTableModel);
+        pTableModel = new ProductTableModel(colNames, colClasses);
+        productTable = new JTable(pTableModel);
+        productTable.setFillsViewportHeight(true);
 
         JScrollPane subPanel4 = new JScrollPane(productTable);
         subPanel4.setPreferredSize(new Dimension((int) (getFrameSizeWidth() * 0.6), (int) (getFrameSizeHeight() * 0.66)));
@@ -194,10 +232,6 @@ public class NewOrderPanel extends CJPanel {
         theLayout.putConstraint(SpringLayout.NORTH, subPanel4, 0, SpringLayout.NORTH, this);
         theLayout.putConstraint(SpringLayout.EAST, subPanel4, 0, SpringLayout.EAST, this);
 
-        pData.add(shoppingCart.getCart().get(p.getProductCode()));
-
-
         add(subPanel4);
     }
-
 }

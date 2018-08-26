@@ -6,16 +6,16 @@ import com.sun.org.apache.xpath.internal.operations.String;
 import javax.swing.table.AbstractTableModel;
 import java.util.Vector;
 
-class TableModel extends AbstractTableModel {
+class ProductTableModel extends AbstractTableModel {
     private java.lang.String[] m_colNames;
     private Class[] m_colTypes;
 
     private Vector<Product> m_Data;
 
-    public TableModel(Vector<Product> products, java.lang.String[] colNames, Class[] colClasses){
+    public ProductTableModel(java.lang.String[] colNames, Class[] colClasses){
         super();
         this.m_colNames = colNames;
-        this.m_Data = products;
+        this.m_Data = new Vector<Product>();
         this.m_colTypes = colClasses;
     }
 
@@ -79,4 +79,14 @@ class TableModel extends AbstractTableModel {
 //                break;
 //        }
 //    }
+
+
+    public void addToVectorM_Data(Product p) {
+        this.m_Data.add(p);
+    }
+
+    public void clearDate()
+    {
+        this.m_Data.clear();
+    }
 }
