@@ -22,22 +22,22 @@ public class InventoryDataAccess {
 
 
 
-    public void removeFromInventory(Product product, int branchNumber) throws Exception {
-
-        try {
-            Class.forName(myDriver);
-            String sql = "DELETE from inventory where inventoryCode = ? and productCode = ?";
-            PreparedStatement statement = myConn.prepareStatement(sql);
-            statement.setInt(1, product.getProductCode());
-            statement.setInt(2, branchNumber);
-            statement.execute();
-            myConn.close();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void removeFromInventory(Product product, int branchNumber) throws Exception {
+//
+//        try {
+//            Class.forName(myDriver);
+//            String sql = "DELETE from inventory where inventoryCode = ? and productCode = ?";
+//            PreparedStatement statement = myConn.prepareStatement(sql);
+//            statement.setInt(1, product.getProductCode());
+//            statement.setInt(2, branchNumber);
+//            statement.execute();
+//            myConn.close();
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public void updateInventory(Inventory inventory) {
 

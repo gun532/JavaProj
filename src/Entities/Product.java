@@ -13,12 +13,12 @@ public class Product {
         this.amount = 0;
         this.productCode = 0;
     }
-    public Product(String name, double price, int amount) throws Exception {
+    public Product(String name, double price, int amount, int productCode) throws Exception {
         if(price >= 0 && amount >= 0) {
             this.name = name;
             this.price = price;
             this.amount = amount;
-//            this.productCode = productCode;
+            this.productCode = productCode;
         }
         else {
             throw new Exception("Invalid input! price and amount can't be a negative number.");

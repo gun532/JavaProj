@@ -58,16 +58,21 @@ class TableModel extends AbstractTableModel {
         return new String();
     }
 
+//    public void removeRow(int row) {
+//        // remove a row from your internal data structure
+//        fireTableRowsDeleted(row, row);
+//    }
+
 //    @Override
 //    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 //        Product pData = (Product) (this.m_Data.elementAt(rowIndex));
 //
 //        switch (columnIndex){
 //            case 0:
-//                pData.set((java.lang.String) aValue);
+//                pData.setName((java.lang.String) aValue);
 //                break;
 //            case 1:
-//                foodData.setCalories((Integer) aValue);
+//                pData.se((Integer) aValue);
 //                break;
 //            case 2:
 //                foodData.setPrice((Integer) aValue);
