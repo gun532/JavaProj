@@ -118,8 +118,8 @@ public class ClientPage extends JFrame {
 
     private JScrollPane buildTable() {
         //Defining table headers and columns type
-        String[] colNames = {"Client Code","Client ID", "Client Name", "Client Type"};
-        Class[] colClasses = {Integer.class, Integer.class, String.class, ClientType.class};
+        String[] colNames = {"Client Code","Client ID", "Client Name","Phone Number", "Client Type"};
+        Class[] colClasses = {Integer.class, Integer.class, String.class, String.class, ClientType.class};
 
         clientTableModal = new ClientTableModal(colNames, colClasses);
 
@@ -139,10 +139,11 @@ public class ClientPage extends JFrame {
                 int clientCode = (int)(model.getValueAt(selectedRowIndex, 0));
                 int clientID = (int)(model.getValueAt(selectedRowIndex, 1));
                 String clientName = (model.getValueAt(selectedRowIndex, 2).toString());
-                ClientType clientType = (ClientType) model.getValueAt(selectedRowIndex, 3);
+                String clientPhone = (model.getValueAt(selectedRowIndex, 3).toString());
+                ClientType clientType = (ClientType) model.getValueAt(selectedRowIndex, 4);
 
                 //Build client object
-                selectedClient(clientCode,clientID,clientName,clientType);
+                selectedClient(clientCode,clientID,clientName,clientPhone,clientType);
             }
         });
 
@@ -177,7 +178,7 @@ public class ClientPage extends JFrame {
         clientTable.repaint();
     }
 
-    public void selectedClient(int clientCode, int clientID, String clientName, ClientType clientType)
+    public void selectedClient(int clientCode, int clientID, String clientName, String clientPhone ,ClientType clientType)
     {
         // TODO: add set client code to clients class and "clean the classes types"
         switch (clientType) {
@@ -185,11 +186,11 @@ public class ClientPage extends JFrame {
                 //this.chosenClient = new NewClient
                 break;
             case RETURNCLIENT:
-                this.chosenClient = new ReturnClient(clientID, clientName, "");
+                this.chosenClient = new ReturnClient(clientID, clientName, clientPhone);
                 break;
 
             case VIPCLIENT:
-                this.chosenClient = new VipClient(clientID, clientName, "");
+                this.chosenClient = new VipClient(clientID, clientName, clientPhone);
                 break;
         }
     }

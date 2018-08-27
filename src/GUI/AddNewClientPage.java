@@ -23,8 +23,8 @@ public class AddNewClientPage extends JFrame {
     private CJButton btnAdd = new CJButton("Add",font);
     private CJButton btnCancel = new CJButton("Cancel", font);
 
-//    private JLabel labelPhoneNumber = new JLabel("Phone Number");
-//    private JTextField fieldPhoneNumber = new JTextField();
+   private JLabel labelPhoneNumber = new JLabel("Phone Number");
+    private JTextField fieldPhoneNumber = new JTextField();
 
 
     public AddNewClientPage(Controller in_controller){
@@ -63,11 +63,19 @@ public class AddNewClientPage extends JFrame {
         labelClientID.setLabelFor(fieldClientID);
         subPanel1.add(fieldClientID);
 
+        labelPhoneNumber.setFont(font);
+        subPanel1.add(labelPhoneNumber);
+
+        fieldFullName = new JTextField(10);
+        fieldFullName.setFont(new Font("Arial", Font.BOLD, 20));
+        labelPhoneNumber.setLabelFor(fieldFullName);
+        subPanel1.add(fieldFullName);
+
         //Lay out sub panel #1.
         SpringUtilities.makeCompactGrid(subPanel1,
-                2, 2, //rows, cols
+                3, 2, //rows, cols
                 6, 6,        //initX, initY
-                10, 40);       //xPad, yPad
+                10, 20);       //xPad, yPad
 
         mainPanel.add(subPanel1);
 

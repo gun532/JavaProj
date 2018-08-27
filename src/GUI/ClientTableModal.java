@@ -52,6 +52,8 @@ public class ClientTableModal extends AbstractTableModel {
             case 2:
                 return client.getFullName();
             case 3:
+                return client.getPhoneNumber();
+            case 4:
                 return client.getType();
         }
         return new String();
