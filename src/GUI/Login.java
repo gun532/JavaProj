@@ -56,8 +56,7 @@ public class Login extends JFrame {
             public void keyTyped(KeyEvent e) {
                 if (passwordField.getPassword().length >= 20) // limits password field to 20 characters
                     e.consume();
-                if(e.getKeyChar() == KeyEvent.VK_ENTER)
-                {
+                if (e.getKeyChar() == KeyEvent.VK_ENTER) {
                     // TODO: make a single method for login SwingWork (duplicated at login button below)
                     new SwingWorker() { //Open a login input check in a new thread.
                         @Override
@@ -86,28 +85,36 @@ public class Login extends JFrame {
         });
     }
 
-    private void login()  {
+    private void login() {
 
-        int employeeInputId = Integer.parseInt(employeeIDFormattedTextField.getText());
-        String passwordInput = String.valueOf(passwordField.getPassword());
+        try {
+            int employeeInputId = Integer.parseInt(employeeIDFormattedTextField.getText());
+            String passwordInput = String.valueOf(passwordField.getPassword());
+            employeeIDFormattedTextField.selectAll();
+            boolean isLoggedIn = AuthService.getInstance().login(employeeInputId, passwordInput);
 
+            if (isLoggedIn) {
+                //get rid from login page
+                setVisible(false);
+                dispose();
 
-        boolean isLoggedIn = AuthService.getInstance().login(employeeInputId, passwordInput);
-
-        if (isLoggedIn) {
-            //get rid from login page
-            setVisible(false);
-            dispose();
-
-            //load the app
-            controller.loadApp();
-        } else {
-            JOptionPane.showMessageDialog(new JFrame(), "Unsuccessful login, please try again.", "Invalid input", JOptionPane.ERROR_MESSAGE);
+                //load the app
+                controller.loadApp();
+            } else {
+                JOptionPane.showMessageDialog(new JFrame(), "Unsuccessful login, please try again.", "Invalid input", JOptionPane.ERROR_MESSAGE);
+            }
+            //clear password field
+            passwordField.selectAll();
+            passwordField.setText(null);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(new JFrame(), "Invalid ID. Please type again", "Invalid input", JOptionPane.ERROR_MESSAGE);
+            employeeIDFormattedTextField.selectAll();
+            employeeIDFormattedTextField.setText(null);
+            passwordField.selectAll();
+            passwordField.setText(null);
         }
 
-        //clear password field
-        passwordField.selectAll();
-        passwordField.setText(null);
+
     }
 
     public static void main(String[] args) {

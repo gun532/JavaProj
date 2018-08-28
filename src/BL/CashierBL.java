@@ -1,15 +1,35 @@
 package BL;
 
+import DAL.ClientsDataAccess;
 import DAL.EmployeeDataAccess;
 import DAL.InventoryDataAccess;
+import Entities.Clients.Client;
 import Entities.Employee.Employee;
+import Entities.Inventory;
+import Entities.ShoppingCart;
+
+import java.util.ArrayList;
 
 public class CashierBL {
     private EmployeeDataAccess employeeDataAccess;
     private InventoryDataAccess inventoryDataAccess;
+    private ClientsDataAccess clientsDataAccess;
 
-    public CashierBL(EmployeeDataAccess employeeDataAccess, InventoryDataAccess inventoryDataAccess) {
+    public CashierBL(EmployeeDataAccess employeeDataAccess, InventoryDataAccess inventoryDataAccess, ClientsDataAccess clientsDataAccess) {
         this.employeeDataAccess = employeeDataAccess;
+        this.inventoryDataAccess = inventoryDataAccess;
+        this.clientsDataAccess = clientsDataAccess;
+    }
+
+    public CashierBL(ClientsDataAccess clientsDataAccess) {
+        this.clientsDataAccess = clientsDataAccess;
+    }
+
+    public CashierBL(EmployeeDataAccess employeeDataAccess) {
+        this.employeeDataAccess = employeeDataAccess;
+    }
+
+    public CashierBL(InventoryDataAccess inventoryDataAccess) {
         this.inventoryDataAccess = inventoryDataAccess;
     }
 
@@ -20,4 +40,39 @@ public class CashierBL {
     public Employee selectEmpDetailsByEmployeeNum(int id) {
         return employeeDataAccess.selectEmpDetailsByEmployeeNum(id);
     }
+
+    public ArrayList<Client> selectAllClients()
+    {
+        return clientsDataAccess.selectAllClients();
+    }
+
+    public void addNewClient(int id, String name, String phone)
+    {
+        clientsDataAccess.addNewClient(id,name,phone);
+    }
+
+    public Client selectClientByID(int id)
+    {
+        return clientsDataAccess.selectClientByID(id);
+    }
+
+    public Inventory selectFromInventory(int branch)
+    {
+        return inventoryDataAccess.selectFromInventory(branch);
+    }
+
+    public void createNewOrder(Inventory inventory, Client client, ShoppingCart shoppingCart) {
+
+        clientsDataAccess.createNewOrder(shoppingCart,client.getClientCode());
+        inventoryDataAccess.updateInventory(inventory);
+
+    }
+
+//    private void insertShoppingCart(ShoppingCart shoppingCart, Client client)
+//    {
+//        clientsDataAccess.insertShoppingCart(shoppingCart);
+//        clientsDataAccess.insertCartDetails(shoppingCart);
+//        clientsDataAccess.insertToShoppingHistory(client.getClientCode(),shoppingCart.getCartID());
+//    }
+
 }

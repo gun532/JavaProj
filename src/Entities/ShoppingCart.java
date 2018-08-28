@@ -13,6 +13,7 @@ import java.util.Map;
 //import Entities.Employee.Employee;
 
 public class ShoppingCart {
+    private int cartID;
     private Map<Integer, Product> cart;
     private int branchCode;
     private int employeeCode;
@@ -21,6 +22,7 @@ public class ShoppingCart {
     private Date cartDate;
 
     public ShoppingCart(){
+        this.cartID = hashCode()/50000;
         this.cart = new LinkedHashMap<Integer, Product>();
         this.branchCode = 0;
         this.employeeCode = 0;
@@ -29,14 +31,16 @@ public class ShoppingCart {
         this.cartDate = new Date();
     }
 
-    public ShoppingCart(Employee employee, Client client){
+    //, Client client
+    public ShoppingCart(Employee employee){
+        this.cartID = hashCode()/50000;
         this.cart = new LinkedHashMap<Integer, Product>();
         this.branchCode = employee.getBranchNumber();
         this.employeeCode = employee.getEmployeeNumber();
         this.totalPrice = 0;
         this.totalItems = 0;
         this.cartDate = new Date();
-        client.addNewCartToHistory(this);
+        //client.addNewCartToHistory(this);
     }
 
     public void addToCart(Product product) throws Exception {
@@ -70,6 +74,14 @@ public class ShoppingCart {
         }
     }
 
+    public int getCartID() {
+        return cartID;
+    }
+
+    public void setCartID(int cartID) {
+        this.cartID = cartID;
+    }
+
     public Map<Integer, Product> getCart() {
         return cart;
     }
@@ -86,6 +98,14 @@ public class ShoppingCart {
         return cartDate;
     }
 
+    public int getBranchCode() {
+        return branchCode;
+    }
+
+    public int getEmployeeCode() {
+        return employeeCode;
+    }
+
     public void setCart(Map<Integer, Product> cart) {
         this.cart = cart;
     }
@@ -100,6 +120,14 @@ public class ShoppingCart {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public void setBranchCode(int branchCode) {
+        this.branchCode = branchCode;
+    }
+
+    public void setEmployeeCode(int employeeCode) {
+        this.employeeCode = employeeCode;
     }
 
     @Override

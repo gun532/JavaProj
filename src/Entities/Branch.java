@@ -9,15 +9,15 @@ public class Branch {
     //private Map<Integer,Employee> employeeMap;
 
     public Branch(){
-        this.branchNumber = hashCode();
+        this.branchNumber = 0;
         this.location = null;
         this.numberOfEmployees = 0;
         this.phone = null;
         this.branchInventory = new Inventory();
     }
 
-    public Branch(String location, int numberOfEmployees, String phone){
-        this.branchNumber = hashCode();
+    public Branch(String location, int numberOfEmployees, String phone, int branchNumber){
+        this.branchNumber = branchNumber;
         this.location = location;
         this.numberOfEmployees = numberOfEmployees;
         this.phone = phone;

@@ -8,8 +8,8 @@ public class VipClient extends Client {
         this.discountRate = 30;
     }
 
-    public VipClient(int in_id, String in_fullName, String in_phoneNumber){
-        super(in_id, in_fullName, in_phoneNumber,ClientType.VIPCLIENT);
+    public VipClient(int in_id, String in_fullName, String in_phoneNumber, int clientCode){
+        super(in_id, in_fullName, in_phoneNumber,ClientType.VIPCLIENT, clientCode);
         this.discountRate = (30);
     }
 

@@ -1,10 +1,17 @@
 package GUI;
 
+import BL.CashierBL;
+import DAL.ClientsDataAccess;
+import Entities.Clients.NewClient;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class AddNewClientPage extends JFrame {
-    private Controller controller = null;
+    private Controller controller;
+
 
     private int frameSizeWidth;
     private int frameSizeHeight;
@@ -13,18 +20,23 @@ public class AddNewClientPage extends JFrame {
     private CJPanel mainPanel = new CJPanel();;
 
     private JLabel labelFullname = new JLabel("Full Name:",JLabel.TRAILING);
-    private JTextField fieldFullName = new JTextField();
+    private JTextField fieldFullName = new JTextField(10);
 
     private JLabel labelClientID = new JLabel("Client ID:",JLabel.TRAILING);
-    private JTextField fieldClientID = new JTextField();
+    private JTextField fieldClientID = new JTextField(10);
 
     private Font font = new Font("Candara", 0, 20); //Custom page font
 
     private CJButton btnAdd = new CJButton("Add",font);
     private CJButton btnCancel = new CJButton("Cancel", font);
 
-   private JLabel labelPhoneNumber = new JLabel("Phone Number");
-    private JTextField fieldPhoneNumber = new JTextField();
+    private JLabel labelPhoneNumber = new JLabel("Phone Number");
+    private JTextField fieldPhoneNumber = new JTextField(10);
+
+    private CashierBL cashierBL = new CashierBL(new ClientsDataAccess());
+
+    private ClientTableModal clientTableModal;
+    private JTable clientTable;
 
 
     public AddNewClientPage(Controller in_controller){
@@ -50,7 +62,7 @@ public class AddNewClientPage extends JFrame {
         labelFullname.setFont(font);
         subPanel1.add(labelFullname);
 
-        fieldFullName = new JTextField(10);
+
         fieldFullName.setFont(font);
         labelFullname.setLabelFor(fieldFullName);
         subPanel1.add(fieldFullName);
@@ -58,7 +70,6 @@ public class AddNewClientPage extends JFrame {
         labelClientID.setFont(font);
         subPanel1.add(labelClientID);
 
-        fieldClientID = new JTextField(10);
         fieldClientID.setFont(new Font("Arial", Font.BOLD, 20));
         labelClientID.setLabelFor(fieldClientID);
         subPanel1.add(fieldClientID);
@@ -66,10 +77,10 @@ public class AddNewClientPage extends JFrame {
         labelPhoneNumber.setFont(font);
         subPanel1.add(labelPhoneNumber);
 
-        fieldFullName = new JTextField(10);
-        fieldFullName.setFont(new Font("Arial", Font.BOLD, 20));
-        labelPhoneNumber.setLabelFor(fieldFullName);
-        subPanel1.add(fieldFullName);
+
+        fieldPhoneNumber.setFont(new Font("Arial", Font.BOLD, 20));
+        labelPhoneNumber.setLabelFor(fieldPhoneNumber);
+        subPanel1.add(fieldPhoneNumber);
 
         //Lay out sub panel #1.
         SpringUtilities.makeCompactGrid(subPanel1,
@@ -97,5 +108,18 @@ public class AddNewClientPage extends JFrame {
 
         setContentPane(mainPanel);
         setVisible(true);
+
+        btnAdd.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cashierBL.addNewClient(Integer.parseInt(fieldClientID.getText()),fieldFullName.getText(), fieldPhoneNumber.getText());
+//                in_controller.getNewOrderPanel().setChosenClient(cashierBL.selectClientByID(Integer.parseInt(fieldClientID.getText())));
+                JOptionPane.showMessageDialog(new JFrame(), "Adding new client was successful", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                setVisible(false);
+
+                //ClientPage clientPage = new ClientPage(controller);
+
+            }
+        });
     }
 }

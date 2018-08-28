@@ -71,6 +71,10 @@ public class Controller {
         appFrame.setIconImage(icon.getImage());
     }
 
+    public NewOrderPanel getNewOrderPanel() {
+        return newOrderPanel;
+    }
+
     public static void main(String[] args) throws Exception {
 
         //Run GUI in a thread
