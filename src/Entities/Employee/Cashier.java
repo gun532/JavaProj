@@ -10,7 +10,7 @@ public class Cashier extends Employee{
     public Cashier(String name, int id, String phone, int accountNum, int branchNumber)
     {
         super(name, id, phone, accountNum,branchNumber, Profession.CASHIER);
-        cashierBL = new CashierBL(new EmployeeDataAccess(),new InventoryDataAccess());
+        cashierBL = new CashierBL(new EmployeeDataAccess());
     }
 
     public Employee selectEmpDetailsById(int id) {

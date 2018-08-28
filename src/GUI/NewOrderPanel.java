@@ -1,6 +1,11 @@
 package GUI;
 
 import BL.AuthService;
+import BL.CashierBL;
+import DAL.ClientsDataAccess;
+import DAL.EmployeeDataAccess;
+import Entities.Clients.Client;
+import Entities.Employee.Cashier;
 import Entities.Inventory;
 import Entities.Product;
 import Entities.Employee.Employee;
@@ -29,22 +34,23 @@ public class NewOrderPanel extends CJPanel {
     private Font font = new Font("Candara", 0, 20); //Custom page font
     private Controller controller = null;
 
-    private InventoryBL inventoryBL = new InventoryBL(new InventoryDataAccess());
-
     private SpringLayout theLayout = new SpringLayout();
 
     private ProductTableModel pTableModel;
     private JTable productTable;
 
     private Employee emp = AuthService.getInstance().getCurrentEmployee();
-    private Inventory inventory = inventoryBL.selectFromInventory(emp.getBranchNumber());;
-    private ShoppingCart shoppingCart = new ShoppingCart();
+    private CashierBL cashierBL = new CashierBL(new EmployeeDataAccess(), new InventoryDataAccess(), new ClientsDataAccess());
+    private Inventory inventory = cashierBL.selectFromInventory(emp.getBranchNumber());
+    private ShoppingCart shoppingCart = new ShoppingCart(emp);
+    private Client chosenClient;
+
+    private ClientPage clientPage;
 
 
     public NewOrderPanel(Controller in_controller) throws Exception {
 
         this.controller = in_controller;
-        inventoryBL = new InventoryBL(new InventoryDataAccess());
 
         //Create the layout and populate the main panel.
         setLayout(theLayout);
@@ -139,7 +145,8 @@ public class NewOrderPanel extends CJPanel {
             @Override
             // TODO: add a thread and make it a singleton page
             public void actionPerformed(ActionEvent e) {
-                ClientPage clientPage = new ClientPage(controller);
+
+                 clientPage = new ClientPage(controller);
             }
         });
 
@@ -158,9 +165,22 @@ public class NewOrderPanel extends CJPanel {
         btnFinish.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                inventoryBL.createNewOrder(inventory);
-                setVisible(false);
-                controller.showEmployeesMenuPage();
+                if(clientPage == null)
+                {
+                    JOptionPane.showMessageDialog(new JFrame(), "Please choose a client", "Invalid input", JOptionPane.ERROR_MESSAGE);
+                }
+                else if(!clientPage.isActive())
+                {
+                    chosenClient = clientPage.getChosenClient();
+                    cashierBL.createNewOrder(inventory, chosenClient, shoppingCart);
+
+                    setVisible(false);
+                    controller.showEmployeesMenuPage();
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(new JFrame(), "Please choose a client", "Invalid input", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
@@ -216,8 +236,14 @@ public class NewOrderPanel extends CJPanel {
         productTable.repaint();
     }
 
+    public void setChosenClient(Client chosenClient) {
+        this.chosenClient = chosenClient;
+    }
+
     private void buildTable()
     {
+
+
         //Defining table headers and columns type
         String[] colNames = {"Product Code", "Product Name", "Number of Items", "Price", "Total"};
         Class[] colClasses = {Integer.class, String.class, Integer.class, Integer.class, Integer.class};
