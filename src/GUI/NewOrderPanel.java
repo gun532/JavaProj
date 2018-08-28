@@ -45,7 +45,7 @@ public class NewOrderPanel extends CJPanel {
     private ShoppingCart shoppingCart = new ShoppingCart(emp);
     private Client chosenClient;
 
-    private ClientPage clientPage;
+    private ClientPage clientPage = null;
 
 
     public NewOrderPanel(Controller in_controller) throws Exception {
@@ -145,8 +145,10 @@ public class NewOrderPanel extends CJPanel {
             @Override
             // TODO: add a thread and make it a singleton page
             public void actionPerformed(ActionEvent e) {
-
+                if(clientPage == null)
                  clientPage = new ClientPage(controller);
+
+                clientPage.setVisible(true);
             }
         });
 
@@ -242,8 +244,6 @@ public class NewOrderPanel extends CJPanel {
 
     private void buildTable()
     {
-
-
         //Defining table headers and columns type
         String[] colNames = {"Product Code", "Product Name", "Number of Items", "Price", "Total"};
         Class[] colClasses = {Integer.class, String.class, Integer.class, Integer.class, Integer.class};

@@ -1,7 +1,7 @@
 package GUI;
 
 import BL.CashierBL;
-import DAL.ClientsDataAccess;
+//import DAL.ClientsDataAccess;
 import Entities.Clients.*;
 
 import javax.swing.*;
@@ -38,10 +38,9 @@ public class ClientPage extends JFrame {
     private JTable clientTable = new JTable(clientTableModal);
     private JScrollPane tablePanel;
 
-
-
-    private CashierBL cashierBL = new CashierBL(new ClientsDataAccess());
-    private Client chosenClient;
+    //Client data
+    //private CashierBL cashierBL = new CashierBL(new ClientsDataAccess());
+    private Client chosenClient = null;
 
 
     public ClientPage(Controller in_controller) {
@@ -59,10 +58,9 @@ public class ClientPage extends JFrame {
         setSize(frameSizeWidth, frameSizeHeight);
         setLocationRelativeTo(null);
 
-
         mainPanel = new CJPanel(theLayout);
 
-        //Build table panel
+        //Build and add table panel
         mainPanel.add(buildTable());
 
         //Build sub panel #1
@@ -93,9 +91,7 @@ public class ClientPage extends JFrame {
             // TODO: add a thread and make it a singleton page
             public void actionPerformed(ActionEvent e) {
                 AddNewClientPage addNewClientPage = new AddNewClientPage(controller);
-
             }
-
         });
 
         subPanel1.add(btnAddNewClient);
@@ -111,19 +107,35 @@ public class ClientPage extends JFrame {
         theLayout.putConstraint(SpringLayout.SOUTH, subPanel2, 0, SpringLayout.SOUTH, mainPanel);
         theLayout.putConstraint(SpringLayout.NORTH, subPanel2, 0, SpringLayout.SOUTH, subPanel1);
 
+        btnOk.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(chosenClient != null) {
+                    //send chosen client data back to new order page
+                    controller.getNewOrderPanel().setChosenClient(chosenClient);
+
+                    //reset chosen client on client page
+                    chosenClient = null;
+
+                    //hide client page and show new order page
+                    setVisible(false);
+                    controller.showNewOrderPanel();
+                }
+                else{
+                    JOptionPane.showMessageDialog(new JFrame(), "Please choose a client from the table above.", "Choose a client", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         subPanel2.add(btnOk);
-
-
         subPanel2.add(btnCancel);
 
         SpringUtilities.makeCompactGrid(subPanel2, 1, 2, 200, 100, 50, 6);
 
         mainPanel.add(subPanel2);
 
-        //mainPanel.setVisible(true);
         setContentPane(mainPanel);
-        setVisible(true);
+        //setVisible(true);
 
         //Example remove later
         updateTable();
@@ -133,7 +145,6 @@ public class ClientPage extends JFrame {
     private JScrollPane buildTable() {
 
         clientTable.setFillsViewportHeight(true);
-
 
         tablePanel = new JScrollPane(clientTable);
         tablePanel.setPreferredSize(new Dimension((int) (frameSizeWidth), (int) (frameSizeHeight * 0.5)));
@@ -147,7 +158,6 @@ public class ClientPage extends JFrame {
                     chooseClientFromTable();
 
                     setVisible(false);
-
                 }
             }
         });
@@ -180,12 +190,12 @@ public class ClientPage extends JFrame {
         clientTableModal.clearDate();
 
         //Example data | remove later
-        //VipClient cl1 = new VipClient(304989171,"Dani Rose", "050-6797973");
+        VipClient cl1 = new VipClient(304989171,"Dani Rose", "050-6797973",23);
 
-        ArrayList<Client> listofclients = cashierBL.selectAllClients();
-        for (int i = 0; i < listofclients.size(); i++) {
-            clientTableModal.addToVectorM_Data(listofclients.get(i));
-        }
+//        ArrayList<Client> listofclients = cashierBL.selectAllClients();
+//        for (int i = 0; i < listofclients.size(); i++) {
+//            clientTableModal.addToVectorM_Data(listofclients.get(i));
+//        }
 
         //----------------------------------------------------
 
