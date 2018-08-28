@@ -2,48 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b26f134b-4a9e-49b5-9992-bf19207f1ecf" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/bff1c604-7764-40ad-9bd0-99dc423f3112.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/bff1c604-7764-40ad-9bd0-99dc423f3112.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/AddNewClientPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/AddNewClientPage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/ClientPage$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/ClientPage$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/ClientPage$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/ClientPage$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/ClientPage$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/ClientPage$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/ClientPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/ClientPage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/ClientTableModal.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/ClientTableModal.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Controller$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Controller$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Controller.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/EmployeesMenuPage$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/EmployeesMenuPage$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/EmployeesMenuPage$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/EmployeesMenuPage$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/EmployeesMenuPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/EmployeesMenuPage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login$2$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login$2$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login$3$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login$3$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/NewOrderPanel$1$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/NewOrderPanel$1$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/NewOrderPanel$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/NewOrderPanel$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/NewOrderPanel$2$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/NewOrderPanel$2$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/NewOrderPanel$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/NewOrderPanel$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/NewOrderPanel$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/NewOrderPanel$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/NewOrderPanel$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/NewOrderPanel$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/NewOrderPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/NewOrderPanel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/ProductTableModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/ProductTableModel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BL/CashierBL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BL/CashierBL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BL/ShoppingCartBL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BL/ShoppingCartBL.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Branch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Branch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Clients/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Clients/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Clients/NewClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Clients/NewClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Clients/ReturnClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Clients/ReturnClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Clients/VipClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Clients/VipClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/Employee/Cashier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/Employee/Cashier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entities/ShoppingCart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entities/ShoppingCart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/AddNewClientPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/AddNewClientPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/ClientPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/ClientPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/NewOrderPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/NewOrderPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -236,8 +195,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/GUI/Login.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1212">
-              <caret line="106" column="13" lean-forward="true" selection-start-line="106" selection-start-column="13" selection-end-line="106" selection-end-column="13" />
+            <state relative-caret-position="926">
+              <caret line="75" lean-forward="true" selection-start-line="75" selection-end-line="75" />
               <folding>
                 <element signature="e#1336#1569#0" expanded="true" />
                 <element signature="e#1568#1569#0" expanded="true" />
@@ -442,7 +401,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://C:/Users/IBM_ADMIN/IdeaProjects/JavaFinalProj/src/GUI/TableModel.java" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535441795104" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535441886482" />
     <property name="database.console.LAST_STATE" value="false" />
     <property name="last_opened_file_path" value="$USER_HOME$/Downloads/mysql-connector-java-5.1.46/mysql-connector-java-5.1.46/mysql-connector-java-5.1.46-bin.jar!/" />
     <property name="project.structure.last.edited" value="Libraries" />
@@ -565,7 +524,7 @@
       <workItem from="1533889914838" duration="3114000" />
       <workItem from="1533893475181" duration="11491000" />
       <workItem from="1534067287294" duration="1464000" />
-      <workItem from="1535099979191" duration="74519000" />
+      <workItem from="1535099979191" duration="75182000" />
     </task>
     <task id="LOCAL-00001" summary="Guy - First commit, includes all the worker related classes&#10;&#10;Check 3">
       <created>1535183199511</created>
@@ -595,18 +554,18 @@
       <option name="project" value="LOCAL" />
       <updated>1535269814583</updated>
     </task>
-    <task id="LOCAL-00005" summary="Guy - First commit, includes all the worker related classes&#10;&#10;Check 3">
-      <created>1534068744909</created>
+    <task id="LOCAL-00005" summary="Changed everything&#10;&#10;divided to BL, DAL, GUI, and entities.&#10;&#10;added the add to cart function and update inventory">
+      <created>1535441849643</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1534068744909</updated>
+      <updated>1535441849643</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="74281000" />
+    <option name="totallyTimeSpent" value="74944000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -1261,8 +1220,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/GUI/Login.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1212">
-          <caret line="106" column="13" lean-forward="true" selection-start-line="106" selection-start-column="13" selection-end-line="106" selection-end-column="13" />
+        <state relative-caret-position="926">
+          <caret line="75" lean-forward="true" selection-start-line="75" selection-end-line="75" />
           <folding>
             <element signature="e#1336#1569#0" expanded="true" />
             <element signature="e#1568#1569#0" expanded="true" />
