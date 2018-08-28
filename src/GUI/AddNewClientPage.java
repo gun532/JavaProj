@@ -2,6 +2,7 @@ package GUI;
 
 import BL.CashierBL;
 import DAL.ClientsDataAccess;
+import Entities.Clients.Client;
 import Entities.Clients.NewClient;
 
 import javax.swing.*;
@@ -46,7 +47,7 @@ public class AddNewClientPage extends JFrame {
 
         //Get and set new frame size
         frameSizeWidth = (int) (controller.getAppFrame().getWidth() * 0.5);
-        frameSizeHeight = (int) (controller.getAppFrame().getHeight() * 0.5);
+        frameSizeHeight = (int) (controller.getAppFrame().getHeight() * 0.4);
 
         setSize(frameSizeWidth, frameSizeHeight);
         setLocationRelativeTo(null);
@@ -56,12 +57,11 @@ public class AddNewClientPage extends JFrame {
 
         //Build sub panel #1.
         CJPanel subPanel1 = new CJPanel(new SpringLayout(), frameSizeWidth*0.9 , frameSizeHeight * 0.5);
-        //subPanel1.setBackground(Color.YELLOW);
+
         theLayout.putConstraint(SpringLayout.NORTH, subPanel1, 0, SpringLayout.NORTH, mainPanel);
 
         labelFullname.setFont(font);
         subPanel1.add(labelFullname);
-
 
         fieldFullName.setFont(font);
         labelFullname.setLabelFor(fieldFullName);
@@ -77,7 +77,6 @@ public class AddNewClientPage extends JFrame {
         labelPhoneNumber.setFont(font);
         subPanel1.add(labelPhoneNumber);
 
-
         fieldPhoneNumber.setFont(new Font("Arial", Font.BOLD, 20));
         labelPhoneNumber.setLabelFor(fieldPhoneNumber);
         subPanel1.add(fieldPhoneNumber);
@@ -90,16 +89,14 @@ public class AddNewClientPage extends JFrame {
 
         mainPanel.add(subPanel1);
 
+
         //Build Sub panel #2
         CJPanel subPanel2 = new CJPanel(new SpringLayout(),frameSizeWidth,frameSizeHeight*0.3);
-        //subPanel2.setBackground(Color.ORANGE);
 
         theLayout.putConstraint(SpringLayout.SOUTH,subPanel2,0,SpringLayout.SOUTH,mainPanel);
         theLayout.putConstraint(SpringLayout.NORTH,subPanel2,0,SpringLayout.SOUTH,subPanel1);
 
-
         subPanel2.add(btnAdd);
-
         subPanel2.add(btnCancel);
 
         SpringUtilities.makeCompactGrid(subPanel2,1,2,120,6,30,6);
@@ -107,18 +104,27 @@ public class AddNewClientPage extends JFrame {
         mainPanel.add(subPanel2);
 
         setContentPane(mainPanel);
-        setVisible(true);
 
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // TODO: 28/08/2018 need to check input fields, and if client already exists in DB -> send the user a matching message.
                 cashierBL.addNewClient(Integer.parseInt(fieldClientID.getText()),fieldFullName.getText(), fieldPhoneNumber.getText());
-//                in_controller.getNewOrderPanel().setChosenClient(cashierBL.selectClientByID(Integer.parseInt(fieldClientID.getText())));
-                JOptionPane.showMessageDialog(new JFrame(), "Adding new client was successful", "Success!", JOptionPane.INFORMATION_MESSAGE);
+
+                JOptionPane.showMessageDialog(new JFrame(), "New client " + fieldFullName.getText() + " was added successfuly", "Success!", JOptionPane.INFORMATION_MESSAGE);
+
+                controller.getNewOrderPanel().getClientPage().setVisible(false);
+                controller.getNewOrderPanel().setClientPage(new ClientPage(controller));
+                controller.getNewOrderPanel().getClientPage().setVisible(true);
+
                 setVisible(false);
+            }
+        });
 
-                //ClientPage clientPage = new ClientPage(controller);
-
+        btnCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
             }
         });
     }

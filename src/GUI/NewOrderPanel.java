@@ -29,7 +29,11 @@ public class NewOrderPanel extends CJPanel {
     private CJButton btnRemoveProduct;
     private CJButton btnChooseClient;
 
+    private JLabel labelChosenClient;
+    private JTextField fieldChosenClient;
+
     private CJButton btnFinish;
+    private CJButton btnCancel;
 
     private Font font = new Font("Candara", 0, 20); //Custom page font
     private Controller controller = null;
@@ -45,7 +49,7 @@ public class NewOrderPanel extends CJPanel {
     private ShoppingCart shoppingCart = new ShoppingCart(emp);
     private Client chosenClient;
 
-    private ClientPage clientPage = null;
+    private ClientPage clientPage;
 
 
     public NewOrderPanel(Controller in_controller) throws Exception {
@@ -83,7 +87,7 @@ public class NewOrderPanel extends CJPanel {
         SpringUtilities.makeCompactGrid(subPanel1,
                 2, 2, //rows, cols
                 6, 6,        //initX, initY
-                10, 60);       //xPad, yPad
+                10, 70);       //xPad, yPad
 
         add(subPanel1);
 
@@ -132,7 +136,7 @@ public class NewOrderPanel extends CJPanel {
             }
         });
 
-        SpringUtilities.makeGrid(subPanel2, 1, 2, 50, 20, 30, 6);
+        SpringUtilities.makeGrid(subPanel2, 1, 2, 50, 10, 30, 6);
 
         //Create "Choose a Client" button
         btnChooseClient = new CJButton("Choose a Client",font);
@@ -148,26 +152,52 @@ public class NewOrderPanel extends CJPanel {
                 if(clientPage == null)
                  clientPage = new ClientPage(controller);
 
+                clientPage.validate();
+                clientPage.repaint();
                 clientPage.setVisible(true);
             }
         });
-
         add(btnChooseClient);
+
+        //Choose a client label and field
+        labelChosenClient = new JLabel("Chosen Client: ", JLabel.TRAILING);
+        labelChosenClient.setFont(font);
+        add(labelChosenClient);
+
+        fieldChosenClient = new JTextField();
+        fieldChosenClient.setFont(new Font("Canadra",0,15));
+        fieldChosenClient.setEditable(false);
+
+        if(chosenClient == null)
+            fieldChosenClient.setText("Please choose a client");
+        else
+            fieldChosenClient.setText(chosenClient.getFullName());
+
+        labelChosenClient.setLabelFor(fieldChosenClient);
+        add(fieldChosenClient);
+
+        theLayout.putConstraint(SpringLayout.WEST, labelChosenClient, 20, SpringLayout.WEST, this);
+        theLayout.putConstraint(SpringLayout.VERTICAL_CENTER, labelChosenClient, 50, SpringLayout.VERTICAL_CENTER, subPanel2);
+        theLayout.putConstraint(SpringLayout.VERTICAL_CENTER, fieldChosenClient, 47, SpringLayout.VERTICAL_CENTER, subPanel2);
+        theLayout.putConstraint(SpringLayout.WEST, fieldChosenClient, 10, SpringLayout.EAST, labelChosenClient);
 
         add(subPanel2);
 
         //Build sub Panel #3
-        CJPanel subPanel3 = new CJPanel(new BorderLayout(), getFrameSizeWidth(), getFrameSizeHeight() * 0.33);
+        CJPanel subPanel3 = new CJPanel(new SpringLayout(), getFrameSizeWidth(), getFrameSizeHeight() * 0.33);
+        subPanel3.setBackground(Color.lightGray);
         theLayout.putConstraint(SpringLayout.NORTH, subPanel3, 0, SpringLayout.SOUTH, subPanel2);
 
-        btnFinish = new CJButton("Finish", new Font("Candara", 0, 50));
-        subPanel3.add(btnFinish, BorderLayout.CENTER);
+        btnFinish = new CJButton("Finish", new Font("Candara", 0, 40));
+        btnFinish.setPreferredSize(new Dimension(300,150));
+        subPanel3.add(btnFinish);
 
         //Finish button was pressed
         btnFinish.addActionListener(new ActionListener() {
+            // TODO: see if everything here is necessary and efficient.
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(clientPage == null)
+                if(chosenClient == null)
                 {
                     JOptionPane.showMessageDialog(new JFrame(), "Please choose a client", "Invalid input", JOptionPane.ERROR_MESSAGE);
                 }
@@ -186,6 +216,18 @@ public class NewOrderPanel extends CJPanel {
             }
         });
 
+        btnCancel = new CJButton("Cancel", new Font("Candara", 0, 40));
+        btnCancel.setPreferredSize(new Dimension(300,150));
+        subPanel3.add(btnCancel);
+
+        btnCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.showEmployeesMenuPage();
+            }
+        });
+
+        SpringUtilities.makeCompactGrid(subPanel3, 1, 2, 100, 60, 100, 60);
         add(subPanel3);
 
         buildTable();
@@ -241,6 +283,9 @@ public class NewOrderPanel extends CJPanel {
     public void setChosenClient(Client chosenClient) {
         this.chosenClient = chosenClient;
     }
+    public JTextField getFieldChosenClient() {
+        return fieldChosenClient;
+    }
 
     private void buildTable()
     {
@@ -259,5 +304,13 @@ public class NewOrderPanel extends CJPanel {
         theLayout.putConstraint(SpringLayout.EAST, subPanel4, 0, SpringLayout.EAST, this);
 
         add(subPanel4);
+    }
+
+    public ClientPage getClientPage() {
+        return clientPage;
+    }
+
+    public void setClientPage(ClientPage clientPage) {
+        this.clientPage = clientPage;
     }
 }

@@ -8,8 +8,8 @@ import java.util.Date;
 
 public class Controller {
     private JFrame appFrame;
-    private EmployeesMenuPage employeesMenuPage = null;
-    private NewOrderPanel newOrderPanel = null;
+    private EmployeesMenuPage employeesMenuPage;
+    private NewOrderPanel newOrderPanel;
     private Login login;
 
     // Controller constructor holds all the app pages (panels)

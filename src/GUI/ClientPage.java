@@ -1,7 +1,7 @@
 package GUI;
 
 import BL.CashierBL;
-//import DAL.ClientsDataAccess;
+import DAL.ClientsDataAccess;
 import Entities.Clients.*;
 
 import javax.swing.*;
@@ -38,9 +38,11 @@ public class ClientPage extends JFrame {
     private JTable clientTable = new JTable(clientTableModal);
     private JScrollPane tablePanel;
 
+    private AddNewClientPage addNewClientPage;
+
     //Client data
-    //private CashierBL cashierBL = new CashierBL(new ClientsDataAccess());
-    private Client chosenClient = null;
+    private CashierBL cashierBL = new CashierBL(new ClientsDataAccess());
+    private Client chosenClient;
 
 
     public ClientPage(Controller in_controller) {
@@ -90,7 +92,11 @@ public class ClientPage extends JFrame {
             @Override
             // TODO: add a thread and make it a singleton page
             public void actionPerformed(ActionEvent e) {
-                AddNewClientPage addNewClientPage = new AddNewClientPage(controller);
+                //if first time entry -> create the page
+                if(addNewClientPage == null)
+                addNewClientPage = new AddNewClientPage(controller);
+
+                addNewClientPage.setVisible(true);
             }
         });
 
@@ -101,25 +107,26 @@ public class ClientPage extends JFrame {
         mainPanel.add(subPanel1);
 
         //Build Sub panel #2
-        CJPanel subPanel2 = new CJPanel(new SpringLayout(), frameSizeWidth * 0.95, frameSizeHeight * 0.4);
-        //subPanel2.setBackground(Color.ORANGE);
+        CJPanel subPanel2 = new CJPanel(new SpringLayout(), frameSizeWidth, frameSizeHeight * 0.2);
 
-        theLayout.putConstraint(SpringLayout.SOUTH, subPanel2, 0, SpringLayout.SOUTH, mainPanel);
+        //theLayout.putConstraint(SpringLayout.SOUTH, subPanel2, 0, SpringLayout.SOUTH, mainPanel);
         theLayout.putConstraint(SpringLayout.NORTH, subPanel2, 0, SpringLayout.SOUTH, subPanel1);
 
+        //OK button was pressed
         btnOk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(chosenClient != null) {
                     //send chosen client data back to new order page
                     controller.getNewOrderPanel().setChosenClient(chosenClient);
+                    controller.getNewOrderPanel().getFieldChosenClient().setText(chosenClient.getFullName());
+                    controller.getNewOrderPanel().validate();
 
                     //reset chosen client on client page
                     chosenClient = null;
 
-                    //hide client page and show new order page
+                    //hide client page
                     setVisible(false);
-                    controller.showNewOrderPanel();
                 }
                 else{
                     JOptionPane.showMessageDialog(new JFrame(), "Please choose a client from the table above.", "Choose a client", JOptionPane.ERROR_MESSAGE);
@@ -127,18 +134,21 @@ public class ClientPage extends JFrame {
             }
         });
 
+        btnCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+            }
+        });
+
         subPanel2.add(btnOk);
         subPanel2.add(btnCancel);
 
-        SpringUtilities.makeCompactGrid(subPanel2, 1, 2, 200, 100, 50, 6);
+        SpringUtilities.makeCompactGrid(subPanel2, 1, 2, 175, 10, 100, 60);
 
         mainPanel.add(subPanel2);
 
         setContentPane(mainPanel);
-        //setVisible(true);
-
-        //Example remove later
-        updateTable();
 
     }
 
@@ -147,20 +157,20 @@ public class ClientPage extends JFrame {
         clientTable.setFillsViewportHeight(true);
 
         tablePanel = new JScrollPane(clientTable);
-        tablePanel.setPreferredSize(new Dimension((int) (frameSizeWidth), (int) (frameSizeHeight * 0.5)));
+        tablePanel.setPreferredSize(new Dimension((int) (frameSizeWidth*0.98), (int) (frameSizeHeight * 0.7)));
 
         theLayout.putConstraint(SpringLayout.NORTH, tablePanel, 0, SpringLayout.NORTH, mainPanel);
         theLayout.putConstraint(SpringLayout.WEST, tablePanel, 0, SpringLayout.WEST, mainPanel);
 
         clientTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
-                if(evt.getClickCount() == 2 ) {
+                if(evt.getClickCount() >= 1 ) {
                     chooseClientFromTable();
-
-                    setVisible(false);
                 }
             }
         });
+
+        updateTable();
 
         return tablePanel;
     }
@@ -189,15 +199,10 @@ public class ClientPage extends JFrame {
         //Clear old data stored in table
         clientTableModal.clearDate();
 
-        //Example data | remove later
-        VipClient cl1 = new VipClient(304989171,"Dani Rose", "050-6797973",23);
-
-//        ArrayList<Client> listofclients = cashierBL.selectAllClients();
-//        for (int i = 0; i < listofclients.size(); i++) {
-//            clientTableModal.addToVectorM_Data(listofclients.get(i));
-//        }
-
-        //----------------------------------------------------
+        ArrayList<Client> listofclients = cashierBL.selectAllClients();
+        for (int i = 0; i < listofclients.size(); i++) {
+            clientTableModal.addToVectorM_Data(listofclients.get(i));
+        }
 
         //update table graphics
         clientTableModal.fireTableDataChanged();
@@ -207,7 +212,7 @@ public class ClientPage extends JFrame {
     }
 
     private void selectedClient(int clientCode, int clientID, String clientName, String clientPhone, ClientType clientType) {
-        // TODO: add set client code to clients class and "clean the classes types"
+
         switch (clientType) {
             case NEWCLIENT:
                 this.chosenClient = new NewClient(clientID, clientName, clientPhone, clientCode);
@@ -228,5 +233,9 @@ public class ClientPage extends JFrame {
 
     public void setChosenClient(Client chosenClient) {
         this.chosenClient = chosenClient;
+    }
+
+    public ClientTableModal getClientTableModal() {
+        return clientTableModal;
     }
 }
