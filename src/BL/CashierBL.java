@@ -68,6 +68,7 @@ public class CashierBL {
 
     }
 
+
 //    private void insertShoppingCart(ShoppingCart shoppingCart, Client client)
 //    {
 //        clientsDataAccess.insertShoppingCart(shoppingCart);

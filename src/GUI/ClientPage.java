@@ -5,6 +5,9 @@ import DAL.ClientsDataAccess;
 import Entities.Clients.*;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -38,11 +41,13 @@ public class ClientPage extends JFrame {
     private JTable clientTable = new JTable(clientTableModal);
     private JScrollPane tablePanel;
 
+    private TableRowSorter<ClientTableModal> sorter = new TableRowSorter<>(clientTableModal);
     private AddNewClientPage addNewClientPage;
 
     //Client data
     private CashierBL cashierBL = new CashierBL(new ClientsDataAccess());
     private Client chosenClient;
+    private ArrayList<Client> listofclients;
 
 
     public ClientPage(Controller in_controller) {
@@ -81,10 +86,47 @@ public class ClientPage extends JFrame {
             public void focusGained(FocusEvent e) {
                 searchField.setText("");
             }
+//
+//            @Override
+//            public void focusLost(FocusEvent e) {
+//                searchField.setText("Search Client...");
+//            }
+//        });
+
+//        btnSearch.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                //if()
+//                filterByName();
+//            }
+        });
+
+        searchField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String text = searchField.getText();
+
+                if (text.trim().length() == 0) {
+                    sorter.setRowFilter(null);
+                } else {
+                    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                }
+            }
 
             @Override
-            public void focusLost(FocusEvent e) {
-                searchField.setText("Search Client...");
+            public void removeUpdate(DocumentEvent e) {
+                String text = searchField.getText();
+
+                if (text.trim().length() == 0) {
+                    sorter.setRowFilter(null);
+                } else {
+                    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates
             }
         });
 
@@ -93,8 +135,8 @@ public class ClientPage extends JFrame {
             // TODO: add a thread and make it a singleton page
             public void actionPerformed(ActionEvent e) {
                 //if first time entry -> create the page
-                if(addNewClientPage == null)
-                addNewClientPage = new AddNewClientPage(controller);
+                if (addNewClientPage == null)
+                    addNewClientPage = new AddNewClientPage(controller);
 
                 addNewClientPage.setVisible(true);
             }
@@ -116,7 +158,7 @@ public class ClientPage extends JFrame {
         btnOk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(chosenClient != null) {
+                if (chosenClient != null) {
                     //send chosen client data back to new order page
                     controller.getNewOrderPanel().setChosenClient(chosenClient);
                     controller.getNewOrderPanel().getFieldChosenClient().setText(chosenClient.getFullName());
@@ -125,10 +167,11 @@ public class ClientPage extends JFrame {
                     //reset chosen client on client page
                     chosenClient = null;
 
+                    searchField.setText("");
+
                     //hide client page
                     setVisible(false);
-                }
-                else{
+                } else {
                     JOptionPane.showMessageDialog(new JFrame(), "Please choose a client from the table above.", "Choose a client", JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -154,17 +197,20 @@ public class ClientPage extends JFrame {
 
     private JScrollPane buildTable() {
 
+
         clientTable.setFillsViewportHeight(true);
+        clientTable.setRowSorter(sorter);
 
         tablePanel = new JScrollPane(clientTable);
-        tablePanel.setPreferredSize(new Dimension((int) (frameSizeWidth*0.98), (int) (frameSizeHeight * 0.7)));
+        tablePanel.setPreferredSize(new Dimension((int) (frameSizeWidth * 0.98), (int) (frameSizeHeight * 0.7)));
+
 
         theLayout.putConstraint(SpringLayout.NORTH, tablePanel, 0, SpringLayout.NORTH, mainPanel);
         theLayout.putConstraint(SpringLayout.WEST, tablePanel, 0, SpringLayout.WEST, mainPanel);
 
         clientTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
-                if(evt.getClickCount() >= 1 ) {
+                if (evt.getClickCount() >= 1) {
                     chooseClientFromTable();
                 }
             }
@@ -178,17 +224,18 @@ public class ClientPage extends JFrame {
     public Client chooseClientFromTable() {
 
         // get the model from the jtable
-        ClientTableModal model = (ClientTableModal) clientTable.getModel();
+        //ClientTableModal model = (ClientTableModal) clientTable.getModel();
 
         // get the selected row index
         int selectedRowIndex = clientTable.getSelectedRow();
+        selectedRowIndex = clientTable.convertRowIndexToModel(selectedRowIndex);
 
         // set the selected row data into Client
-        int clientCode = (int) (model.getValueAt(selectedRowIndex, 0));
-        int clientID = (int) (model.getValueAt(selectedRowIndex, 1));
-        String clientName = (model.getValueAt(selectedRowIndex, 2).toString());
-        String clientPhone = (model.getValueAt(selectedRowIndex, 3).toString());
-        ClientType clientType = (ClientType) model.getValueAt(selectedRowIndex, 4);
+        int clientCode = (int) (clientTableModal.getValueAt(selectedRowIndex, 0));
+        int clientID = (int) (clientTableModal.getValueAt(selectedRowIndex, 1));
+        String clientName = (clientTableModal.getValueAt(selectedRowIndex, 2).toString());
+        String clientPhone = (clientTableModal.getValueAt(selectedRowIndex, 3).toString());
+        ClientType clientType = (ClientType) clientTableModal.getValueAt(selectedRowIndex, 4);
 
         //Build client object
         selectedClient(clientCode, clientID, clientName, clientPhone, clientType);
@@ -199,7 +246,7 @@ public class ClientPage extends JFrame {
         //Clear old data stored in table
         clientTableModal.clearDate();
 
-        ArrayList<Client> listofclients = cashierBL.selectAllClients();
+        listofclients = cashierBL.selectAllClients();
         for (int i = 0; i < listofclients.size(); i++) {
             clientTableModal.addToVectorM_Data(listofclients.get(i));
         }
@@ -227,7 +274,7 @@ public class ClientPage extends JFrame {
         }
     }
 
-    public Client getChosenClient(){
+    public Client getChosenClient() {
         return chosenClient;
     }
 

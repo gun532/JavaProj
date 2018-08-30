@@ -128,8 +128,8 @@ public class NewOrderPanel extends CJPanel {
 
                     @Override
                     protected Object doInBackground() throws Exception {
-                removeFromCart(Integer.parseInt(productCodeField.getText()),
-                        Integer.parseInt(amountField.getText()));
+                        removeFromCart(Integer.parseInt(productCodeField.getText()),
+                                Integer.parseInt(amountField.getText()));
                         return null;
                     }
                 }.execute();
@@ -139,8 +139,8 @@ public class NewOrderPanel extends CJPanel {
         SpringUtilities.makeGrid(subPanel2, 1, 2, 50, 10, 30, 6);
 
         //Create "Choose a Client" button
-        btnChooseClient = new CJButton("Choose a Client",font);
-        btnChooseClient.setSize(50,50);
+        btnChooseClient = new CJButton("Choose a Client", font);
+        btnChooseClient.setSize(50, 50);
 
         theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnChooseClient, 0, SpringLayout.HORIZONTAL_CENTER, subPanel2);
         theLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnChooseClient, 0, SpringLayout.VERTICAL_CENTER, subPanel2);
@@ -149,8 +149,8 @@ public class NewOrderPanel extends CJPanel {
             @Override
             // TODO: add a thread and make it a singleton page
             public void actionPerformed(ActionEvent e) {
-                if(clientPage == null)
-                 clientPage = new ClientPage(controller);
+                if (clientPage == null)
+                    clientPage = new ClientPage(controller);
 
                 clientPage.validate();
                 clientPage.repaint();
@@ -165,10 +165,10 @@ public class NewOrderPanel extends CJPanel {
         add(labelChosenClient);
 
         fieldChosenClient = new JTextField();
-        fieldChosenClient.setFont(new Font("Canadra",0,15));
+        fieldChosenClient.setFont(new Font("Canadra", 0, 15));
         fieldChosenClient.setEditable(false);
 
-        if(chosenClient == null)
+        if (chosenClient == null)
             fieldChosenClient.setText("Please choose a client");
         else
             fieldChosenClient.setText(chosenClient.getFullName());
@@ -189,7 +189,7 @@ public class NewOrderPanel extends CJPanel {
         theLayout.putConstraint(SpringLayout.NORTH, subPanel3, 0, SpringLayout.SOUTH, subPanel2);
 
         btnFinish = new CJButton("Finish", new Font("Candara", 0, 40));
-        btnFinish.setPreferredSize(new Dimension(300,150));
+        btnFinish.setPreferredSize(new Dimension(300, 150));
         subPanel3.add(btnFinish);
 
         //Finish button was pressed
@@ -201,23 +201,29 @@ public class NewOrderPanel extends CJPanel {
                 {
                     JOptionPane.showMessageDialog(new JFrame(), "Please choose a client", "Invalid input", JOptionPane.ERROR_MESSAGE);
                 }
-                else if(!clientPage.isActive())
-                {
-                    chosenClient = clientPage.getChosenClient();
+//                else if(!clientPage.isActive())
+//                {
+//                    chosenClient = clientPage.getChosenClient();
+//                    cashierBL.createNewOrder(inventory, chosenClient, shoppingCart);
+//
+//                    setVisible(false);
+//                    controller.showEmployeesMenuPage();
+//                }
+//                else
+//                {
+//                    JOptionPane.showMessageDialog(new JFrame(), "Please choose a client", "Invalid input", JOptionPane.ERROR_MESSAGE);
+//                }
+                else {
                     cashierBL.createNewOrder(inventory, chosenClient, shoppingCart);
 
                     setVisible(false);
                     controller.showEmployeesMenuPage();
                 }
-                else
-                {
-                    JOptionPane.showMessageDialog(new JFrame(), "Please choose a client", "Invalid input", JOptionPane.ERROR_MESSAGE);
-                }
             }
         });
 
         btnCancel = new CJButton("Cancel", new Font("Candara", 0, 40));
-        btnCancel.setPreferredSize(new Dimension(300,150));
+        btnCancel.setPreferredSize(new Dimension(300, 150));
         subPanel3.add(btnCancel);
 
         btnCancel.addActionListener(new ActionListener() {
@@ -250,21 +256,20 @@ public class NewOrderPanel extends CJPanel {
     }
 
     private void addToCart(int productCode, int amount) {
-            try {
+        try {
 
-                Product p = inventory.takeFromInventory(productCode, amount);
-                shoppingCart.addToCart(p);
+            Product p = inventory.takeFromInventory(productCode, amount);
+            shoppingCart.addToCart(p);
 
-                updateTable();
+            updateTable();
 
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "Invalid input", JOptionPane.ERROR_MESSAGE);
-                //e.printStackTrace();
-            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "Invalid input", JOptionPane.ERROR_MESSAGE);
+            //e.printStackTrace();
+        }
     }
 
-    private void updateTable()
-    {
+    private void updateTable() {
         //Clear old data stored in table
         pTableModel.clearDate();
 
@@ -283,12 +288,12 @@ public class NewOrderPanel extends CJPanel {
     public void setChosenClient(Client chosenClient) {
         this.chosenClient = chosenClient;
     }
+
     public JTextField getFieldChosenClient() {
         return fieldChosenClient;
     }
 
-    private void buildTable()
-    {
+    private void buildTable() {
         //Defining table headers and columns type
         String[] colNames = {"Product Code", "Product Name", "Number of Items", "Price", "Total"};
         Class[] colClasses = {Integer.class, String.class, Integer.class, Integer.class, Integer.class};

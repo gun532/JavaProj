@@ -29,6 +29,7 @@ public class ClientsDataAccess {
     public ArrayList<Client> selectAllClients() {
         ArrayList<Client> clientArrayList = new ArrayList<>();
         try {
+            // TODO: 29/08/2018 use switch case for clients type
             Class.forName(myDriver);
             String sql = "SELECT * from clients";
             PreparedStatement statement = myConn.prepareStatement(sql);

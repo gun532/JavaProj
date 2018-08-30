@@ -67,4 +67,5 @@ public class ClientTableModal extends AbstractTableModel {
     {
         this.m_Data.clear();
     }
+
 }
