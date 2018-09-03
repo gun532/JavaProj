@@ -1,16 +1,10 @@
 package Entities;
-import DAL.InventoryDataAccess;
-import Entities.Clients.Client;
-import Entities.Clients.ClientType;
-import Entities.Employee.*;
 
+import Entities.Employee.*;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-
-//import Entities.Employee.Cashier;
-//import Entities.Employee.Employee;
 
 public class ShoppingCart {
     private int cartID;
@@ -23,7 +17,7 @@ public class ShoppingCart {
 
     public ShoppingCart(){
         this.cartID = hashCode()/50000;
-        this.cart = new LinkedHashMap<Integer, Product>();
+        this.cart = new LinkedHashMap<>();
         this.branchCode = 0;
         this.employeeCode = 0;
         this.totalPrice = 0;
@@ -31,16 +25,14 @@ public class ShoppingCart {
         this.cartDate = new Date();
     }
 
-    //, Client client
     public ShoppingCart(Employee employee){
         this.cartID = hashCode()/50000;
-        this.cart = new LinkedHashMap<Integer, Product>();
+        this.cart = new LinkedHashMap<>();
         this.branchCode = employee.getBranchNumber();
         this.employeeCode = employee.getEmployeeNumber();
         this.totalPrice = 0;
         this.totalItems = 0;
         this.cartDate = new Date();
-        //client.addNewCartToHistory(this);
     }
 
     public void addToCart(Product product) throws Exception {
@@ -78,9 +70,6 @@ public class ShoppingCart {
         return cartID;
     }
 
-    public void setCartID(int cartID) {
-        this.cartID = cartID;
-    }
 
     public Map<Integer, Product> getCart() {
         return cart;
@@ -138,31 +127,5 @@ public class ShoppingCart {
                 + "\nTotal products: " + this.totalItems
                 + "\nTotal amount: " + this.totalPrice
                 + "\nOrder Date: " + this.cartDate;
-    }
-
-    public static void main(String[] args) throws Exception {
-//        Branch branch = new Branch("Tel-Aviv", 6, "03-690370");
-//        InventoryDataAccess inventoryDataAccess = new InventoryDataAccess();
-//        Cashier e1 = new Cashier("Dani", 302343567, "052343567", 6, branch.getBranchNumber());
-//        //Product p1 = new Product("shirt", 30, 100);
-//        //Product p2 = new Product("jeans", 120, 12);
-//        //inventoryDataAccess.addToInventory(p1, branch.getBranchNumber());
-//        //inventoryDataAccess.addToInventory(p2, branch.getBranchNumber());
-//        //branch.getBranchInventory().addToInventory(p1);
-//        //branch.getBranchInventory().addToInventory(p2);
-//        System.out.println(branch);
-//        Client cl1 = new Client(304989171,"Roy Bar","0506797973", ClientType.NEWCLIENT){};
-//        ShoppingCart testShopCart1 = new ShoppingCart(e1,cl1);
-//        Product p3 = branch.getBranchInventory().takeFromInventory(p1.getProductCode(),2);
-//        testShopCart1.addToCart(p3);
-//        System.out.println(branch);
-//        //Product p1Return = new Product("shirt", 30, 1);
-//        testShopCart1.removeFromCart(p1Return);
-//        branch.getBranchInventory().returnToInventory(p1Return.getProductCode(),p1Return.getAmount());
-//        cl1.addNewCartToHistory(testShopCart1);
-//
-//        System.out.println(testShopCart1);
-//        System.out.println(cl1);
-//        System.out.println(branch);
     }
 }

@@ -1,21 +1,21 @@
 package GUI;
 
-import Entities.Product;
+import Entities.Clients.Client;
+import Entities.Employee.Employee;
 import com.sun.org.apache.xpath.internal.operations.String;
-
 import javax.swing.table.AbstractTableModel;
 import java.util.Vector;
 
-class ProductTableModel extends AbstractTableModel {
+public class EmployeeTableModel extends AbstractTableModel {
     private java.lang.String[] m_colNames;
     private Class[] m_colTypes;
 
-    private Vector<Product> m_Data;
+    private Vector<Employee> m_Data;
 
-    public ProductTableModel(java.lang.String[] colNames, Class[] colClasses){
+    public EmployeeTableModel(java.lang.String[] colNames, Class[] colClasses){
         super();
         this.m_colNames = colNames;
-        this.m_Data = new Vector<Product>();
+        this.m_Data = new Vector<Employee>();
         this.m_colTypes = colClasses;
     }
 
@@ -41,25 +41,27 @@ class ProductTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Product pData = (Product) (this.m_Data.elementAt(rowIndex));
+        Employee employee =  this.m_Data.elementAt(rowIndex);
 
         switch (columnIndex) {
             case 0:
-                return pData.getProductCode();
+                return employee.getEmployeeNumber();
             case 1:
-                return pData.getName();
+                return employee.getId();
             case 2:
-                return pData.getAmount();
+                return employee.getName();
             case 3:
-                return pData.getPrice();
+                return employee.getPhone();
             case 4:
-                return pData.getPrice()*pData.getAmount();
+                return employee.getAccountNum();
+            case 5:
+                return employee.getJobPos();
         }
         return new String();
     }
 
-    public void addToVectorM_Data(Product p) {
-        this.m_Data.add(p);
+    public void addToVectorM_Data(Employee employee) {
+        this.m_Data.add(employee);
     }
 
     public void clearData()

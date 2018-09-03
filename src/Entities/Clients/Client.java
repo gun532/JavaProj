@@ -1,5 +1,6 @@
 package Entities.Clients;
 
+import Entities.Deal;
 import Entities.ShoppingCart;
 
 import java.util.LinkedHashMap;
@@ -10,7 +11,7 @@ public abstract class Client {
     private String fullName;
     private String phoneNumber;
     private ClientType type;
-    protected double discountRate;
+    protected double discountRate; // TODO: 01/09/2018 remove this method and the column in the DB.
     private Map <Integer, ShoppingCart> shoppingHistory;
     private int clientCode;
 
@@ -60,11 +61,6 @@ public abstract class Client {
         return type;
     }
 
-
-    public double getDiscountRate() {
-        return discountRate;
-    }
-
     public Map<Integer, ShoppingCart> getShoppingHistory() {
         return shoppingHistory;
     }
@@ -100,6 +96,7 @@ public abstract class Client {
         this.shoppingHistory.put(newCart.hashCode(),newCart);
     }
 
+
     @Override
     public String toString() {
         return "\nClient Details:\n" + "Client Code: " + this.hashCode() + "\nClient id: " + this.id + "\nClient full name: " + this.fullName + "\nClient phone number: " + this.phoneNumber
@@ -108,9 +105,7 @@ public abstract class Client {
 
 
     public static void main(String args[]){
-        //Client cl1 = new Client(304989171,"Roy Bar","0506797973", ClientType.NEWCLIENT) {};
-        //cl1 = new VipClient(cl1);
-        //System.out.println(cl1);
+
     }
 }
 
