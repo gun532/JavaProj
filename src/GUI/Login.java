@@ -89,7 +89,7 @@ public class Login extends JPanel {
             public void keyTyped(KeyEvent e) {
                 if (fieldPassword.getPassword().length >= 20) // limits password fieldPassword to 20 characters
                     e.consume();
-                if (e.getKeyChar() == KeyEvent.VK_ENTER && !fieldID.getText().isEmpty() && !fieldPassword.getText().isEmpty())
+                if (e.getKeyChar() == KeyEvent.VK_ENTER && !fieldID.getText().isEmpty())
                 {
                     new SwingWorker() { //Open a login input check in a new thread.
                         @Override

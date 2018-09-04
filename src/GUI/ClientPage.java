@@ -164,7 +164,7 @@ public class ClientPage extends JFrame {
                     //send chosen client data back to new order and main page
                     controller.getMainMenuPage().setChosenClient(chosenClient);
 
-                    if(controller.getNewOrderPanel().isVisible()) {
+                    if(controller.getNewOrderPanel().isShowing()) {
                         controller.getNewOrderPanel().setChosenClient(chosenClient);
                         controller.getNewOrderPanel().getFieldChosenClient().setText(chosenClient.getFullName());
                         controller.getNewOrderPanel().updateShoppingCartDeal();

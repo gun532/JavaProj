@@ -172,12 +172,6 @@ public class NewOrderPanel extends CJPanel {
         fieldChosenClient.setFont(new Font("Canadra", 0, 15));
         fieldChosenClient.setEditable(false);
 
-        chosenClient = controller.getMainMenuPage().getChosenClient();
-        if (chosenClient == null)
-            fieldChosenClient.setText("Please choose a client");
-        else
-            fieldChosenClient.setText(chosenClient.getFullName());
-
         labelChosenClient.setLabelFor(fieldChosenClient);
         add(fieldChosenClient);
 
@@ -270,6 +264,14 @@ public class NewOrderPanel extends CJPanel {
         SpringUtilities.makeCompactGrid(subPanelTable,1,4,6,0,0,0);
 
         add(subPanelTable);
+
+        chosenClient = controller.getMainMenuPage().getChosenClient();
+        if (chosenClient == null)
+            fieldChosenClient.setText("Please choose a client");
+        else {
+            fieldChosenClient.setText(chosenClient.getFullName());
+            updateShoppingCartDeal();
+        }
     }
 
     //Class functions

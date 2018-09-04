@@ -22,6 +22,7 @@ public class MainMenuPage extends CJPanel {
     private CJButton btnChat;
     private CJButton btnEmployees;
     private CJButton btnNewOrder;
+
     private Font font = new Font("Candara",0,50);
     private Controller controller;
 

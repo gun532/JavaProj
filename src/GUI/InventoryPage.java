@@ -129,6 +129,7 @@ public class InventoryPage extends CJPanel {
                 10, 40);       //xPad, yPad
 
         add(subPanel1);
+        // TODO: 04/09/2018 check fields input
     }
 
     private void buildSubPanel2() {
