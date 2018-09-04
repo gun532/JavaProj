@@ -2,62 +2,95 @@ package GUI;
 
 import BL.AuthService;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.net.URL;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
-public class Login extends JFrame {
-    private JPanel LoginPanel;
-    private JButton loginButton;
-    private JFormattedTextField employeeIDFormattedTextField;
-    private JPasswordField passwordField;
-    private JLabel labelEmployee;
-
+public class Login extends JPanel {
     private Controller controller;
+    private Font font = new Font("Candara",Font.BOLD,30);
+    private Image image;
 
+    private JLabel labelEmployeeID = new JLabel("Employee ID:", JLabel.TRAILING);
+    private JTextField fieldID = new JTextField(9);
 
-    public Login(Controller in_controller) {
+    private JPasswordField fieldPassword = new JPasswordField(10);
+    private JLabel labelPassword = new JLabel("Password:", JLabel.TRAILING);
+
+    private CJButton loginButton = new CJButton("Login",new Font("Candara",0,30));
+
+    public Login(Controller in_controller) throws IOException {
 
         this.controller = in_controller;
 
-        //Build page frame
-        setTitle("Login");
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    image = ImageIO.read(new File("src/GUI/Res/clothing_login_BG.jpg"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
-        //Get logo icon
-        URL iconURL = getClass().getResource("appLogo.png"); // iconURL is null when not found
-        ImageIcon icon = new ImageIcon(iconURL);
-        setIconImage(icon.getImage());
+        SpringLayout theLayout = new SpringLayout();
+        setLayout(theLayout);
 
-        setSize((int) (Toolkit.getDefaultToolkit().getScreenSize().width * 0.2),
-                (int) (Toolkit.getDefaultToolkit().getScreenSize().height * 0.17));
-        setMinimumSize(new Dimension(626, 268));
-        setResizable(false);
+        CJPanel subPanel = new CJPanel(new SpringLayout(),controller.getAppFrame().getWidth()*0.7, controller.getAppFrame().getHeight()*0.5);
+        subPanel.setOpaque(false);
 
-        setLocationRelativeTo(null);
-        setContentPane(LoginPanel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        theLayout.putConstraint(SpringLayout.NORTH,subPanel,0,SpringLayout.NORTH,this);
+        theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER,subPanel,0,SpringLayout.HORIZONTAL_CENTER,this);
 
-        pack();
-        setVisible(true);
+        labelEmployeeID.setFont(font);
+        labelEmployeeID.setBackground(new Color(255, 230, 230));
+        labelEmployeeID.setOpaque(true);
+        labelEmployeeID.setForeground(Color.BLACK);
+        subPanel.add(labelEmployeeID);
 
-        employeeIDFormattedTextField.addKeyListener(new KeyAdapter() {
+        fieldID.setFont(new Font("Arial", Font.BOLD, 30));
+        labelEmployeeID.setLabelFor(fieldID);
+        subPanel.add(fieldID);
+
+        labelPassword.setFont(font);
+        labelPassword.setBackground(new Color(255, 230, 230));
+        labelPassword.setOpaque(true);
+        labelPassword.setForeground(Color.BLACK);
+        subPanel.add(labelPassword);
+
+        fieldPassword.setFont(new Font("Arial", Font.BOLD, 30));
+        labelPassword.setLabelFor(fieldPassword);
+        subPanel.add(fieldPassword);
+
+        SpringUtilities.makeCompactGrid(subPanel,2,2,10,40,10,30);
+        add(subPanel);
+
+        add(loginButton);
+        theLayout.putConstraint(SpringLayout.SOUTH,loginButton,-50,SpringLayout.SOUTH,this);
+        theLayout.putConstraint(SpringLayout.EAST,loginButton,-40,SpringLayout.EAST,this);
+
+        fieldID.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
-                if (employeeIDFormattedTextField.getText().length() >= 9) // limits text field to 9 characters
+                if (fieldID.getText().length() >= 9 || e.getKeyChar() < '0' || e.getKeyChar() > '9') // limits text fieldPassword to 9 characters
                     e.consume();
             }
         });
 
-        passwordField.addKeyListener(new KeyAdapter() {
+        fieldPassword.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
-                if (passwordField.getPassword().length >= 20) // limits password field to 20 characters
+                if (fieldPassword.getPassword().length >= 20) // limits password fieldPassword to 20 characters
                     e.consume();
-                if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-                    // TODO: make a single method for login SwingWork (duplicated at login button below)
+                if (e.getKeyChar() == KeyEvent.VK_ENTER && !fieldID.getText().isEmpty())
+                {
                     new SwingWorker() { //Open a login input check in a new thread.
                         @Override
                         protected Object doInBackground() throws Exception {
@@ -68,7 +101,6 @@ public class Login extends JFrame {
                 }
             }
         });
-
 
         loginButton.addActionListener(new ActionListener() {
             @Override
@@ -88,36 +120,44 @@ public class Login extends JFrame {
     private void login() {
 
         try {
-            int employeeInputId = Integer.parseInt(employeeIDFormattedTextField.getText());
-            String passwordInput = String.valueOf(passwordField.getPassword());
-            employeeIDFormattedTextField.selectAll();
+            int employeeInputId = Integer.parseInt(fieldID.getText());
+            String passwordInput = String.valueOf(fieldPassword.getPassword());
+            fieldID.selectAll();
             boolean isLoggedIn = AuthService.getInstance().login(employeeInputId, passwordInput);
 
             if (isLoggedIn) {
-                //get rid from login page
-                setVisible(false);
-                dispose();
-
-                //load the app
-                controller.loadApp();
+                SwingUtilities.invokeAndWait(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            controller.showMainMenuPage();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             } else {
                 JOptionPane.showMessageDialog(new JFrame(), "Unsuccessful login, please try again.", "Invalid input", JOptionPane.ERROR_MESSAGE);
             }
-            //clear password field
-            passwordField.selectAll();
-            passwordField.setText(null);
+
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(new JFrame(), "Invalid ID. Please type again", "Invalid input", JOptionPane.ERROR_MESSAGE);
-            employeeIDFormattedTextField.selectAll();
-            employeeIDFormattedTextField.setText(null);
-            passwordField.selectAll();
-            passwordField.setText(null);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } finally {
+            //clear password fieldPassword
+            fieldPassword.selectAll();
+            fieldPassword.setText(null);
+
+            //clear ID fieldPassword
+            fieldID.selectAll();
+            fieldID.setText(null);
         }
-
-
     }
-
-    public static void main(String[] args) {
-
+    @Override
+    protected void paintComponent(Graphics g) {
+        g.drawImage(image,0,0,null);
     }
 }

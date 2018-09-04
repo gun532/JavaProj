@@ -5,11 +5,11 @@ import BL.CashierBL;
 import DAL.ClientsDataAccess;
 import DAL.EmployeeDataAccess;
 import Entities.Clients.Client;
-import Entities.Employee.Cashier;
+import Entities.Clients.ClientType;
+import Entities.Deal;
 import Entities.Inventory;
 import Entities.Product;
 import Entities.Employee.Employee;
-import BL.InventoryBL;
 import DAL.InventoryDataAccess;
 import Entities.ShoppingCart;
 
@@ -17,6 +17,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class NewOrderPanel extends CJPanel {
     private JLabel labelProduct;
@@ -36,20 +39,26 @@ public class NewOrderPanel extends CJPanel {
     private CJButton btnCancel;
 
     private Font font = new Font("Candara", 0, 20); //Custom page font
-    private Controller controller = null;
+    private Controller controller;
 
     private SpringLayout theLayout = new SpringLayout();
 
     private ProductTableModel pTableModel;
     private JTable productTable;
+    private JScrollPane subPanel4;
+
+    private JTextField fieldInTotal;
+    private JTextField fieldDiscount;
 
     private Employee emp = AuthService.getInstance().getCurrentEmployee();
     private CashierBL cashierBL = new CashierBL(new EmployeeDataAccess(), new InventoryDataAccess(), new ClientsDataAccess());
     private Inventory inventory = cashierBL.selectFromInventory(emp.getBranchNumber());
     private ShoppingCart shoppingCart = new ShoppingCart(emp);
-    private Client chosenClient;
 
+    private Client chosenClient;
     private ClientPage clientPage;
+    private Map<ClientType,Deal> clientsDeals = getClientsDeals();
+    private double discountRate;
 
 
     public NewOrderPanel(Controller in_controller) throws Exception {
@@ -86,8 +95,8 @@ public class NewOrderPanel extends CJPanel {
         //Lay out sub panel #1.
         SpringUtilities.makeCompactGrid(subPanel1,
                 2, 2, //rows, cols
-                6, 6,        //initX, initY
-                10, 70);       //xPad, yPad
+                6, 20,        //initX, initY
+                10, 60);       //xPad, yPad
 
         add(subPanel1);
 
@@ -147,14 +156,8 @@ public class NewOrderPanel extends CJPanel {
 
         btnChooseClient.addActionListener(new ActionListener() {
             @Override
-            // TODO: add a thread and make it a singleton page
             public void actionPerformed(ActionEvent e) {
-                if (clientPage == null)
-                    clientPage = new ClientPage(controller);
-
-                clientPage.validate();
-                clientPage.repaint();
-                clientPage.setVisible(true);
+                controller.showClientPage();
             }
         });
         add(btnChooseClient);
@@ -162,30 +165,26 @@ public class NewOrderPanel extends CJPanel {
         //Choose a client label and field
         labelChosenClient = new JLabel("Chosen Client: ", JLabel.TRAILING);
         labelChosenClient.setFont(font);
+        labelChosenClient.setLabelFor(fieldChosenClient);
         add(labelChosenClient);
 
         fieldChosenClient = new JTextField();
         fieldChosenClient.setFont(new Font("Canadra", 0, 15));
         fieldChosenClient.setEditable(false);
 
-        if (chosenClient == null)
-            fieldChosenClient.setText("Please choose a client");
-        else
-            fieldChosenClient.setText(chosenClient.getFullName());
-
         labelChosenClient.setLabelFor(fieldChosenClient);
         add(fieldChosenClient);
 
         theLayout.putConstraint(SpringLayout.WEST, labelChosenClient, 20, SpringLayout.WEST, this);
-        theLayout.putConstraint(SpringLayout.VERTICAL_CENTER, labelChosenClient, 50, SpringLayout.VERTICAL_CENTER, subPanel2);
-        theLayout.putConstraint(SpringLayout.VERTICAL_CENTER, fieldChosenClient, 47, SpringLayout.VERTICAL_CENTER, subPanel2);
+        theLayout.putConstraint(SpringLayout.VERTICAL_CENTER, labelChosenClient, 60, SpringLayout.VERTICAL_CENTER, subPanel2);
+        theLayout.putConstraint(SpringLayout.VERTICAL_CENTER, fieldChosenClient, 57, SpringLayout.VERTICAL_CENTER, subPanel2);
         theLayout.putConstraint(SpringLayout.WEST, fieldChosenClient, 10, SpringLayout.EAST, labelChosenClient);
 
         add(subPanel2);
 
         //Build sub Panel #3
         CJPanel subPanel3 = new CJPanel(new SpringLayout(), getFrameSizeWidth(), getFrameSizeHeight() * 0.33);
-        subPanel3.setBackground(Color.lightGray);
+        //subPanel3.setBackground(null);
         theLayout.putConstraint(SpringLayout.NORTH, subPanel3, 0, SpringLayout.SOUTH, subPanel2);
 
         btnFinish = new CJButton("Finish", new Font("Candara", 0, 40));
@@ -194,30 +193,20 @@ public class NewOrderPanel extends CJPanel {
 
         //Finish button was pressed
         btnFinish.addActionListener(new ActionListener() {
-            // TODO: see if everything here is necessary and efficient.
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(chosenClient == null)
                 {
                     JOptionPane.showMessageDialog(new JFrame(), "Please choose a client", "Invalid input", JOptionPane.ERROR_MESSAGE);
-                }
-//                else if(!clientPage.isActive())
-//                {
-//                    chosenClient = clientPage.getChosenClient();
-//                    cashierBL.createNewOrder(inventory, chosenClient, shoppingCart);
-//
-//                    setVisible(false);
-//                    controller.showEmployeesMenuPage();
-//                }
-//                else
-//                {
-//                    JOptionPane.showMessageDialog(new JFrame(), "Please choose a client", "Invalid input", JOptionPane.ERROR_MESSAGE);
-//                }
-                else {
-                    cashierBL.createNewOrder(inventory, chosenClient, shoppingCart);
+                } else {
 
+                    cashierBL.createNewOrder(inventory, chosenClient, shoppingCart);
                     setVisible(false);
-                    controller.showEmployeesMenuPage();
+                    try {
+                        controller.showMainMenuPage();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
         });
@@ -229,7 +218,12 @@ public class NewOrderPanel extends CJPanel {
         btnCancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.showEmployeesMenuPage();
+                setVisible(false);
+                try {
+                    controller.showMainMenuPage();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -237,6 +231,47 @@ public class NewOrderPanel extends CJPanel {
         add(subPanel3);
 
         buildTable();
+
+        //build table bottom field panel
+        CJPanel subPanelTable = new CJPanel(new SpringLayout(),getFrameSizeWidth()*0.6,getFrameSizeHeight()*0.06);
+        subPanelTable.setBackground(Color.YELLOW);
+
+        theLayout.putConstraint(SpringLayout.NORTH,subPanelTable,0,SpringLayout.SOUTH,subPanel4);
+        theLayout.putConstraint(SpringLayout.EAST,subPanelTable,0,SpringLayout.EAST,this);
+        theLayout.putConstraint(SpringLayout.SOUTH,subPanelTable,0,SpringLayout.NORTH,subPanel3);
+
+        JButton labelDiscount = new JButton("Discount Rate:");
+        labelDiscount.setEnabled(false);
+        labelDiscount.setFont(font);
+        subPanelTable.add(labelDiscount);
+
+        fieldDiscount = new JTextField();
+        fieldDiscount.setFont(new Font("Arial", Font.BOLD, 20));
+        fieldDiscount.setHorizontalAlignment(JTextField.CENTER);
+        subPanelTable.add(fieldDiscount);
+
+        JButton labelInTotal = new JButton("In Total:");
+        labelInTotal.setEnabled(false);
+        labelInTotal.setFont(font);
+        subPanelTable.add(labelInTotal);
+
+        fieldInTotal = new JTextField();
+        fieldInTotal.setFont(new Font("Arial", Font.BOLD, 20));
+        fieldInTotal.setHorizontalAlignment(JTextField.CENTER);
+        subPanelTable.add(fieldInTotal);
+
+
+        SpringUtilities.makeCompactGrid(subPanelTable,1,4,6,0,0,0);
+
+        add(subPanelTable);
+
+        chosenClient = controller.getMainMenuPage().getChosenClient();
+        if (chosenClient == null)
+            fieldChosenClient.setText("Please choose a client");
+        else {
+            fieldChosenClient.setText(chosenClient.getFullName());
+            updateShoppingCartDeal();
+        }
     }
 
     //Class functions
@@ -271,12 +306,17 @@ public class NewOrderPanel extends CJPanel {
 
     private void updateTable() {
         //Clear old data stored in table
-        pTableModel.clearDate();
+        pTableModel.clearData();
 
         //Get new data from shopping cart and send it into table modal data vector.
         shoppingCart.getCart().entrySet().forEach(entry -> {
             pTableModel.addToVectorM_Data(entry.getValue());
         });
+
+        if(discountRate != 0)
+        fieldInTotal.setText(String.format("%1$,.2f", shoppingCart.getTotalPrice()*discountRate));
+        else
+            fieldInTotal.setText(String.format("%1$,.2f", shoppingCart.getTotalPrice()));
 
         //update table graphics
         pTableModel.fireTableDataChanged();
@@ -302,8 +342,8 @@ public class NewOrderPanel extends CJPanel {
         productTable = new JTable(pTableModel);
         productTable.setFillsViewportHeight(true);
 
-        JScrollPane subPanel4 = new JScrollPane(productTable);
-        subPanel4.setPreferredSize(new Dimension((int) (getFrameSizeWidth() * 0.6), (int) (getFrameSizeHeight() * 0.66)));
+        subPanel4 = new JScrollPane(productTable);
+        subPanel4.setPreferredSize(new Dimension((int) (getFrameSizeWidth() * 0.6), (int) (getFrameSizeHeight() * 0.6)));
 
         theLayout.putConstraint(SpringLayout.NORTH, subPanel4, 0, SpringLayout.NORTH, this);
         theLayout.putConstraint(SpringLayout.EAST, subPanel4, 0, SpringLayout.EAST, this);
@@ -311,11 +351,49 @@ public class NewOrderPanel extends CJPanel {
         add(subPanel4);
     }
 
-    public ClientPage getClientPage() {
-        return clientPage;
+    public void updateShoppingCartDeal(){
+        Deal currentDeal = this.clientsDeals.get(chosenClient.getType());
+
+        // TODO: may need to add a discount method to ShoppingCart class for saving and displaying the correct order total price in DB.
+        fieldDiscount.setText(String.format("%,.0f%%",currentDeal.getDiscount()));
+        discountRate = (100-currentDeal.getDiscount())/100;
+
+        // TODO: add free gits to inventory and then uncomment this section
+//        new SwingWorker() { //Open a new thread for add to cart.
+//            @Override
+//            protected Object doInBackground() throws Exception {
+//                for(int n:currentDeal.getGifts()) {
+//                    addToCart(n,1);
+//                }
+//                return null;
+//            }
+//        }.execute();
+
+        updateTable();
     }
 
-    public void setClientPage(ClientPage clientPage) {
-        this.clientPage = clientPage;
+    private Map<ClientType,Deal> getClientsDeals() {
+
+        Map<ClientType,Deal> mapClientDeals = new LinkedHashMap<>();
+
+        //need to get Deals from a data source
+
+        //---Example Data---------------------------------
+        Deal deal1 = new Deal(0);
+        mapClientDeals.put(ClientType.NEWCLIENT,deal1);
+
+        Deal deal2 = new Deal(30);
+        deal2.addGiftToDeal(1232323);
+        mapClientDeals.put(ClientType.RETURNCLIENT,deal2);
+
+        Deal deal3 = new Deal(50);
+        deal3.addGiftToDeal(2254323);
+        mapClientDeals.put(ClientType.VIPCLIENT,deal3);
+        //----------------------------------------------
+
+        return mapClientDeals;
     }
+
+    @Override
+    protected void paintComponent(Graphics g) { g.drawImage(controller.getInnerPageImage(),0,0,null); }
 }

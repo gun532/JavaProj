@@ -1,7 +1,7 @@
 package Entities;
 
 public class Product {
-    //private int productCode;
+
     private String name;
     private double price;
     private int amount;

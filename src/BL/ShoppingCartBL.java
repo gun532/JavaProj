@@ -24,6 +24,4 @@ public class ShoppingCartBL {
         this.inventoryDataAccess = inventoryDataAccess;
     }
 
-
-
 }

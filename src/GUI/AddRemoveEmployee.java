@@ -1,9 +1,7 @@
 package GUI;
 
-import BL.CashierBL;
-import DAL.ClientsDataAccess;
-import Entities.Clients.Client;
-import Entities.Clients.ClientType;
+import Entities.Employee.Employee;
+import Entities.Employee.Profession;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +11,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-public class AddNewClientPage extends JFrame {
+public class AddRemoveEmployee extends JFrame {
     private Controller controller;
 
     private int frameSizeWidth;
@@ -22,17 +20,20 @@ public class AddNewClientPage extends JFrame {
     private SpringLayout theLayout = new SpringLayout();
     private CJPanel mainPanel = new CJPanel();
 
-    private JLabel labelFullname = new JLabel("Full Name:", JLabel.TRAILING);
+    private JLabel labelFullName = new JLabel("Full Name:", JLabel.TRAILING);
     private JTextField fieldFullName = new JTextField(10);
 
-    private JLabel labelClientID = new JLabel("Client ID:", JLabel.TRAILING);
-    private JTextField fieldClientID = new JTextField(10);
+    private JLabel labelEmpID = new JLabel("Employee ID:", JLabel.TRAILING);
+    private JTextField fieldEmpID = new JTextField(10);
 
     private JLabel labelPhoneNumber = new JLabel("Phone Number:", JLabel.TRAILING);
     private JTextField fieldPhoneNumber = new JTextField(10);
 
-    private JLabel labelClientType = new JLabel("Client Type:", JLabel.TRAILING);
-    private JComboBox<ClientType> cmbClientType = new JComboBox<ClientType>();
+    private JLabel labelAccountNum = new JLabel("Account Number:", JLabel.TRAILING);
+    private JTextField fieldAccountNum = new JTextField(10);
+
+    private JLabel labelEmpType = new JLabel("Profession:", JLabel.TRAILING);
+    private JComboBox<Profession> cmbEmpType = new JComboBox<Profession>();
 
     private Font font = new Font("Candara", 0, 20); //Custom page font
 
@@ -41,23 +42,23 @@ public class AddNewClientPage extends JFrame {
     private CJButton btnRemove = new CJButton("Remove", font);
 
 
-    private CashierBL cashierBL = new CashierBL(new ClientsDataAccess());
+    //private CashierBL cashierBL = new CashierBL(new ClientsDataAccess());
 
 
-    public AddNewClientPage(Controller in_controller) {
+    public AddRemoveEmployee(Controller in_controller) {
         this.controller = in_controller;
 
         setIconImage(controller.getAppFrame().getIconImage());
 
         //Get and set new frame size
         frameSizeWidth = (int) (controller.getAppFrame().getWidth() * 0.5);
-        frameSizeHeight = (int) (controller.getAppFrame().getHeight() * 0.5);
+        frameSizeHeight = (int) (controller.getAppFrame().getHeight() * 0.6);
 
         setSize(frameSizeWidth, frameSizeHeight);
         setResizable(false);
         setLocationRelativeTo(null);
 
-        setTitle("Edit Client");
+        setTitle("Edit Employee");
         setLayout(theLayout);
 
         //Build sub panel #1.
@@ -65,19 +66,19 @@ public class AddNewClientPage extends JFrame {
 
         theLayout.putConstraint(SpringLayout.NORTH, subPanel1, 0, SpringLayout.NORTH, mainPanel);
 
-        labelFullname.setFont(font);
-        subPanel1.add(labelFullname);
+        labelFullName.setFont(font);
+        subPanel1.add(labelFullName);
 
         fieldFullName.setFont(font);
-        labelFullname.setLabelFor(fieldFullName);
+        labelFullName.setLabelFor(fieldFullName);
         subPanel1.add(fieldFullName);
 
-        labelClientID.setFont(font);
-        subPanel1.add(labelClientID);
+        labelEmpID.setFont(font);
+        subPanel1.add(labelEmpID);
 
-        fieldClientID.setFont(new Font("Arial", Font.BOLD, 20));
-        labelClientID.setLabelFor(fieldClientID);
-        subPanel1.add(fieldClientID);
+        fieldEmpID.setFont(new Font("Arial", Font.BOLD, 20));
+        labelEmpID.setLabelFor(fieldEmpID);
+        subPanel1.add(fieldEmpID);
 
         labelPhoneNumber.setFont(font);
         subPanel1.add(labelPhoneNumber);
@@ -86,15 +87,22 @@ public class AddNewClientPage extends JFrame {
         labelPhoneNumber.setLabelFor(fieldPhoneNumber);
         subPanel1.add(fieldPhoneNumber);
 
-        labelClientType.setFont(font);
-        subPanel1.add(labelClientType);
+        labelAccountNum.setFont(font);
+        subPanel1.add(labelAccountNum);
 
-        cmbClientType.setModel(new DefaultComboBoxModel<>(ClientType.values()));
-        subPanel1.add(cmbClientType);
+        fieldAccountNum.setFont(new Font("Arial", Font.BOLD, 20));
+        labelAccountNum.setLabelFor(fieldAccountNum);
+        subPanel1.add(fieldAccountNum);
+
+        labelEmpType.setFont(font);
+        subPanel1.add(labelEmpType);
+
+        cmbEmpType.setModel(new DefaultComboBoxModel<>(Profession.values()));
+        subPanel1.add(cmbEmpType);
 
         //Lay out sub panel #1.
         SpringUtilities.makeCompactGrid(subPanel1,
-                4, 2, //rows, cols
+                5, 2, //rows, cols
                 6, 6,        //initX, initY
                 10, 20);       //xPad, yPad
 
@@ -109,9 +117,9 @@ public class AddNewClientPage extends JFrame {
             }
         });
 
-        fieldClientID.addKeyListener(new KeyAdapter() {
+        fieldEmpID.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
-                if (fieldClientID.getText().length() >= 9 || e.getKeyChar() < '0' || e.getKeyChar() > '9') // limits text field to 9 characters
+                if (fieldEmpID.getText().length() >= 9 || e.getKeyChar() < '0' || e.getKeyChar() > '9') // limits text field to 9 characters
                     e.consume();
             }
         });
@@ -124,11 +132,17 @@ public class AddNewClientPage extends JFrame {
             }
         });
 
+        fieldAccountNum.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                if (fieldAccountNum.getText().length() >= 10 || e.getKeyChar() < '0' || e.getKeyChar() > '9') // limits text field to 9 characters
+                    e.consume();
+            }
+        });
+
         //Build Sub panel #2
         CJPanel subPanel2 = new CJPanel(new SpringLayout(), frameSizeWidth, frameSizeHeight * 0.2);
-        //subPanel2.setBackground(Color.YELLOW);
+
         theLayout.putConstraint(SpringLayout.SOUTH, subPanel2, 0, SpringLayout.SOUTH, mainPanel);
-        //theLayout.putConstraint(SpringLayout.NORTH, subPanel2, 0, SpringLayout.SOUTH, subPanel1);
         theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER,subPanel2,0,SpringLayout.HORIZONTAL_CENTER,mainPanel);
 
         subPanel2.add(btnRemove);
@@ -144,19 +158,19 @@ public class AddNewClientPage extends JFrame {
         btnRemove.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!fieldClientID.getText().isEmpty()){
+                if (!fieldEmpID.getText().isEmpty()){
                     if(isAlreadyExists()) {
-                        // TODO: 03/09/2018 remove client from DB.
+                        // TODO: 03/09/2018 remove employee from DB.
                         //cashierBL
-                        JOptionPane.showMessageDialog(new JFrame(), "Client " + fieldClientID.getText() + " was removed successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(new JFrame(), "Employee " + fieldEmpID.getText() + " was removed successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
 
                         controller.getClientPage().setVisible(false);
                         controller.showClientPage();
                     }else {
-                        JOptionPane.showMessageDialog(new JFrame(), "Client " + fieldClientID.getText() + " is not in the clients list!", "Not exists!", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(new JFrame(), "Employee " + fieldEmpID.getText() + " is not in the Employees list!", "Not exists!", JOptionPane.ERROR_MESSAGE);
                     }
                 }else {
-                    JOptionPane.showMessageDialog(new JFrame(), "Please choose client ID to be removed", "Invalid input", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(new JFrame(), "Please choose employee ID to be removed", "Invalid input", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -164,19 +178,19 @@ public class AddNewClientPage extends JFrame {
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!fieldClientID.getText().isEmpty() && !fieldFullName.getText().isEmpty() && !fieldPhoneNumber.getText().isEmpty()) {
+                if (!fieldEmpID.getText().isEmpty() && !fieldFullName.getText().isEmpty() && !fieldPhoneNumber.getText().isEmpty()) {
                     if (!isAlreadyExists()) {
-                        // TODO: 03/09/2018 need the option to add client type of a new client into DB.
-                        cashierBL.addNewClient(Integer.parseInt(fieldClientID.getText()), fieldFullName.getText(), fieldPhoneNumber.getText());
+                        // TODO: 03/09/2018 add new employee
+                        //cashierBL.addNewClient(Integer.parseInt(fieldEmpID.getText()), fieldFullName.getText(), fieldPhoneNumber.getText());
 
-                        JOptionPane.showMessageDialog(new JFrame(), "New client " + fieldFullName.getText() + " was added successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(new JFrame(), "New employee " + fieldFullName.getText() + " was added successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
 
                         controller.getClientPage().setVisible(false);
                         controller.showClientPage();
 
                         setVisible(false);
                     } else {
-                        JOptionPane.showMessageDialog(new JFrame(), "Client " + fieldClientID.getText() + " already in the clients list!", "Already exists!", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(new JFrame(), "Employee " + fieldEmpID.getText() + " already in the Employees list!", "Already exists!", JOptionPane.ERROR_MESSAGE);
                     }
 
                 } else {
@@ -196,11 +210,11 @@ public class AddNewClientPage extends JFrame {
     /*---/Page functions methods/-------------------------------------------------------------------------*/
 
     private boolean isAlreadyExists() {
-        ArrayList<Client> listClients = controller.getClientPage().getListOfClients();
-        int clientID = Integer.parseInt(fieldClientID.getText());
+        ArrayList<Employee> listEmp = controller.getEmployeesPage().getListOfEmployees();
+        int empID = Integer.parseInt(fieldEmpID.getText());
 
-        for (Client c : listClients) {
-            if (c.getId() == clientID)
+        for (Employee e : listEmp) {
+            if (e.getId() == empID)
                 return true;
         }
 
