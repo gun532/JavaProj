@@ -1,6 +1,8 @@
 package GUI;
 
 import BL.AuthService;
+import BL.ManagerBL;
+import DAL.ManagerDataAccess;
 import Entities.Employee.Employee;
 import Entities.Employee.Manager;
 import Entities.Employee.Profession;
@@ -47,6 +49,7 @@ public class EmployeesPage extends JFrame {
     //private CashierBL cashierBL = new CashierBL(new ClientsDataAccess());
     //private Client chosenClient;
 
+    private ManagerBL managerBL = new ManagerBL(new ManagerDataAccess());
     private ArrayList<Employee> listOfEmployees;
 
     private Employee emp = AuthService.getInstance().getCurrentEmployee();
@@ -214,8 +217,8 @@ public class EmployeesPage extends JFrame {
         employeeTableModel.clearData();
 
         //----Example-------------------------------------------------------
-        listOfEmployees = new ArrayList<>();
-        listOfEmployees.add(new Manager("El Jefe",989131223,"02-893323",3332211,1));
+        listOfEmployees = managerBL.selectAllEmployees();
+//        listOfEmployees.add(new Manager(3,"El Jefe",989131223,"02-893323",3332211,1));
         //------------------------------------------------------------------
 
         // TODO: 02/09/2018 get list of employees from DB.

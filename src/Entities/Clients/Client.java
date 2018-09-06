@@ -15,7 +15,7 @@ public abstract class Client {
     private Map <Integer, ShoppingCart> shoppingHistory;
     private int clientCode;
 
-    public  Client(){
+    public Client(){
         this.id = 0;
         this.clientCode = 0;
         this.fullName = null;

@@ -1,9 +1,8 @@
 package Entities.Employee;
 
 public class Seller extends Employee {
-    public Seller(String name, int id, String phone, int accountNum, int branchNumber) {
-        super(name, id, phone, accountNum,branchNumber, Profession.SELLER);
-        setBranchNumber(branchNumber);
+    public Seller(int employeeNumber, String name, int id, String phone, int accountNum, int branchNumber) {
+        super(employeeNumber, name, id, phone, accountNum,branchNumber, Profession.SELLER);
     }
 
 //    @Override

@@ -12,8 +12,8 @@ public class Manager extends Employee {
     private ManagerDataAccess managerDataAccess;
 
 
-    public Manager(String name, int id, String phone, int accountNum, int branchNumber) {
-        super(name, id, phone, accountNum,branchNumber, Profession.MANAGER);
+    public Manager(int employeeNumber, String name, int id, String phone, int accountNum, int branchNumber) {
+        super(employeeNumber, name, id, phone, accountNum,branchNumber, Profession.MANAGER);
     }
 
 //    public void addEmployee(Employee emp) {

@@ -11,12 +11,11 @@ public abstract class Employee {
 
     public Employee(){    }
 
-    public Employee(String name, int id, String phone, int accountNum, int branchNumber, Profession profession)
+    public Employee(int employeeNumber, String name, int id, String phone, int accountNum, int branchNumber, Profession profession)
     {
-        //Random rand = new Random();
+        this.employeeNumber = employeeNumber;
         this.name = name;
         this.id = id;
-        //this.employeeNumber = counter++;
         this.phone = phone;
         this.accountNum = accountNum;
         this.branchNumber = branchNumber;
