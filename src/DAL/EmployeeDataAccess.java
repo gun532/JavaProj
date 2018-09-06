@@ -1,7 +1,6 @@
 package DAL;
 
-import Entities.Employee.Employee;
-import Entities.Employee.Profession;
+import Entities.Employee.*;
 
 import java.sql.*;
 
@@ -23,8 +22,7 @@ public class EmployeeDataAccess {
 
 
     public Employee selectEmpDetailsById(int id) {
-        Employee e1 = new Employee() {
-        };
+
         try {
             Class.forName(myDriver);
             String sql = "SELECT * from employee where ID = ?";
@@ -32,13 +30,33 @@ public class EmployeeDataAccess {
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                e1.setEmployeeNumber(rs.getInt("employeeCode"));
-                e1.setName(rs.getString("fullName"));
-                e1.setId(id);
-                e1.setPhone(rs.getString("phoneNum"));
-                e1.setAccountNum(rs.getInt("accountNumber"));
-                e1.setBranchNumber(rs.getInt("branch"));
-                e1.setJobPos(Profession.valueOf(rs.getString("profession")));
+                String type = rs.getString("profession");
+                Employee e;
+                switch (type)
+                {
+                    case "SELLER":
+                        e = new Seller(rs.getInt("employeeCode"), rs.getString("fullName"), id,
+                                rs.getString("phoneNum"), rs.getInt("accountNumber"),
+                                rs.getInt("branch"));
+                        return e;
+                    case "CASHIER":
+                        e = new Cashier(rs.getInt("employeeCode"), rs.getString("fullName"), id,
+                                rs.getString("phoneNum"), rs.getInt("accountNumber"),
+                                rs.getInt("branch"));
+                        return e;
+                    case "MANAGER":
+                        e= new Manager(rs.getInt("employeeCode"), rs.getString("fullName"), id,
+                                rs.getString("phoneNum"), rs.getInt("accountNumber"),
+                                rs.getInt("branch"));
+                        return e;
+                }
+//                e1.setEmployeeNumber(rs.getInt("employeeCode"));
+//                e1.setName(rs.getString("fullName"));
+//                e1.setId(id);
+//                e1.setPhone(rs.getString("phoneNum"));
+//                e1.setAccountNum(rs.getInt("accountNumber"));
+//                e1.setBranchNumber(rs.getInt("branch"));
+//                e1.setJobPos(Profession.valueOf(rs.getString("profession")));
             }
 
             myConn.close();
@@ -47,12 +65,10 @@ public class EmployeeDataAccess {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return e1;
+        return null;
     }
 
     public Employee selectEmpDetailsByEmployeeNum(int empNum) {
-        Employee e1 = new Employee() {
-        };
         try {
             Class.forName(myDriver);
             String sql = "SELECT * from employee where employeeCode = ?";
@@ -60,13 +76,33 @@ public class EmployeeDataAccess {
             statement.setInt(1, empNum);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                e1.setEmployeeNumber(empNum);
-                e1.setName(rs.getString("fullName"));
-                e1.setId(rs.getInt("ID"));
-                e1.setPhone(rs.getString("phoneNum"));
-                e1.setAccountNum(rs.getInt("accountNumber"));
-                e1.setBranchNumber(rs.getInt("branch"));
-                e1.setJobPos(Profession.valueOf(rs.getString("profession")));
+                String type = rs.getString("profession");
+                Employee e;
+                switch (type)
+                {
+                    case "SELLER":
+                        e = new Seller(empNum, rs.getString("fullName"), rs.getInt("ID"),
+                                rs.getString("phoneNum"), rs.getInt("accountNumber"),
+                                rs.getInt("branch"));
+                        return e;
+                    case "CASHIER":
+                        e = new Cashier(empNum, rs.getString("fullName"), rs.getInt("ID"),
+                                rs.getString("phoneNum"), rs.getInt("accountNumber"),
+                                rs.getInt("branch"));
+                        return e;
+                    case "MANAGER":
+                        e= new Manager(empNum, rs.getString("fullName"), rs.getInt("ID"),
+                                rs.getString("phoneNum"), rs.getInt("accountNumber"),
+                                rs.getInt("branch"));
+                        return e;
+                }
+//                e.setEmployeeNumber(empNum);
+//                e.setName(rs.getString("fullName"));
+//                e.setId(rs.getInt("ID"));
+//                e.setPhone(rs.getString("phoneNum"));
+//                e.setAccountNum(rs.getInt("accountNumber"));
+//                e.setBranchNumber(rs.getInt("branch"));
+//                e.setJobPos(Profession.valueOf(rs.getString("profession")));
             }
 
             myConn.close();
@@ -75,7 +111,7 @@ public class EmployeeDataAccess {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return e1;
+        return null;
     }
 
 
@@ -99,6 +135,8 @@ public class EmployeeDataAccess {
         }
         return null;
     }
+
+
 
 
 
