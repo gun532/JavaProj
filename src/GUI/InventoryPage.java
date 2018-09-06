@@ -2,7 +2,7 @@ package GUI;
 
 import BL.AuthService;
 import BL.CashierBL;
-import BL.InventoryBL;
+import BL.ManagerBL;
 import DAL.ClientsDataAccess;
 import DAL.EmployeeDataAccess;
 import DAL.InventoryDataAccess;
@@ -20,9 +20,10 @@ public class InventoryPage extends CJPanel {
 
     private Employee emp = AuthService.getInstance().getCurrentEmployee();
     private InventoryDataAccess inventoryDataAccess = new InventoryDataAccess();
-    private CashierBL cashierBL = new CashierBL(new EmployeeDataAccess(), inventoryDataAccess, new ClientsDataAccess());
-    private Inventory inventory = cashierBL.selectFromInventory(emp.getBranchNumber());
-    private InventoryBL inventoryBL = new InventoryBL(inventoryDataAccess);
+    private ManagerBL managerBL = new ManagerBL(new CashierBL(new EmployeeDataAccess(), inventoryDataAccess, new ClientsDataAccess()));
+    private Inventory inventory = managerBL.getCashierBL().selectFromInventory(emp.getBranchNumber());
+
+    //private InventoryBL inventoryBL = new InventoryBL(inventoryDataAccess);
 
     private CJPanel subPanel1;
 
@@ -205,7 +206,7 @@ public class InventoryPage extends CJPanel {
                 //cashierBL.createNewOrder(inventory, chosenClient, shoppingCart);
                 clearPageFields();
                 setVisible(false);
-                inventoryBL.createNewOrder(inventory);
+                //inventoryBL.createNewOrder(inventory);
                 try {
                     controller.showMainMenuPage();
                 } catch (IOException e1) {

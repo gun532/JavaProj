@@ -1,7 +1,6 @@
 package DAL;
 
-import Entities.Clients.Client;
-import Entities.Clients.ClientType;
+import Entities.Clients.*;
 import Entities.Employee.Employee;
 import Entities.Employee.Profession;
 import Entities.Product;
@@ -29,22 +28,34 @@ public class ClientsDataAccess {
     public ArrayList<Client> selectAllClients() {
         ArrayList<Client> clientArrayList = new ArrayList<>();
         try {
-            // TODO: 29/08/2018 use switch case for clients type
             Class.forName(myDriver);
             String sql = "SELECT * from clients";
             PreparedStatement statement = myConn.prepareStatement(sql);
-            //statement.setInt(1, empNum);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                Client c = new Client() {
-                };
-                c.setClientCode(rs.getInt("clientNumber"));
-                c.setId(rs.getInt("clientID"));
-                c.setFullName(rs.getString("fullName"));
-                c.setPhoneNumber(rs.getString("phone"));
-                c.setType(ClientType.valueOf(rs.getString("ClientType")));
-                c.setDiscountRate(rs.getInt("discountRate"));
-                clientArrayList.add(c);
+                String type = rs.getString("ClientType");
+                Client c;
+                switch (type)
+                {
+                    case "NEWCLIENT":
+                        c = new NewClient(rs.getInt("clientID"), rs.getString("fullName"), rs.getString("phone") ,rs.getInt("clientNumber"));
+                        clientArrayList.add(c);
+                        break;
+                    case "RETURNCLIENT":
+                        c = new ReturnClient(rs.getInt("clientID"), rs.getString("fullName"), rs.getString("phone") ,rs.getInt("clientNumber"));
+                        clientArrayList.add(c);
+                        break;
+                    case "VIPCLIENT":
+                        c = new VipClient(rs.getInt("clientID"), rs.getString("fullName"), rs.getString("phone") ,rs.getInt("clientNumber"));
+                        clientArrayList.add(c);
+                        break;
+                }
+//                c.setClientCode(rs.getInt("clientNumber"));
+//                c.setId(rs.getInt("clientID"));
+//                c.setFullName(rs.getString("fullName"));
+//                c.setPhoneNumber(rs.getString("phone"));
+//                c.setType(ClientType.valueOf(rs.getString("ClientType")));
+//                c.setDiscountRate(rs.getInt("discountRate"));
             }
 
             myConn.close();
@@ -173,8 +184,6 @@ public class ClientsDataAccess {
     }
 
     public Client selectClientByID(int id) {
-        Client c = new Client() {
-        };
         try {
             Class.forName(myDriver);
             String sql = "SELECT * from clients where clientID = ?";
@@ -182,11 +191,28 @@ public class ClientsDataAccess {
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                c.setClientCode(rs.getInt("clientNumber"));
-                c.setFullName(rs.getString("fullName"));
-                c.setPhoneNumber(rs.getString("phone"));
-                c.setType(ClientType.valueOf(rs.getString("ClientType")));
-                c.setDiscountRate(rs.getInt("discountRate"));
+                String type = rs.getString("ClientType");
+                Client c;
+                switch (type)
+                {
+                    case "NEWCLIENT":
+                        c = new NewClient(rs.getInt("clientID"), rs.getString("fullName"),
+                                rs.getString("phone") ,rs.getInt("clientNumber"));
+                        return c;
+                    case "RETURNCLIENT":
+                        c = new ReturnClient(rs.getInt("clientID"), rs.getString("fullName"),
+                                rs.getString("phone") ,rs.getInt("clientNumber"));
+                        return c;
+                    case "VIPCLIENT":
+                        c = new VipClient(rs.getInt("clientID"), rs.getString("fullName"),
+                                rs.getString("phone") ,rs.getInt("clientNumber"));
+                        return c;
+                }
+//                c.setClientCode(rs.getInt("clientNumber"));
+//                c.setFullName(rs.getString("fullName"));
+//                c.setPhoneNumber(rs.getString("phone"));
+//                c.setType(ClientType.valueOf(rs.getString("ClientType")));
+//                c.setDiscountRate(rs.getInt("discountRate"));
             }
 
             myConn.close();
@@ -195,6 +221,6 @@ public class ClientsDataAccess {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return c;
+        return null;
     }
 }

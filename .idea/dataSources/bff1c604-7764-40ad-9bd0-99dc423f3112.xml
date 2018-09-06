@@ -1265,71 +1265,64 @@ productCode</ColNames>
     <column id="301" parent="237" name="cartID">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="302" parent="237" name="shopping_history_clientNumber_uindex">
+    <index id="302" parent="237" name="shopping_history_client_idx">
       <ColNames>clientNumber</ColNames>
-      <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="303" parent="237" name="shopping_history_shopping_cart_cartCode_fk">
-      <ColNames>cartID</ColNames>
-      <Type>btree</Type>
-    </index>
-    <key id="304" parent="237" name="PRIMARY">
+    <key id="303" parent="237" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>clientNumber</ColNames>
+      <ColNames>cartID
+clientNumber</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="305" parent="237" name="shopping_history_clientNumber_uindex">
-      <ColNames>clientNumber</ColNames>
-      <UnderlyingIndexName>shopping_history_clientNumber_uindex</UnderlyingIndexName>
-    </key>
-    <foreign-key id="306" parent="237" name="shopping_history_clients_clientNumber_fk">
+    <foreign-key id="304" parent="237" name="shopping_history_client_fk">
       <ColNames>clientNumber</ColNames>
       <RefSchemaName>test_db</RefSchemaName>
       <RefTableName>clients</RefTableName>
       <RefColNames>clientNumber</RefColNames>
     </foreign-key>
-    <foreign-key id="307" parent="237" name="shopping_history_shopping_cart_cartCode_fk">
+    <foreign-key id="305" parent="237" name="shooping_history_shooping_cart_fk">
       <ColNames>cartID</ColNames>
       <RefSchemaName>test_db</RefSchemaName>
       <RefTableName>shoppingcart</RefTableName>
       <RefColNames>cartCode</RefColNames>
     </foreign-key>
-    <column id="308" parent="238" name="cartCode">
+    <column id="306" parent="238" name="cartCode">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="309" parent="238" name="product_code">
+    <column id="307" parent="238" name="product_code">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="310" parent="238" name="numOfItems">
+    <column id="308" parent="238" name="numOfItems">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="311" parent="238" name="shoppingcart_cartdetails_cartID_FK_idx">
+    <index id="309" parent="238" name="shoppingcart_cartdetails_cartID_FK_idx">
       <ColNames>cartCode</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="312" parent="238" name="shoppingcart_product_productCode_fk">
+    <index id="310" parent="238" name="shoppingcart_product_productCode_fk">
       <ColNames>product_code</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="313" parent="238" name="PRIMARY">
+    <key id="311" parent="238" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>cartCode
 product_code</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="314" parent="238" name="shoppingcart_product_productCode_fk">
+    <foreign-key id="312" parent="238" name="shoppingcart_product_productCode_fk">
       <ColNames>product_code</ColNames>
       <RefSchemaName>test_db</RefSchemaName>
       <RefTableName>product</RefTableName>

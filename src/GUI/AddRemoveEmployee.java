@@ -1,7 +1,9 @@
 package GUI;
 
-import Entities.Employee.Employee;
-import Entities.Employee.Profession;
+import BL.AuthService;
+import BL.ManagerBL;
+import DAL.ManagerDataAccess;
+import Entities.Employee.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +28,9 @@ public class AddRemoveEmployee extends JFrame {
     private JLabel labelEmpID = new JLabel("Employee ID:", JLabel.TRAILING);
     private JTextField fieldEmpID = new JTextField(10);
 
+    private JLabel labelPassword = new JLabel("Password:", JLabel.TRAILING);
+    private JPasswordField fieldPassword = new JPasswordField(10);
+
     private JLabel labelPhoneNumber = new JLabel("Phone Number:", JLabel.TRAILING);
     private JTextField fieldPhoneNumber = new JTextField(10);
 
@@ -41,9 +46,9 @@ public class AddRemoveEmployee extends JFrame {
     private CJButton btnCancel = new CJButton("Cancel", font);
     private CJButton btnRemove = new CJButton("Remove", font);
 
+    private Employee emp = AuthService.getInstance().getCurrentEmployee();
 
-    //private CashierBL cashierBL = new CashierBL(new ClientsDataAccess());
-
+    private ManagerBL managerBL = new ManagerBL(new ManagerDataAccess());
 
     public AddRemoveEmployee(Controller in_controller) {
         this.controller = in_controller;
@@ -80,6 +85,13 @@ public class AddRemoveEmployee extends JFrame {
         labelEmpID.setLabelFor(fieldEmpID);
         subPanel1.add(fieldEmpID);
 
+        labelPassword.setFont(font);
+        subPanel1.add(labelPassword);
+
+        fieldPassword.setFont(new Font("Arial", Font.BOLD, 20));
+        labelPassword.setLabelFor(fieldPassword);
+        subPanel1.add(fieldPassword);
+
         labelPhoneNumber.setFont(font);
         subPanel1.add(labelPhoneNumber);
 
@@ -102,7 +114,7 @@ public class AddRemoveEmployee extends JFrame {
 
         //Lay out sub panel #1.
         SpringUtilities.makeCompactGrid(subPanel1,
-                5, 2, //rows, cols
+                6, 2, //rows, cols
                 6, 6,        //initX, initY
                 10, 20);       //xPad, yPad
 
@@ -181,7 +193,12 @@ public class AddRemoveEmployee extends JFrame {
                 if (!fieldEmpID.getText().isEmpty() && !fieldFullName.getText().isEmpty() && !fieldPhoneNumber.getText().isEmpty()) {
                     if (!isAlreadyExists()) {
                         // TODO: 03/09/2018 add new employee
-                        //cashierBL.addNewClient(Integer.parseInt(fieldEmpID.getText()), fieldFullName.getText(), fieldPhoneNumber.getText());
+
+                        String encryptedPass = managerBL.getEncryptedPass(String.valueOf(fieldPassword.getPassword()));
+                        managerBL.addEmployee(fieldFullName.getText(), encryptedPass ,Integer.parseInt(fieldEmpID.getText()), fieldPhoneNumber.getText(),
+                                Integer.parseInt(fieldAccountNum.getText()), emp.getBranchNumber(), cmbEmpType.getSelectedItem().toString());
+
+
 
                         JOptionPane.showMessageDialog(new JFrame(), "New employee " + fieldFullName.getText() + " was added successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
 
