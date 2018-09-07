@@ -67,7 +67,7 @@ public class ClientsDataAccess {
         return clientArrayList;
     }
 
-    public void addNewClient(int ID, String fullName, String phoneNum) {
+    public void addNewClient(int ID, String fullName, String phoneNum, String clientType) {
         try {
 
             //change it later to something more secure
@@ -82,7 +82,7 @@ public class ClientsDataAccess {
             statement.setInt(1, ID);
             statement.setString(2, fullName);
             statement.setString(3, phoneNum);
-            statement.setString(4, ClientType.NEWCLIENT.name());
+            statement.setString(4, clientType);
             statement.setInt(5, 0);
 
             statement.executeUpdate();
@@ -97,12 +97,12 @@ public class ClientsDataAccess {
     }
 
 
-    public void createNewOrder(ShoppingCart shoppingCart, int clientNum) {
+    public void createNewOrder(ShoppingCart shoppingCart, int clientNum, double total) {
         try {
             Class.forName(myDriver);
 
             insertShoppingCart(shoppingCart);
-            insertCartDetails(shoppingCart);
+            insertCartDetails(shoppingCart, total);
             insertToShoppingHistory(clientNum, shoppingCart.getCartID());
 
             myConn.close();
@@ -158,7 +158,7 @@ public class ClientsDataAccess {
     }
 
 
-    public void insertCartDetails(ShoppingCart shoppingCart) {
+    public void insertCartDetails(ShoppingCart shoppingCart, double total) {
         try {
 
             //change it later to something more secure
@@ -167,14 +167,14 @@ public class ClientsDataAccess {
             //ResultSetMetaData metaData = rs.getMetaData();
             //int cols = metaData.getColumnCount();
             java.sql.Date sqlDate = new java.sql.Date(shoppingCart.getCartDate().getTime());
-            String sql = "INSERT INTO cart_details (cartID, branch_Number, employeeNum, date) values (?,?,?, ?)";
+            String sql = "INSERT INTO cart_details (cartID, total, branch_Number, employeeNum, date) values (?,?,?,?, ?)";
             PreparedStatement statement = myConn.prepareStatement(sql);
 
             statement.setInt(1, shoppingCart.getCartID());
-            statement.setInt(2, shoppingCart.getBranchCode());
-            statement.setInt(3, shoppingCart.getEmployeeCode());
-
-            statement.setDate(4, sqlDate);
+            statement.setDouble(2, total);
+            statement.setInt(3, shoppingCart.getBranchCode());
+            statement.setInt(4, shoppingCart.getEmployeeCode());
+            statement.setDate(5, sqlDate);
 
             statement.executeUpdate();
 

@@ -6,6 +6,7 @@ import DAL.ManagerDataAccess;
 import Entities.Employee.Employee;
 import Entities.Employee.Manager;
 import Entities.Employee.Profession;
+import org.json.JSONArray;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -149,7 +150,8 @@ public class EmployeesPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                     //searchField.setText("Search client...");
-                    setVisible(false);
+
+                    //setVisible(false);
             }
         });
 

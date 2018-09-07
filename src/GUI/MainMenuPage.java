@@ -1,9 +1,12 @@
 package GUI;
 
 import BL.AuthService;
+import BL.ManagerBL;
+import DAL.ManagerDataAccess;
 import Entities.Clients.Client;
 import Entities.Employee.Employee;
 import Entities.Employee.Profession;
+import org.json.JSONArray;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -80,6 +83,11 @@ public class MainMenuPage extends CJPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //go to chat page use the controller
+
+                ManagerBL managerBL = new ManagerBL(new ManagerDataAccess());
+                JSONArray jsonArray = managerBL.createReportTotalPurchasesInBranch(2);
+                managerBL.writeJSONToFile(jsonArray);
+
             }
         });
 
