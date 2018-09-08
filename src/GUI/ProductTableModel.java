@@ -41,7 +41,7 @@ class ProductTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Product pData = (Product) (this.m_Data.elementAt(rowIndex));
+        Product pData = this.m_Data.elementAt(rowIndex);
 
         switch (columnIndex) {
             case 0:

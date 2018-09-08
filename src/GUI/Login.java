@@ -30,14 +30,11 @@ public class Login extends JPanel {
 
         this.controller = in_controller;
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    image = ImageIO.read(new File("src/GUI/Res/clothing_login_BG.jpg"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        SwingUtilities.invokeLater(() -> {
+            try {
+                image = ImageIO.read(new File("src/GUI/Res/clothing_login_BG.jpg"));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
 
@@ -102,19 +99,13 @@ public class Login extends JPanel {
             }
         });
 
-        loginButton.addActionListener(new ActionListener() {
+        loginButton.addActionListener(e -> new SwingWorker() { //Open a login input check in a new thread.
             @Override
-            public void actionPerformed(ActionEvent e) {
-
-                new SwingWorker() { //Open a login input check in a new thread.
-                    @Override
-                    protected Object doInBackground() throws Exception {
-                        login();
-                        return null;
-                    }
-                }.execute();
+            protected Object doInBackground() throws Exception {
+                login();
+                return null;
             }
-        });
+        }.execute());
     }
 
     private void login() {
@@ -126,14 +117,16 @@ public class Login extends JPanel {
             boolean isLoggedIn = AuthService.getInstance().login(employeeInputId, passwordInput);
 
             if (isLoggedIn) {
-                SwingUtilities.invokeAndWait(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            controller.showMainMenuPage();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                SwingUtilities.invokeAndWait(() -> {
+                    try {
+                        controller.showMainMenuPage();
+
+                        //clear ID field
+                        fieldID.selectAll();
+                        fieldID.setText(null);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 });
             } else {
@@ -147,13 +140,10 @@ public class Login extends JPanel {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         } finally {
+
             //clear password fieldPassword
             fieldPassword.selectAll();
             fieldPassword.setText(null);
-
-            //clear ID fieldPassword
-            fieldID.selectAll();
-            fieldID.setText(null);
         }
     }
     @Override
