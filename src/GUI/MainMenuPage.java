@@ -38,43 +38,42 @@ public class MainMenuPage extends CJPanel {
         this.controller = in_controller;
 
         //Get frame size
-        int frameSizeWidth = (int)(controller.getAppFrame().getWidth());
-        int frameSizeHeight = (int)(controller.getAppFrame().getHeight());
+        int frameSizeWidth = (controller.getAppFrame().getWidth());
+        int frameSizeHeight = (controller.getAppFrame().getHeight());
 
         //Set page layout
         SpringLayout theLayout = new SpringLayout();
         setLayout(theLayout);
 
         //Inner sub panel
-        CJPanel subPanel = new CJPanel(new GridLayout(3,2,50,50),(int)(frameSizeWidth),(int)(frameSizeHeight));
+        CJPanel subPanel = new CJPanel(new GridLayout(3,2,50,50),frameSizeWidth,frameSizeHeight);
 
         theLayout.putConstraint(SpringLayout.VERTICAL_CENTER,subPanel,0,SpringLayout.VERTICAL_CENTER,this);
         theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER,subPanel,0,SpringLayout.HORIZONTAL_CENTER,this);
 
         //Build page components
         btnInventory = new CJButton("Inventory", font);
-        btnInventory.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //Go to Inventory page using the Controller
-                setVisible(false);
-                controller.showInventoryPage();
-            }
+        btnInventory.addActionListener(e -> {
+            //Go to Inventory page using the Controller
+            setVisible(false);
+            controller.showInventoryPage();
         });
         subPanel.add(btnInventory);
 
         btnClients = new CJButton("Clients", font);
-        btnClients.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //Go to New Order page using the Controller
-                controller.showClientPage();
-            }
+        btnClients.addActionListener(e -> {
+            //Go to New Order page using the Controller
+            controller.showClientPage();
         });
         subPanel.add(btnClients);
 
-        // TODO: 02/09/2018 branch button
+        // TODO: 02/09/2018 branch page
         btnBranch = new CJButton("Branch", font);
+        btnBranch.addActionListener(e -> {
+            //Go to Branch page using the Controller
+            setVisible(false);
+            controller.showBranchPage();
+        });
         subPanel.add(btnBranch);
 
         btnChat = new CJButton("Chat", font);
@@ -101,14 +100,11 @@ public class MainMenuPage extends CJPanel {
         subPanel.add(btnEmployees);
 
         btnNewOrder = new CJButton("New Order", font);
-        btnNewOrder.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //Go to New Order page using the Controller
-                setVisible(false);
+        btnNewOrder.addActionListener(e -> {
+            //Go to New Order page using the Controller
+            setVisible(false);
 
-                controller.showNewOrderPanel();
-            }
+            controller.showNewOrderPanel();
         });
         subPanel.add(btnNewOrder);
 

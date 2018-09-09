@@ -38,7 +38,6 @@ public class AddNewClientPage extends JFrame {
 
     private CJButton btnAdd = new CJButton("Add", font);
     private CJButton btnCancel = new CJButton("Cancel", font);
-    private CJButton btnRemove = new CJButton("Remove", font);
 
 
     private CashierBL cashierBL = new CashierBL(new ClientsDataAccess());
@@ -57,7 +56,7 @@ public class AddNewClientPage extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
 
-        setTitle("Edit Client");
+        setTitle("Add New Client");
         setLayout(theLayout);
 
         //Build sub panel #1.
@@ -126,71 +125,42 @@ public class AddNewClientPage extends JFrame {
 
         //Build Sub panel #2
         CJPanel subPanel2 = new CJPanel(new SpringLayout(), frameSizeWidth, frameSizeHeight * 0.2);
-        //subPanel2.setBackground(Color.YELLOW);
+
         theLayout.putConstraint(SpringLayout.SOUTH, subPanel2, 0, SpringLayout.SOUTH, mainPanel);
-        //theLayout.putConstraint(SpringLayout.NORTH, subPanel2, 0, SpringLayout.SOUTH, subPanel1);
         theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER,subPanel2,0,SpringLayout.HORIZONTAL_CENTER,mainPanel);
 
-        subPanel2.add(btnRemove);
         subPanel2.add(btnAdd);
         subPanel2.add(btnCancel);
 
-        SpringUtilities.makeCompactGrid(subPanel2, 1, 3, 60, 6, 20, 6);
+        SpringUtilities.makeCompactGrid(subPanel2, 1, 2, 120, 6, 20, 6);
 
         mainPanel.add(subPanel2);
 
         setContentPane(mainPanel);
 
-        btnRemove.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!fieldClientID.getText().isEmpty()){
-                    if(isAlreadyExists()) {
-                        // TODO: 03/09/2018 remove client from DB.
-                        //cashierBL
-                        JOptionPane.showMessageDialog(new JFrame(), "Client " + fieldClientID.getText() + " was removed successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
 
-                        controller.getClientPage().setVisible(false);
-                        controller.showClientPage();
-                    }else {
-                        JOptionPane.showMessageDialog(new JFrame(), "Client " + fieldClientID.getText() + " is not in the clients list!", "Not exists!", JOptionPane.ERROR_MESSAGE);
-                    }
-                }else {
-                    JOptionPane.showMessageDialog(new JFrame(), "Please choose client ID to be removed", "Invalid input", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+        btnAdd.addActionListener(e -> {
+            if (!fieldClientID.getText().isEmpty() && !fieldFullName.getText().isEmpty() && !fieldPhoneNumber.getText().isEmpty()) {
+                if (!isAlreadyExists()) {
+                    // TODO: 03/09/2018 need the option to add client type of a new client into DB.
+                    cashierBL.addNewClient(Integer.parseInt(fieldClientID.getText()), fieldFullName.getText(), fieldPhoneNumber.getText());
 
-        btnAdd.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!fieldClientID.getText().isEmpty() && !fieldFullName.getText().isEmpty() && !fieldPhoneNumber.getText().isEmpty()) {
-                    if (!isAlreadyExists()) {
-                        // TODO: 03/09/2018 need the option to add client type of a new client into DB.
-                        cashierBL.addNewClient(Integer.parseInt(fieldClientID.getText()), fieldFullName.getText(), fieldPhoneNumber.getText(),cmbClientType.getSelectedItem().toString());
+                    JOptionPane.showMessageDialog(new JFrame(), "New client " + fieldFullName.getText() + " was added successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
 
-                        JOptionPane.showMessageDialog(new JFrame(), "New client " + fieldFullName.getText() + " was added successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                    controller.getClientPage().setVisible(false);
+                    controller.showClientPage();
 
-                        controller.getClientPage().setVisible(false);
-                        controller.showClientPage();
-
-                        setVisible(false);
-                    } else {
-                        JOptionPane.showMessageDialog(new JFrame(), "Client " + fieldClientID.getText() + " already in the clients list!", "Already exists!", JOptionPane.ERROR_MESSAGE);
-                    }
-
+                    setVisible(false);
                 } else {
-                    JOptionPane.showMessageDialog(new JFrame(), "One of the input fields is empty!", "Invalid input", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(new JFrame(), "Client " + fieldClientID.getText() + " already in the clients list!", "Already exists!", JOptionPane.ERROR_MESSAGE);
                 }
+
+            } else {
+                JOptionPane.showMessageDialog(new JFrame(), "One of the input fields is empty!", "Invalid input", JOptionPane.ERROR_MESSAGE);
             }
         });
 
-        btnCancel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
+        btnCancel.addActionListener(e -> setVisible(false));
     }
 
     /*---/Page functions methods/-------------------------------------------------------------------------*/

@@ -7,13 +7,10 @@ import Entities.Employee.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 
-public class AddRemoveEmployee extends JFrame {
+public class AddEmployeePage extends JFrame {
     private Controller controller;
 
     private int frameSizeWidth;
@@ -44,13 +41,14 @@ public class AddRemoveEmployee extends JFrame {
 
     private CJButton btnAdd = new CJButton("Add", font);
     private CJButton btnCancel = new CJButton("Cancel", font);
-    private CJButton btnRemove = new CJButton("Remove", font);
 
     private Employee emp = AuthService.getInstance().getCurrentEmployee();
 
     private ManagerBL managerBL = new ManagerBL(new ManagerDataAccess());
 
-    public AddRemoveEmployee(Controller in_controller) {
+    private boolean isPasswordValid = false;
+
+    public AddEmployeePage(Controller in_controller) {
         this.controller = in_controller;
 
         setIconImage(controller.getAppFrame().getIconImage());
@@ -63,7 +61,7 @@ public class AddRemoveEmployee extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
 
-        setTitle("Edit Employee");
+        setTitle("Add New Employee");
         setLayout(theLayout);
 
         //Build sub panel #1.
@@ -120,6 +118,29 @@ public class AddRemoveEmployee extends JFrame {
 
         mainPanel.add(subPanel1);
 
+        fieldPassword.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                if(fieldPassword.getPassword().length>0)
+                {
+                    String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}";
+                    if(!String.valueOf(fieldPassword.getPassword()).matches(pattern))
+                    {
+                        JOptionPane.showMessageDialog(new JFrame(), "A password must contain the following:\n" +
+                                " -  a digit must occur at least once\n" +
+                                " -  a lower case letter must occur at least once\n" +
+                                " -  an upper case letter must occur at least once\n" +
+                                " -  no whitespace allowed\n" +
+                                " -  at least 8 characters long\n", "Invalid password", JOptionPane.ERROR_MESSAGE);
+                        fieldPassword.setText("");
+                        isPasswordValid = false;
+                    }else {
+                        isPasswordValid = true;
+                    }
+                }
+            }
+        });
+
         fieldFullName.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
                 if (fieldFullName.getText().length() >= 40 || !((e.getKeyChar() >= 'a' && e.getKeyChar() <= 'z') || (e.getKeyChar() >= 'A' && e.getKeyChar() <= 'Z'))) {
@@ -157,71 +178,39 @@ public class AddRemoveEmployee extends JFrame {
         theLayout.putConstraint(SpringLayout.SOUTH, subPanel2, 0, SpringLayout.SOUTH, mainPanel);
         theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER,subPanel2,0,SpringLayout.HORIZONTAL_CENTER,mainPanel);
 
-        subPanel2.add(btnRemove);
         subPanel2.add(btnAdd);
         subPanel2.add(btnCancel);
 
-        SpringUtilities.makeCompactGrid(subPanel2, 1, 3, 60, 6, 20, 6);
+        SpringUtilities.makeCompactGrid(subPanel2, 1, 2, 120, 6, 20, 6);
 
         mainPanel.add(subPanel2);
 
         setContentPane(mainPanel);
 
-        btnRemove.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!fieldEmpID.getText().isEmpty()){
-                    if(isAlreadyExists()) {
-                        // TODO: 03/09/2018 remove employee from DB.
-                        //cashierBL
-                        JOptionPane.showMessageDialog(new JFrame(), "Employee " + fieldEmpID.getText() + " was removed successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+        btnAdd.addActionListener(e -> {
+            if (!fieldEmpID.getText().isEmpty() && !fieldFullName.getText().isEmpty() && !fieldPhoneNumber.getText().isEmpty() && isPasswordValid) {
+                if (!isAlreadyExists()) {
 
-                        controller.getClientPage().setVisible(false);
-                        controller.showClientPage();
-                    }else {
-                        JOptionPane.showMessageDialog(new JFrame(), "Employee " + fieldEmpID.getText() + " is not in the Employees list!", "Not exists!", JOptionPane.ERROR_MESSAGE);
-                    }
-                }else {
-                    JOptionPane.showMessageDialog(new JFrame(), "Please choose employee ID to be removed", "Invalid input", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+                    String encryptedPass = managerBL.getEncryptedPass(String.valueOf(fieldPassword.getPassword()));
+                    managerBL.addEmployee(fieldFullName.getText(), encryptedPass ,Integer.parseInt(fieldEmpID.getText()), fieldPhoneNumber.getText(),
+                            Integer.parseInt(fieldAccountNum.getText()), emp.getBranchNumber(), cmbEmpType.getSelectedItem().toString());
 
-        btnAdd.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!fieldEmpID.getText().isEmpty() && !fieldFullName.getText().isEmpty() && !fieldPhoneNumber.getText().isEmpty()) {
-                    if (!isAlreadyExists()) {
-                        // TODO: 03/09/2018 add new employee
+                    JOptionPane.showMessageDialog(new JFrame(), "New employee " + fieldFullName.getText() + " was added successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
 
-                        String encryptedPass = managerBL.getEncryptedPass(String.valueOf(fieldPassword.getPassword()));
-                        managerBL.addEmployee(fieldFullName.getText(), encryptedPass ,Integer.parseInt(fieldEmpID.getText()), fieldPhoneNumber.getText(),
-                                Integer.parseInt(fieldAccountNum.getText()), emp.getBranchNumber(), cmbEmpType.getSelectedItem().toString());
+                    controller.getEmployeesPage().setVisible(false);
+                    controller.showEmployeesPage();
 
-
-
-                        JOptionPane.showMessageDialog(new JFrame(), "New employee " + fieldFullName.getText() + " was added successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
-
-                        controller.getClientPage().setVisible(false);
-                        controller.showClientPage();
-
-                        setVisible(false);
-                    } else {
-                        JOptionPane.showMessageDialog(new JFrame(), "Employee " + fieldEmpID.getText() + " already in the Employees list!", "Already exists!", JOptionPane.ERROR_MESSAGE);
-                    }
-
+                    setVisible(false);
                 } else {
-                    JOptionPane.showMessageDialog(new JFrame(), "One of the input fields is empty!", "Invalid input", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(new JFrame(), "Employee " + fieldEmpID.getText() + " already in the Employees list!", "Already exists!", JOptionPane.ERROR_MESSAGE);
                 }
+
+            } else {
+                JOptionPane.showMessageDialog(new JFrame(), "One of the input fields is empty!", "Invalid input", JOptionPane.ERROR_MESSAGE);
             }
         });
 
-        btnCancel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
+        btnCancel.addActionListener(e -> setVisible(false));
     }
 
     /*---/Page functions methods/-------------------------------------------------------------------------*/

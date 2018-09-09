@@ -3,10 +3,7 @@ package GUI;
 import BL.AuthService;
 import BL.ManagerBL;
 import DAL.ManagerDataAccess;
-import Entities.Employee.Employee;
-import Entities.Employee.Manager;
-import Entities.Employee.Profession;
-import org.json.JSONArray;
+import Entities.Employee.*;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -27,13 +24,11 @@ public class EmployeesPage extends JFrame {
     private SpringLayout theLayout = new SpringLayout();
     private CJPanel mainPanel;
 
-    private CJButton btnOk = new CJButton("OK", font);
-    private CJButton btnCancel = new CJButton("Cancel", font);
-
     private JTextField searchField = new JTextField("Search Employee...");
 
-    private CJButton btnAddRemoveEmployee = new CJButton("Add/Remove Employee", font);
-
+    private CJButton btnAddEmp = new CJButton("Add", font);
+    private CJButton btnRemoveEmp = new CJButton("Remove", font);
+    private CJButton btnUpdateEmp = new CJButton("Update", font);
 
     //Defining table headers and columns type
     private String[] colNames = {"Employee Code", "Employee ID", "Employee Name", "Phone Number","Account Number", "Employee Type"};
@@ -44,16 +39,15 @@ public class EmployeesPage extends JFrame {
     private JScrollPane tablePanel;
 
     private TableRowSorter<EmployeeTableModel> sorter = new TableRowSorter<>(employeeTableModel);
-    private AddRemoveEmployee addRemoveEmployee;
 
-    //Client data
-    //private CashierBL cashierBL = new CashierBL(new ClientsDataAccess());
-    //private Client chosenClient;
+    private AddEmployeePage addEmployeePage;
+    private UpdateEmployeePage updateEmployeePage;
 
     private ManagerBL managerBL = new ManagerBL(new ManagerDataAccess());
     private ArrayList<Employee> listOfEmployees;
 
     private Employee emp = AuthService.getInstance().getCurrentEmployee();
+    private Employee chosenEmployee;
 
     public EmployeesPage(Controller in_controller) {
         this.controller = in_controller;
@@ -120,57 +114,52 @@ public class EmployeesPage extends JFrame {
             }
         });
 
-        if(emp.getJobPos() != Profession.MANAGER)
-            btnAddRemoveEmployee.setEnabled(false);
+        btnAddEmp.addActionListener(e -> {
+            //if first time entry -> create the page
+            if (addEmployeePage == null)
+                addEmployeePage = new AddEmployeePage(controller);
 
-        btnAddRemoveEmployee.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //if first time entry -> create the page
-                if (addRemoveEmployee == null)
-                    addRemoveEmployee = new AddRemoveEmployee(controller);
+            addEmployeePage.setVisible(true);
+        });
+        subPanel1.add(btnAddEmp);
 
-                addRemoveEmployee.setVisible(true);
+
+        btnRemoveEmp.addActionListener(e -> {
+            if (chosenEmployee != null){
+
+                // TODO: 03/09/2018 remove employee from DB.
+
+                    JOptionPane.showMessageDialog(new JFrame(), "Employee " + chosenEmployee.getName() + " was removed successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+
+                    controller.getEmployeesPage().setVisible(false);
+                    controller.showEmployeesPage();
+            }else {
+                JOptionPane.showMessageDialog(new JFrame(), "Please choose employee from table, to be removed", "Invalid input", JOptionPane.ERROR_MESSAGE);
             }
         });
-        subPanel1.add(btnAddRemoveEmployee);
+        subPanel1.add(btnRemoveEmp);
 
-        SpringUtilities.makeCompactGrid(subPanel1, 1, 2, 0, 0, 0, 0);
+        btnUpdateEmp.addActionListener(e -> {
+            //if first time entry -> create the page
+            if (chosenEmployee != null) {
+                updateEmployeePage = new UpdateEmployeePage(controller, chosenEmployee);
+                updateEmployeePage.setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(new JFrame(), "Please choose employee from table, to be updated", "Invalid input", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        subPanel1.add(btnUpdateEmp);
 
+
+        SpringUtilities.makeCompactGrid(subPanel1, 1, 4, 5, 10, 5, 0);
+
+        if(emp.getJobPos() != Profession.MANAGER) {
+            btnAddEmp.setEnabled(false);
+            btnRemoveEmp.setEnabled(false);
+            btnUpdateEmp.setEnabled(false);
+        }
         mainPanel.add(subPanel1);
-
-        //Build Sub panel #2
-        CJPanel subPanel2 = new CJPanel(new SpringLayout(), frameSizeWidth, frameSizeHeight * 0.2);
-
-        theLayout.putConstraint(SpringLayout.NORTH, subPanel2, 0, SpringLayout.SOUTH, subPanel1);
-
-        //OK button was pressed
-        btnOk.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                    //searchField.setText("Search client...");
-
-                    //setVisible(false);
-            }
-        });
-
-        btnCancel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
-
-        subPanel2.add(btnOk);
-        subPanel2.add(btnCancel);
-
-        SpringUtilities.makeCompactGrid(subPanel2, 1, 2, 175, 20, 100, 60);
-
-        mainPanel.add(subPanel2);
-
         setContentPane(mainPanel);
-
     }
 
     private JScrollPane buildTable() {
@@ -178,52 +167,48 @@ public class EmployeesPage extends JFrame {
         employeesTable.setRowSorter(sorter);
 
         tablePanel = new JScrollPane(employeesTable);
-        tablePanel.setPreferredSize(new Dimension((int) (frameSizeWidth * 0.98), (int) (frameSizeHeight * 0.7)));
+        tablePanel.setPreferredSize(new Dimension((int) (frameSizeWidth * 0.98), (int) (frameSizeHeight * 0.8)));
 
         theLayout.putConstraint(SpringLayout.NORTH, tablePanel, 0, SpringLayout.NORTH, mainPanel);
         theLayout.putConstraint(SpringLayout.WEST, tablePanel, 0, SpringLayout.WEST, mainPanel);
 
-//        employeesTable.addMouseListener(new MouseAdapter() {
-//            public void mouseClicked(MouseEvent evt) {
-//                if (evt.getClickCount() >= 1) {
-//                    chooseClientFromTable();
-//                }
-//            }
-//        });
+        employeesTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                if (evt.getClickCount() >= 1) {
+                    chooseEmployeeFromTable();
+                }
+            }
+        });
 
         updateTable();
 
         return tablePanel;
     }
 
-//    public Client chooseClientFromTable() {
-//
-//        // get the selected row index
-//        int selectedRowIndex = employeesTable.getSelectedRow();
-//        selectedRowIndex = employeesTable.convertRowIndexToModel(selectedRowIndex);
-//
-//        // set the selected row data into Client
-//        int clientCode = (int) (employeeTableModel.getValueAt(selectedRowIndex, 0));
-//        int clientID = (int) (employeeTableModel.getValueAt(selectedRowIndex, 1));
-//        String clientName = (employeeTableModel.getValueAt(selectedRowIndex, 2).toString());
-//        String clientPhone = (employeeTableModel.getValueAt(selectedRowIndex, 3).toString());
-//        ClientType clientType = (ClientType) employeeTableModel.getValueAt(selectedRowIndex, 4);
-//
-//        //Build client object
-//        //selectedClient(clientCode, clientID, clientName, clientPhone, clientType);
-//        return chosenClient;
-//    }
+    private void chooseEmployeeFromTable() {
+
+        // get the selected row index
+        int selectedRowIndex = employeesTable.getSelectedRow();
+        selectedRowIndex = employeesTable.convertRowIndexToModel(selectedRowIndex);
+
+        // set the selected row data into Client
+        int employeeCode = (int) (employeeTableModel.getValueAt(selectedRowIndex, 0));
+        int employeeID = (int) (employeeTableModel.getValueAt(selectedRowIndex, 1));
+        String employeeName = (employeeTableModel.getValueAt(selectedRowIndex, 2).toString());
+        String employeePhone = (employeeTableModel.getValueAt(selectedRowIndex, 3).toString());
+        int employeeAccount = (int) (employeeTableModel.getValueAt(selectedRowIndex, 4));
+        Profession profession = (Profession) employeeTableModel.getValueAt(selectedRowIndex, 5);
+
+        //Build Employee object
+        selectedEmployee(employeeCode, employeeID, employeeName, employeePhone, employeeAccount, profession);
+    }
 
     private void updateTable() {
         //Clear old data stored in table
         employeeTableModel.clearData();
 
-        //----Example-------------------------------------------------------
         listOfEmployees = managerBL.selectAllEmployees();
-//        listOfEmployees.add(new Manager(3,"El Jefe",989131223,"02-893323",3332211,1));
-        //------------------------------------------------------------------
 
-        // TODO: 02/09/2018 get list of employees from DB.
         for (int i = 0; i < listOfEmployees.size(); i++) {
             employeeTableModel.addToVectorM_Data(listOfEmployees.get(i));
         }
@@ -235,21 +220,21 @@ public class EmployeesPage extends JFrame {
         employeesTable.repaint();
     }
 
-//    private void selectedClient(int clientCode, int clientID, String clientName, String clientPhone, ClientType clientType) {
-//
-//        switch (clientType) {
-//            case NEWCLIENT:
-//                this.chosenClient = new NewClient(clientID, clientName, clientPhone, clientCode);
-//                break;
-//            case RETURNCLIENT:
-//                this.chosenClient = new ReturnClient(clientID, clientName, clientPhone, clientCode);
-//                break;
-//
-//            case VIPCLIENT:
-//                this.chosenClient = new VipClient(clientID, clientName, clientPhone, clientCode);
-//                break;
-//        }
-//    }
+    private void selectedEmployee(int empCode, int empID, String empName, String empPhone, int empAccount, Profession profession) {
+
+        switch (profession) {
+            case SELLER:
+                this.chosenEmployee = new Seller(empCode,empName,empID,empPhone,empAccount,emp.getBranchNumber());
+                break;
+            case CASHIER:
+                this.chosenEmployee = new Cashier(empCode,empName,empID,empPhone,empAccount,emp.getBranchNumber());
+                break;
+
+            case MANAGER:
+                this.chosenEmployee = new Manager(empCode,empName,empID,empPhone,empAccount,emp.getBranchNumber());
+                break;
+        }
+    }
 
     public ArrayList<Employee> getListOfEmployees() {
         return listOfEmployees;

@@ -26,12 +26,14 @@ public class ClientPage extends JFrame {
     private SpringLayout theLayout = new SpringLayout();
     private CJPanel mainPanel;
 
-    private CJButton btnChoose = new CJButton("Choose", font);
-    private CJButton btnCancel = new CJButton("Cancel", font);
-
     private JTextField searchField = new JTextField("Search Client...");
 
-    private CJButton btnAddNewClient = new CJButton("Add/Remove Client", font);
+    private CJButton btnAddNewClient = new CJButton("Add", font);
+    private CJButton btnRemoveClient = new CJButton("Remove", font);
+    private CJButton btnUpdateClient = new CJButton("Update", font);
+
+    private CJButton btnChoose = new CJButton("Choose", font);
+    private CJButton btnCancel = new CJButton("Cancel", font);
 
     //Defining table headers and columns type
     private String[] colNames = {"Client Code", "Client ID", "Client Name", "Phone Number", "Client Type"};
@@ -50,6 +52,8 @@ public class ClientPage extends JFrame {
     private ArrayList<Client> listOfClients;
 
     private Employee emp = AuthService.getInstance().getCurrentEmployee();
+
+    private UpdateClientPage updateClientPage;
 
     public ClientPage(Controller in_controller) {
         this.controller = in_controller;
@@ -72,7 +76,7 @@ public class ClientPage extends JFrame {
         mainPanel.add(buildTable());
 
         //Build sub panel #1
-        CJPanel subPanel1 = new CJPanel(new SpringLayout(), frameSizeWidth*0.97, frameSizeHeight * 0.07);
+        CJPanel subPanel1 = new CJPanel(new SpringLayout(), frameSizeWidth*0.97, frameSizeHeight * 0.1);
 
         theLayout.putConstraint(SpringLayout.NORTH, subPanel1, 0, SpringLayout.SOUTH, tablePanel);
         theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, subPanel1, 0, SpringLayout.HORIZONTAL_CENTER, mainPanel);
@@ -129,22 +133,43 @@ public class ClientPage extends JFrame {
             }
         });
 
-        if(emp.getJobPos() == Profession.SELLER)
-            btnAddNewClient.setEnabled(false);
 
-        btnAddNewClient.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //if first time entry -> create the page
-                if (addNewClientPage == null)
-                    addNewClientPage = new AddNewClientPage(controller);
+        btnAddNewClient.addActionListener(e -> {
+            //if first time entry -> create the page
+            if (addNewClientPage == null)
+                addNewClientPage = new AddNewClientPage(controller);
 
-                addNewClientPage.setVisible(true);
-            }
+            addNewClientPage.setVisible(true);
         });
         subPanel1.add(btnAddNewClient);
 
-        SpringUtilities.makeCompactGrid(subPanel1, 1, 2, 0, 0, 0, 0);
+        btnRemoveClient.addActionListener(e -> {
+            if (chosenClient != null){
+
+                // TODO: 03/09/2018 remove employee from DB.
+
+                JOptionPane.showMessageDialog(new JFrame(), "Client " + chosenClient.getFullName() + " was removed successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+
+                controller.getClientPage().setVisible(false);
+                controller.showClientPage();
+            }else {
+                JOptionPane.showMessageDialog(new JFrame(), "Please choose client from table, to be removed", "Invalid input", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        subPanel1.add(btnRemoveClient);
+
+        btnUpdateClient.addActionListener(e -> {
+            //if first time entry -> create the page
+            if (chosenClient != null) {
+                updateClientPage = new UpdateClientPage(controller,  chosenClient);
+                updateClientPage.setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(new JFrame(), "Please choose client from table, to be updated", "Invalid input", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        subPanel1.add(btnUpdateClient);
+
+        SpringUtilities.makeCompactGrid(subPanel1, 1, 4, 5, 10, 5, 0);
 
         mainPanel.add(subPanel1);
 
@@ -157,38 +182,30 @@ public class ClientPage extends JFrame {
 
 
         //Choose button was pressed
-        btnChoose.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (chosenClient != null) {
-                    //send chosen client data back to new order and main page
-                    controller.getMainMenuPage().setChosenClient(chosenClient);
+        btnChoose.addActionListener(e -> {
+            if (chosenClient != null) {
+                //send chosen client data back to new order and main page
+                controller.getMainMenuPage().setChosenClient(chosenClient);
 
-                    if(controller.getNewOrderPanel().isShowing()) {
-                        controller.getNewOrderPanel().setChosenClient(chosenClient);
-                        controller.getNewOrderPanel().getFieldChosenClient().setText(chosenClient.getFullName());
-                        controller.getNewOrderPanel().updateShoppingCartDeal();
-                        controller.getNewOrderPanel().validate();
-                    }
-                    //reset chosen client on client page
-                    chosenClient = null;
-
-                    searchField.setText("Search client...");
-
-                    //hide client page
-                    setVisible(false);
-                } else {
-                    JOptionPane.showMessageDialog(new JFrame(), "Please choose a client from the table above.", "Choose a client", JOptionPane.ERROR_MESSAGE);
+                if(controller.getNewOrderPanel().isShowing()) {
+                    controller.getNewOrderPanel().setChosenClient(chosenClient);
+                    controller.getNewOrderPanel().getFieldChosenClient().setText(chosenClient.getFullName());
+                    controller.getNewOrderPanel().updateShoppingCartDeal();
+                    controller.getNewOrderPanel().validate();
                 }
+                //reset chosen client on client page
+                chosenClient = null;
+
+                searchField.setText("Search client...");
+
+                //hide client page
+                setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(new JFrame(), "Please choose a client from the table above.", "Choose a client", JOptionPane.ERROR_MESSAGE);
             }
         });
 
-        btnCancel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
+        btnCancel.addActionListener(e -> setVisible(false));
 
         subPanel2.add(btnChoose);
         subPanel2.add(btnCancel);
@@ -199,6 +216,17 @@ public class ClientPage extends JFrame {
 
         setContentPane(mainPanel);
         setResizable(false);
+
+        //----Employees Permissions----------
+        switch (emp.getJobPos()) {
+            case SELLER:
+                btnAddNewClient.setEnabled(false);
+                btnRemoveClient.setEnabled(false);
+                btnUpdateClient.setEnabled(false);
+            case CASHIER:
+                btnRemoveClient.setEnabled(false);
+                btnUpdateClient.setEnabled(false);
+        }
     }
 
     private JScrollPane buildTable() {
