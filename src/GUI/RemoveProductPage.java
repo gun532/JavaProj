@@ -4,6 +4,8 @@ import Entities.Product;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class RemoveProductPage extends JFrame {
 
@@ -43,7 +45,7 @@ public class RemoveProductPage extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
 
-        setTitle("Add New Employee");
+        setTitle("Remove Product");
 
         mainPanel = new CJPanel(theLayout, frameSizeWidth*0.9, frameSizeHeight*0.9);
 
@@ -74,6 +76,13 @@ public class RemoveProductPage extends JFrame {
 
         setContentPane(mainPanel);
         setVisible(true);
+
+        fieldProductAmount.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                if (fieldProductAmount.getText().length() >= 10 || e.getKeyChar() < '0' || e.getKeyChar() > '9') // limits text field to 9 characters
+                        e.consume();
+            }
+        });
 
         btnCancel.addActionListener(e -> {
             setVisible(false);

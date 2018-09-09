@@ -143,7 +143,7 @@ public class AddNewClientPage extends JFrame {
             if (!fieldClientID.getText().isEmpty() && !fieldFullName.getText().isEmpty() && !fieldPhoneNumber.getText().isEmpty()) {
                 if (!isAlreadyExists()) {
                     // TODO: 03/09/2018 need the option to add client type of a new client into DB.
-                    cashierBL.addNewClient(Integer.parseInt(fieldClientID.getText()), fieldFullName.getText(), fieldPhoneNumber.getText());
+                    cashierBL.addNewClient(Integer.parseInt(fieldClientID.getText()), fieldFullName.getText(), fieldPhoneNumber.getText(), cmbClientType.getSelectedItem().toString());
 
                     JOptionPane.showMessageDialog(new JFrame(), "New client " + fieldFullName.getText() + " was added successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
 

@@ -2,6 +2,7 @@ package GUI;
 
 import BL.AuthService;
 import BL.CashierBL;
+import BL.InventoryBL;
 import BL.ManagerBL;
 import DAL.ClientsDataAccess;
 import DAL.EmployeeDataAccess;
@@ -24,7 +25,7 @@ public class InventoryPage extends CJPanel {
     private InventoryDataAccess inventoryDataAccess = new InventoryDataAccess();
     private ManagerBL managerBL = new ManagerBL(new CashierBL(new EmployeeDataAccess(), inventoryDataAccess, new ClientsDataAccess()));
     private Inventory inventory = managerBL.getCashierBL().selectFromInventory(emp.getBranchNumber());
-
+    //private InventoryBL inventoryBL = new InventoryBL(inventoryDataAccess);
 
     private CJPanel subPanel1;
     private JTextField searchField = new JTextField("Search Product...");
@@ -279,9 +280,7 @@ public class InventoryPage extends CJPanel {
 
     public void updateInventory(Product p){
         try {
-
-            // TODO: 08/09/2018 update inventory function.
-            //inventory.updateInventory(p);
+            inventory.updateInventory(p);
             updateTable();
 
         }catch (Exception e){
