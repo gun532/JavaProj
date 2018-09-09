@@ -200,7 +200,7 @@ public class NewOrderPanel extends CJPanel {
                     JOptionPane.showMessageDialog(new JFrame(), "Please choose a client", "Invalid input", JOptionPane.ERROR_MESSAGE);
                 } else {
 
-                    cashierBL.createNewOrder(inventory, chosenClient, shoppingCart);
+                    cashierBL.createNewOrder(inventory, chosenClient, shoppingCart, Double.parseDouble(fieldInTotal.getText()));
                     setVisible(false);
                     try {
                         controller.showMainMenuPage();
@@ -208,7 +208,7 @@ public class NewOrderPanel extends CJPanel {
                         e1.printStackTrace();
                     }
                 }
-            }
+                }
         });
 
         btnCancel = new CJButton("Cancel", new Font("Candara", 0, 40));

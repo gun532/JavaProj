@@ -22,7 +22,7 @@ public class ManagerDataAccess {
         }
     }
 
-    public void addEmployee(String name,String pass, int id, String phone,int accountNum, int branchNumber, String profession) {
+    public void addEmployee(String name, String pass, int id, String phone, int accountNum, int branchNumber, String profession) {
         try {
 
             //change it later to something more secure
@@ -101,8 +101,7 @@ public class ManagerDataAccess {
             while (rs.next()) {
                 String type = rs.getString("profession");
                 Employee e;
-                switch (type)
-                {
+                switch (type) {
                     case "SELLER":
                         e = new Seller(rs.getInt("employeeCode"), rs.getString("fullName"), rs.getInt("ID"),
                                 rs.getString("phoneNum"), rs.getInt("accountNumber"),
@@ -116,7 +115,7 @@ public class ManagerDataAccess {
                         employeeArrayList.add(e);
                         break;
                     case "MANAGER":
-                        e= new Manager(rs.getInt("employeeCode"), rs.getString("fullName"), rs.getInt("ID"),
+                        e = new Manager(rs.getInt("employeeCode"), rs.getString("fullName"), rs.getInt("ID"),
                                 rs.getString("phoneNum"), rs.getInt("accountNumber"),
                                 rs.getInt("branch"));
                         employeeArrayList.add(e);
@@ -138,69 +137,77 @@ public class ManagerDataAccess {
         return employeeArrayList;
     }
 
+    public int getTotalAmountInBranch(int branchNumber) {
+        try {
+            int total = 0;
+            Class.forName(myDriver);
+            createViewForTotalPurchasesForBranch(branchNumber);
+            String sql = "SELECT sum(total) as totalPurchases from purchasesbybranch";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                total = rs.getInt("totalPurchases");
+            }
+            return total;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
+
+    private void createViewForTotalPurchasesForBranch(int branchNumber) {
+        try {
+            Class.forName(myDriver);
+
+            String sql = "create view PurchasesByBranch  as (select distinct clients.fullName, total, clients.ClientType from clients join shopping_history join cart_details on clients.clientNumber = shopping_history.clientNumber and shopping_history.cartID = cart_details.cartID where branch_Number = ?)";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, branchNumber);
+            statement.executeUpdate();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.out.println("Table already exists!");
+        }
+    }
+
+    public ResultSetMetaData getResultSetMetaData(ResultSet rs) {
+        try {
+            return rs.getMetaData();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ResultSet totalClientPurchasesInBranch(int branchNumber) {
+        try {
+            // @TODO: 06/09/2018 figure out how to keep the connection working if the view exists
+            Class.forName(myDriver);
+            createViewForTotalPurchasesForBranch(branchNumber);
+
+            String sql = "select fullName, sum(total) as totalBuying, clientType from PurchasesByBranch group by fullName";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+//            while (rs.next()) {
+//            }
+//                c.setClientCode(rs.getInt("clientNumber"));
+//                c.setId(rs.getInt("clientID"));
+//                c.setFullName(rs.getString("fullName"));
+//                c.setPhoneNumber(rs.getString("phone"));
+//                c.setType(ClientType.valueOf(rs.getString("ClientType")));
+//                c.setDiscountRate(rs.getInt("discountRate"));
+
+            return rs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
 
-
-
-
-
-//    //לפי הגישה הזו אנו שולפים את המלאי בפעם הראשונה כשעושים לוגין לעובד
-//    void addInventoryToDB(Inventory inventory, Product p) throws Exception {
-//        inventory.addToInventory(p);
-//        updateInventory(inventory);
-//    }
-
-
-//
-//    public Product takeFromInventory(int productCode, int amount, Inventory inventory) throws Exception {
-//
-//        Product refProduct = inventory.getMyInventory().get(productCode);
-//        if (refProduct != null) {
-//            if (refProduct.getAmount() - amount >= 0) {
-//                refProduct.setAmount(refProduct.getAmount() - amount);
-//                //this.totalItems -= amount;
-//                //this.totalValue -= refProduct.getPrice()*amount;
-//                inventory.setTotalItems(inventory.getTotalProducts() - amount);
-//                inventory.setTotalValue(inventory.getTotalValue() - (refProduct.getPrice() * amount));
-//                Product product = new Product(refProduct);
-//                product.setAmount(amount);
-//                return product;
-//            } else
-//                throw new Exception("There's not enough items in the inventory.");
-//        } else
-//            throw new Exception("The product is not in the inventory.");
-//    }
-//}
-
-//    public void addToCart(Product product) throws Exception {
-//        ShoppingCart newCart = new ShoppingCart();
-//        if (newCart.getCart().containsValue(product)) {
-//            newCart.getCart().get(product.getProductCode()).incAmount(product.getAmount());
-//        } else {
-//            newCart.getCart().put(product.hashCode(), product);
-//        }
-//
-//        newCart.setTotalItems(newCart.getTotalItems() + product.getAmount());
-//        newCart.setTotalItems(newCart.getTotalPrice()+ product.getPrice() * product.getAmount());
-//    }
-//
-//    public void removeFromCart(Product product) throws Exception {
-//        Product refProduct = this.cart.get(product.getProductCode());
-//        if(refProduct != null){
-//            if(refProduct.getAmount() - product.getAmount() >= 0) {
-//                refProduct.decAmount(product.getAmount());
-//                if (refProduct.getAmount() == 0)
-//                    this.cart.remove(product.getProductCode());
-//
-//                this.totalItems -= product.getAmount();
-//                this.totalPrice -= product.getPrice()*product.getAmount();
-//            }
-//            else{
-//                throw new Exception("You are trying to remove more items than you have in cart.");
-//            }
-//        }
-//        else{
-//            throw new Exception("The product is not in the shopping cart.");
-//        }
-//    }
-//}

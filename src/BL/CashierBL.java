@@ -43,9 +43,9 @@ public class CashierBL {
         return clientsDataAccess.selectAllClients();
     }
 
-    public void addNewClient(int id, String name, String phone)
+    public void addNewClient(int id, String name, String phone, String clientType)
     {
-        clientsDataAccess.addNewClient(id,name,phone);
+        clientsDataAccess.addNewClient(id,name,phone, clientType);
     }
 
     public Client selectClientByID(int id)
@@ -58,9 +58,9 @@ public class CashierBL {
         return inventoryDataAccess.selectFromInventory(branch);
     }
 
-    public void createNewOrder(Inventory inventory, Client client, ShoppingCart shoppingCart) {
+    public void createNewOrder(Inventory inventory, Client client, ShoppingCart shoppingCart, double total) {
 
-        clientsDataAccess.createNewOrder(shoppingCart,client.getClientCode());
+        clientsDataAccess.createNewOrder(shoppingCart,client.getClientCode(),total);
         inventoryDataAccess.updateInventory(inventory);
 
     }
