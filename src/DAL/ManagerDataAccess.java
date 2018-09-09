@@ -1,5 +1,6 @@
 package DAL;
 
+import Entities.Clients.Client;
 import Entities.Employee.*;
 
 import java.sql.*;
@@ -44,13 +45,30 @@ public class ManagerDataAccess {
 
             statement.executeUpdate();
 
-            myConn.close();
+//            myConn.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean deleteClient(int clientID) {
+        try {
+            Class.forName(myDriver);
+            String sql = "DELETE from clients where clientID = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, clientID);
+            statement.execute();
+            //myConn.close();
+            return true;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void deleteEmployee(int empNum) {
@@ -60,7 +78,7 @@ public class ManagerDataAccess {
             PreparedStatement statement = myConn.prepareStatement(sql);
             statement.setInt(1, empNum);
             statement.execute();
-            myConn.close();
+//            myConn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -69,8 +87,6 @@ public class ManagerDataAccess {
     }
 
     public void updateEmployee(Employee employee) {
-        //employee to update - e1
-        //when button is clicked create an object with type employee from textboxes
         try {
             Class.forName(myDriver);
             String sql = "UPDATE employee set name = ?, phone = ?, accountNum = ?, BranchNum = ?, profession = ? where employeeCode = ?";
@@ -82,7 +98,7 @@ public class ManagerDataAccess {
             statement.setString(5, employee.getJobPos().name());
             statement.setInt(6, employee.getEmployeeNumber());
             statement.executeUpdate();
-            myConn.close();
+//            myConn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -128,7 +144,7 @@ public class ManagerDataAccess {
 //                c.setType(ClientType.valueOf(rs.getString("ClientType")));
 //                c.setDiscountRate(rs.getInt("discountRate"));
             }
-            myConn.close();
+//            myConn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -208,6 +224,29 @@ public class ManagerDataAccess {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean updateClient(int clientID, String name, String phone, String type, int clientCode) {
+        try {
+            Class.forName(myDriver);
+            String sql = "UPDATE clients set clientID = ? , fullName = ? ,phone = ?,ClientType = ? where clientNumber = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, clientID);
+            statement.setString(2, name);
+            statement.setString(3, phone);
+            statement.setString(4, type);
+            statement.setInt(5, clientCode);
+
+            statement.executeUpdate();
+            return true;
+//            myConn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }
 

@@ -1,13 +1,16 @@
 package BL;
 
-import DTO.DtoBase;
-import DTO.LoginDetailsDto;
+import DAL.ClientsDataAccess;
+import DAL.EmployeeDataAccess;
+import DAL.InventoryDataAccess;
+import DAL.ManagerDataAccess;
+import DTO.*;
+import Entities.Clients.Client;
 import Entities.Employee.Employee;
+import Entities.Inventory;
+import Entities.ShoppingCart;
 import com.google.gson.Gson;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONStringer;
-import org.json.JSONWriter;
+import org.json.*;
 
 import javax.swing.*;
 import java.io.*;
@@ -20,14 +23,16 @@ public class ServerTest {
     private static ArrayList<Employee> connectedUsers = new ArrayList<>();
 
 
-
     public static class SocketServer extends Thread {
+
 
         public static final int PORT_NUMBER = 8081;
         static DataInputStream in = null;
         static PrintStream out = null;
         static Socket socket;
         static ServerSocket server = null;
+        private ManagerBL managerBL = new ManagerBL(new ManagerDataAccess());
+        private CashierBL cashierBL = new CashierBL(new EmployeeDataAccess(), new InventoryDataAccess(), new ClientsDataAccess());
 
 
         private SocketServer(Socket socket) {
@@ -39,6 +44,7 @@ public class ServerTest {
         public void run() {
             String line;
             try {
+                Inventory inventory;
                 in = new DataInputStream(socket.getInputStream());
                 out = new PrintStream(socket.getOutputStream());
                 BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -48,25 +54,80 @@ public class ServerTest {
 
                     System.out.println("Message received");
                     //line = br.readLine();
-                    LoginUtility loginUtility = new LoginUtility();
                     Gson gson = new Gson();
 
-                    DtoBase dtoBase = gson.fromJson(request, DtoBase.class);
 
+                    DtoBase dtoBase = gson.fromJson(request, DtoBase.class);
+                    ClientDto clientDto;
+                    Client client;
 
                     switch (dtoBase.getFunc()) {
                         case "login":
+                            LoginUtility loginUtility = new LoginUtility();
                             LoginDetailsDto loginDetailsDto = gson.fromJson(request, LoginDetailsDto.class);
                             Employee loggedInEmployee =
                                     loginUtility.login(loginDetailsDto.getEmployeeId(), loginDetailsDto.getPassword());
                             Boolean ifConnected = checkIfConnected(loggedInEmployee);
-                            if(ifConnected == false || ifConnected == null)
-                            {
+                            if (ifConnected == false || ifConnected == null) {
                                 String employeeJson = gson.toJson(loggedInEmployee);
                                 out.println(employeeJson);
                             }
                             break;
+                        case "inverntoryByBranch":
+                            //cashierBL = new CashierBL(new EmployeeDataAccess(), new InventoryDataAccess(), new ClientsDataAccess());
+                            InventoryDto inventoryDto = gson.fromJson(request, InventoryDto.class);
+                            inventory = cashierBL.selectFromInventory(inventoryDto.getInventoryNumber());
+                            String inventoryJson = gson.toJson(inventory);
+                            out.println(inventoryJson);
+                            break;
+
+                        case "createNewOrder":
+                            OrderDto orderDto = gson.fromJson(request, OrderDto.class);
+                            inventory = orderDto.getInventory();
+                            int clientID = orderDto.getClientId();
+                            client = cashierBL.selectClientByID(clientID);
+                            ShoppingCart shoppingCart = orderDto.getShoppingCart();
+                            Boolean orderConfirm = cashierBL.createNewOrder(inventory, client, shoppingCart, orderDto.getTotal());
+                            String orderConfirmJson = gson.toJson(orderConfirm);
+                            out.println(orderConfirmJson);
+                            break;
+
+                        case "selectAllClients":
+                            ClientsArrayDto clientsArrayDto = gson.fromJson(request, ClientsArrayDto.class);
+                            //ArrayList<Client> clientArrayList = cashierBL.selectAllClients();
+                            //clientsArrayDto.setAllClients(cashierBL.selectAllClients());
+                            String clients = gson.toJson(cashierBL.selectAllClients());
+                            //JSONArray jsArray = new JSONArray(clientsArrayDto.getAllClients());
+                            //JSONObject jsonObject = new JSONObject(clientsArrayDto.getAllClients());
+                            //JSONObject object = new JSONObject(clients);
+                            JSONArray jsArray = new JSONArray(clients);
+                            //  out.println(object);
+                            out.println(jsArray);
+                            break;
+                        case "removeClient":
+                            clientDto = gson.fromJson(request, ClientDto.class);
+                            boolean isDeleted = managerBL.deleteClient(clientDto.getId());
+                            out.println(gson.toJson(isDeleted));
+                            break;
+
+                        case "addNewClient":
+                            clientDto = gson.fromJson(request, ClientDto.class);
+                            boolean isAdded = cashierBL.addNewClient(clientDto.getId(), clientDto.getFullName(),
+                                    clientDto.getPhoneNumber(), clientDto.getType().toString());
+                            out.println(gson.toJson(isAdded));
+                            break;
+                        case "updateClient":
+                            clientDto = gson.fromJson(request, ClientDto.class);
+                            boolean isUpdated = managerBL.updateClient(clientDto.getId(),
+                                    clientDto.getFullName(),clientDto.getPhoneNumber(),clientDto.getType().toString(),
+                                    clientDto.getClientCode());
+                            out.println(gson.toJson(isUpdated));
+                            break;
                     }
+
+
+                    //cashierBL.createNewOrder(inventory, chosenClient, shoppingCart, Double.parseDouble(fieldInTotal.getText()));
+
                 }
 
             } catch (Exception ex) {
@@ -92,11 +153,10 @@ public class ServerTest {
                 throw new Exception("user already logged in");
 
             } else {
-                if(loggedInEmployee!= null) connectedUsers.add(loggedInEmployee);
+                if (loggedInEmployee != null) connectedUsers.add(loggedInEmployee);
                 return false;
             }
         }
-
 
 
         public static void main(String[] args) {
@@ -126,7 +186,6 @@ public class ServerTest {
         public ArrayList<Employee> getConnectedUsers() {
             return connectedUsers;
         }
-
 
 
 //        public static  void main(String[] args) {

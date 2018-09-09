@@ -1,6 +1,7 @@
 package BL;
 
 import DAL.ManagerDataAccess;
+import Entities.Clients.Client;
 import Entities.Employee.Employee;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +50,16 @@ public class ManagerBL {
 
     public ArrayList<Employee> selectAllEmployees() {
         return managerDataAccess.selectAllEmployees();
+    }
+
+    public boolean deleteClient(int clientID)
+    {
+        return managerDataAccess.deleteClient(clientID);
+    }
+
+    public boolean updateClient(int clientID, String name, String phone, String type, int clientCode)
+    {
+        return managerDataAccess.updateClient(clientID,name,phone,type,clientCode);
     }
 
     public JSONArray createReportTotalPurchasesInBranch(int branchNumber) {

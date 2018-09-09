@@ -127,6 +127,17 @@ public class Inventory {
         this.myInventory = myInventory;
     }
 
+    public void updateInventory(Product p) throws Exception {
+
+        Product refProduct = this.myInventory.get(p.getProductCode());
+
+        if (refProduct != null) {
+            this.myInventory.replace(refProduct.getProductCode(),refProduct,p);
+        }else {
+            throw new Exception("The product is not in the inventory.");
+        }
+    }
+
     @Override
     public String toString() {
         return "\nAll products in store's inventory:\n"
