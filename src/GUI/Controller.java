@@ -23,6 +23,7 @@ public class Controller {
     private ClientPage clientPage;
     private InventoryPage inventoryPage;
     private EmployeesPage employeesPage;
+    private BranchPage branchPage;
     private Login login;
 
     // Controller constructor holds all the app pages (panels)
@@ -65,15 +66,12 @@ public class Controller {
 
             //build in the meanwhile the New Order page in a new thread
             Controller controller = this;
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        newOrderPanel = new NewOrderPanel(controller);
-                        innerPageImage = ImageIO.read(new File("src/GUI/Res/inner_BG.jpg"));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+            SwingUtilities.invokeLater(() -> {
+                try {
+                    newOrderPanel = new NewOrderPanel(controller);
+                    innerPageImage = ImageIO.read(new File("src/GUI/Res/inner_BG.jpg"));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
         } else { //main page already exists...
@@ -114,6 +112,20 @@ public class Controller {
             appFrame.setTitle("Inventory");
             inventoryPage.setVisible(true);
             appFrame.setContentPane(inventoryPage);
+        }
+        catch (Exception e)
+        {
+            //TODO:write to logger
+            e.printStackTrace();
+        }
+    }
+
+    public void showBranchPage() {
+        try{
+            branchPage = new BranchPage(this);
+            appFrame.setTitle("Branch Details");
+            branchPage.setVisible(true);
+            appFrame.setContentPane(branchPage);
         }
         catch (Exception e)
         {
@@ -182,6 +194,8 @@ public class Controller {
     public MainMenuPage getMainMenuPage() {
         return mainMenuPage;
     }
+
+    public InventoryPage getInventoryPage() { return inventoryPage; }
 
     public JFrame getAppFrame() {
         return appFrame;
