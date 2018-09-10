@@ -148,12 +148,8 @@ public class AddNewClientPage extends JFrame {
         btnAdd.addActionListener(e -> {
             if (!fieldClientID.getText().isEmpty() && !fieldFullName.getText().isEmpty() && !fieldPhoneNumber.getText().isEmpty()) {
                 if (!isAlreadyExists()) {
-<<<<<<< HEAD
-                    // TODO: 03/09/2018 need the option to add client type of a new client into DB.
-                    cashierBL.addNewClient(Integer.parseInt(fieldClientID.getText()), fieldFullName.getText(), fieldPhoneNumber.getText(), cmbClientType.getSelectedItem().toString());
-=======
->>>>>>> func
 
+                    cashierBL.addNewClient(Integer.parseInt(fieldClientID.getText()), fieldFullName.getText(), fieldPhoneNumber.getText(), cmbClientType.getSelectedItem().toString());
                     addNewClient();
                 }
                 else {

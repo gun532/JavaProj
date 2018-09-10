@@ -5,6 +5,8 @@ import BL.ClientSocket;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -26,6 +28,7 @@ public class Controller {
     private InventoryPage inventoryPage;
     private EmployeesPage employeesPage;
     private BranchPage branchPage;
+    private ReportsPage reportsPage;
     private Login login;
 
     final String host = "127.0.0.1";
@@ -140,6 +143,20 @@ public class Controller {
         }
     }
 
+    public void showReportsPage() {
+        try{
+            reportsPage = new ReportsPage(this);
+            appFrame.setTitle("Reports");
+            reportsPage.setVisible(true);
+            appFrame.setContentPane(reportsPage);
+        }
+        catch (Exception e)
+        {
+            //TODO:write to logger
+            e.printStackTrace();
+        }
+    }
+
     public void showEmployeesPage() {
         try {
             employeesPage = new EmployeesPage(this);
@@ -156,7 +173,7 @@ public class Controller {
         //Build the frame
         appFrame.setLocationRelativeTo(null);
         appFrame.setResizable(false);
-        appFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        appFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         //Get and set app image icon
         SwingUtilities.invokeLater(new Runnable() {
@@ -168,19 +185,27 @@ public class Controller {
                 appFrame.setIconImage(icon.getImage());
             }
         });
+
+        appFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                if (JOptionPane.showConfirmDialog(appFrame, "Are you sure you want to close this window?", "Close Window?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
+                {
+                    // TODO: 10/09/2018 call function for closing socket and deleting login array.
+                    System.exit(0);
+                }
+            }
+        });
     }
 
     public static void main(String[] args) throws Exception {
 
         //Run GUI in a thread
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    new Controller().loadApp();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        SwingUtilities.invokeLater(() -> {
+            try {
+                new Controller().loadApp();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }

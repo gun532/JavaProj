@@ -8,10 +8,7 @@ import Entities.Employee.Profession;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class UpdateEmployeePage extends JFrame {
@@ -49,6 +46,8 @@ public class UpdateEmployeePage extends JFrame {
     private ManagerBL managerBL = new ManagerBL(new ManagerDataAccess());
 
     private Employee chosenEmp;
+
+    private boolean isPasswordValid = true;
 
     public UpdateEmployeePage(Controller in_controller, Employee chosenEmployee) {
         this.controller = in_controller;
@@ -125,6 +124,7 @@ public class UpdateEmployeePage extends JFrame {
 
         mainPanel.add(subPanel1);
 
+
         fieldFullName.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
                 if (fieldFullName.getText().length() >= 40 || !((e.getKeyChar() >= 'a' && e.getKeyChar() <= 'z') || (e.getKeyChar() >= 'A' && e.getKeyChar() <= 'Z'))) {
@@ -177,19 +177,35 @@ public class UpdateEmployeePage extends JFrame {
                 if (!isAlreadyExists()) {
 
                     if(fieldPassword.getPassword().length >0) {
-                        String newEncryptedPass = managerBL.getEncryptedPass(String.valueOf(fieldPassword.getPassword()));
+                        String pattern = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}";
+                        if(!String.valueOf(fieldPassword.getPassword()).matches(pattern))
+                        {
+                            JOptionPane.showMessageDialog(new JFrame(), "A password must contain the following:\n" +
+                                    " -  a digit must occur at least once\n" +
+                                    " -  a lower case letter must occur at least once\n" +
+                                    " -  an upper case letter must occur at least once\n" +
+                                    " -  no whitespace allowed\n" +
+                                    " -  at least 8 characters long\n", "Invalid password", JOptionPane.ERROR_MESSAGE);
+                            fieldPassword.setText("");
+                            isPasswordValid = false;
+
+                        }else {
+                            isPasswordValid = true;
+                            String newEncryptedPass = managerBL.getEncryptedPass(String.valueOf(fieldPassword.getPassword()));
+                        }
                     }
 
-                    // TODO: 03/09/2018 update  employee
+                    if(isPasswordValid) {
+                        // TODO: 03/09/2018 update  employee
 //                    managerBL.addEmployee(fieldFullName.getText(), encryptedPass ,Integer.parseInt(fieldEmpID.getText()), fieldPhoneNumber.getText(),
 //                            Integer.parseInt(fieldAccountNum.getText()), emp.getBranchNumber(), cmbEmpType.getSelectedItem().toString());
 
+                        JOptionPane.showMessageDialog(new JFrame(), "Employee " + fieldFullName.getText() + " was updated successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
 
-                    JOptionPane.showMessageDialog(new JFrame(), "Employee " + fieldFullName.getText() + " was updated successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
-
-                    controller.getEmployeesPage().setVisible(false);
-                    controller.showEmployeesPage();
-                    setVisible(false);
+                        controller.getEmployeesPage().setVisible(false);
+                        controller.showEmployeesPage();
+                        setVisible(false);
+                    }
 
                 } else {
                     JOptionPane.showMessageDialog(new JFrame(), "Employee " + fieldEmpID.getText() + " already in the Employees list!", "Already exists!", JOptionPane.ERROR_MESSAGE);

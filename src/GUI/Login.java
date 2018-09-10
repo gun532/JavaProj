@@ -166,6 +166,10 @@ public class Login extends JPanel {
                     SwingUtilities.invokeAndWait(() -> {
                         try {
                             controller.showMainMenuPage();
+
+                            //clear ID fieldPassword
+                            fieldID.selectAll();
+                            fieldID.setText(null);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -187,10 +191,6 @@ public class Login extends JPanel {
             //clear password fieldPassword
             fieldPassword.selectAll();
             fieldPassword.setText(null);
-
-            //clear ID fieldPassword
-            fieldID.selectAll();
-            fieldID.setText(null);
         }
     }
 

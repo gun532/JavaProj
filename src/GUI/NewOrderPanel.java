@@ -161,12 +161,7 @@ public class NewOrderPanel extends CJPanel {
         theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnChooseClient, 0, SpringLayout.HORIZONTAL_CENTER, subPanel2);
         theLayout.putConstraint(SpringLayout.VERTICAL_CENTER, btnChooseClient, 0, SpringLayout.VERTICAL_CENTER, subPanel2);
 
-        btnChooseClient.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.showClientPage();
-            }
-        });
+        btnChooseClient.addActionListener(e -> controller.showClientPage());
         add(btnChooseClient);
 
         //Choose a client label and field

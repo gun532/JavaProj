@@ -14,10 +14,11 @@ public class BranchPage extends JPanel {
     private Controller controller;
     private Employee emp = AuthService.getInstance().getCurrentEmployee();
 
-    // TODO: 08/09/2018 get branch details from DB thru current employee.
+    // TODO: 08/09/2018 get branch details from DB through current employee.
     //private Branch branch = AuthService.getBranch;
 
     private SpringLayout theLayout = new SpringLayout();
+
     private int fontSize = 40;
     private Font font = new Font("Candara", 0, fontSize); //Custom page font
 
@@ -143,8 +144,8 @@ public class BranchPage extends JPanel {
         });
 
         btnReports.addActionListener(e -> {
-            // TODO: 08/09/2018 reports page
-            JOptionPane.showMessageDialog(new JFrame(),"need to create reports page");
+            setVisible(false);
+            controller.showReportsPage();
         });
 
         if(emp.getJobPos() != Profession.MANAGER)
