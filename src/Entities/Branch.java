@@ -5,15 +5,14 @@ public class Branch {
     private String location;
     private int numberOfEmployees;
     private String phone;
-    private Inventory branchInventory;
-    //private Map<Integer,Employee> employeeMap;
+    //private Inventory branchInventory;
 
     public Branch(){
         this.branchNumber = 0;
         this.location = null;
         this.numberOfEmployees = 0;
         this.phone = null;
-        this.branchInventory = new Inventory();
+        //this.branchInventory = new Inventory();
     }
 
     public Branch(String location, int numberOfEmployees, String phone, int branchNumber){
@@ -21,7 +20,7 @@ public class Branch {
         this.location = location;
         this.numberOfEmployees = numberOfEmployees;
         this.phone = phone;
-        this.branchInventory = new Inventory();
+        //this.branchInventory = new Inventory();
     }
 
     public int getBranchNumber() {
@@ -40,7 +39,7 @@ public class Branch {
         return phone;
     }
 
-    public Inventory getBranchInventory() { return branchInventory; }
+    //public Inventory getBranchInventory() { return branchInventory; }
 
     public void setLocation(String location) {
         this.location = location;
@@ -57,6 +56,6 @@ public class Branch {
     @Override
     public String toString() {
         return "\nBranch Details:" + "\nBranch Number: " + this.branchNumber + "\nLocation: " + this.location
-                + "\nPhone Number: " + this.phone + this.branchInventory.toString();
+                + "\nPhone Number: " + this.phone; //+ this.branchInventory.toString();
     }
 }
