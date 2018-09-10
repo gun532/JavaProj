@@ -14,8 +14,8 @@ import java.util.Date;
 public class Controller {
     private JFrame appFrame;
     //Take user screen size
-    private int screenSizeWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().width;
-    private int screenSizeHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().height;
+    private int screenSizeWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+    private int screenSizeHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
 
     private ImageIcon icon;
     private Image innerPageImage;
@@ -25,17 +25,17 @@ public class Controller {
     private ClientPage clientPage;
     private InventoryPage inventoryPage;
     private EmployeesPage employeesPage;
-    private BranchPage branchPage;
-    private Login login;
 
-    final String host = "127.0.0.1";
-    final int port = 8081;
+
+
 
     // Controller constructor holds all the app pages (panels)
-    public Controller() throws Exception { }
+    public Controller() { }
 
     public void loadApp() throws IOException {
 
+        final String host = "127.0.0.1";
+        final int port = 8081;
         new ClientSocket(host,port);
         appFrame = new JFrame();
 
@@ -45,6 +45,7 @@ public class Controller {
 
     public void showLoginPage() throws IOException {
 
+        Login login;
         appFrame.setSize((int)(screenSizeWidth* 0.45),(int)(screenSizeHeight* 0.4));
         appFrame.setLocationRelativeTo(null);
 
@@ -127,6 +128,7 @@ public class Controller {
     }
 
     public void showBranchPage() {
+        BranchPage branchPage;
         try{
             branchPage = new BranchPage(this);
             appFrame.setTitle("Branch Details");

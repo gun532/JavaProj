@@ -5,6 +5,7 @@ import DAL.EmployeeDataAccess;
 import DAL.InventoryDataAccess;
 import DAL.ManagerDataAccess;
 import DTO.*;
+import Entities.Branch;
 import Entities.Clients.Client;
 import Entities.Employee.Employee;
 import Entities.Inventory;
@@ -42,7 +43,6 @@ public class ServerTest {
         }
 
         public void run() {
-            String line;
             try {
                 Inventory inventory;
                 in = new DataInputStream(socket.getInputStream());
@@ -60,6 +60,9 @@ public class ServerTest {
                     DtoBase dtoBase = gson.fromJson(request, DtoBase.class);
                     ClientDto clientDto;
                     Client client;
+                    JSONArray jsArray;
+                    EmployeeDto employeeDto;
+                    BranchDto branchDto;
 
                     switch (dtoBase.getFunc()) {
                         case "login":
@@ -93,45 +96,83 @@ public class ServerTest {
                             break;
 
                         case "selectAllClients":
-                            ClientsArrayDto clientsArrayDto = gson.fromJson(request, ClientsArrayDto.class);
+                            //ClientsArrayDto clientsArrayDto = gson.fromJson(request, ClientsArrayDto.class);
                             //ArrayList<Client> clientArrayList = cashierBL.selectAllClients();
                             //clientsArrayDto.setAllClients(cashierBL.selectAllClients());
                             String clients = gson.toJson(cashierBL.selectAllClients());
                             //JSONArray jsArray = new JSONArray(clientsArrayDto.getAllClients());
                             //JSONObject jsonObject = new JSONObject(clientsArrayDto.getAllClients());
                             //JSONObject object = new JSONObject(clients);
-                            JSONArray jsArray = new JSONArray(clients);
+                            jsArray = new JSONArray(clients);
                             //  out.println(object);
                             out.println(jsArray);
                             break;
                         case "removeClient":
                             clientDto = gson.fromJson(request, ClientDto.class);
-                            boolean isDeleted = managerBL.deleteClient(clientDto.getId());
-                            out.println(gson.toJson(isDeleted));
+                            boolean isClientDeleted = managerBL.deleteClient(clientDto.getId());
+                            out.println(gson.toJson(isClientDeleted));
                             break;
 
                         case "addNewClient":
                             clientDto = gson.fromJson(request, ClientDto.class);
-                            boolean isAdded = cashierBL.addNewClient(clientDto.getId(), clientDto.getFullName(),
+                            boolean isClientAdded = cashierBL.addNewClient(clientDto.getId(), clientDto.getFullName(),
                                     clientDto.getPhoneNumber(), clientDto.getType().toString());
-                            out.println(gson.toJson(isAdded));
+                            out.println(gson.toJson(isClientAdded));
                             break;
                         case "updateClient":
                             clientDto = gson.fromJson(request, ClientDto.class);
-                            boolean isUpdated = managerBL.updateClient(clientDto.getId(),
+                            boolean isClientUpdated = managerBL.updateClient(clientDto.getId(),
                                     clientDto.getFullName(),clientDto.getPhoneNumber(),clientDto.getType().toString(),
                                     clientDto.getClientCode());
-                            out.println(gson.toJson(isUpdated));
+                            out.println(gson.toJson(isClientUpdated));
+                            break;
+                        case "selectAllEmployess":
+                            //EmployeeArrayDto employeeArrayDto = gson.fromJson(request, EmployeeArrayDto.class);
+                            String employees = gson.toJson(managerBL.selectAllEmployees());
+                            jsArray = new JSONArray(employees);
+                            out.println(jsArray);
+                            break;
+                        case "addNewEmployee":
+                            employeeDto = gson.fromJson(request,EmployeeDto.class);
+                            boolean isEmployeeAdded = managerBL.addEmployee(employeeDto.getName(),employeeDto.getPass(),employeeDto.getId(),
+                                    employeeDto.getPhone(),employeeDto.getAccountNum(),
+                                    employeeDto.getBranchNumber(),employeeDto.getJobPos().toString());
+                            boolean isIncreasedInBranch = managerBL.increaseEmployeeInBranch(employeeDto.getBranchNumber());
+                            out.println(gson.toJson(isEmployeeAdded && isIncreasedInBranch));
+                            break;
+                        case "removeEmployee":
+                            employeeDto = gson.fromJson(request,EmployeeDto.class);
+                            boolean isEmployeeDeleted = managerBL.deleteEmployee(employeeDto.getEmployeeNumber());
+                            boolean isDecreasedInBranch = managerBL.decreaseEmployeeInBranch(employeeDto.getBranchNumber());
+
+                            out.println(gson.toJson(isEmployeeDeleted && isDecreasedInBranch));
+                            break;
+                        case "updateEmployee":
+                            employeeDto = gson.fromJson(request, EmployeeDto.class);
+                            boolean isEmployeeUpdated = managerBL.updateEmployee(employeeDto.getName(),employeeDto.getId(),
+                                    employeeDto.getPhone(),employeeDto.getAccountNum(),employeeDto.getBranchNumber(),
+                                    employeeDto.getJobPos().toString(),employeeDto.getPass(),employeeDto.getEmployeeNumber());
+                            out.println(gson.toJson(isEmployeeUpdated));
+                            break;
+                        case "selectBranchDetails":
+                            branchDto = gson.fromJson(request, BranchDto.class);
+                            Branch branchInUse = managerBL.selectBranchDetails(branchDto.getBranchNumber());
+                            String branchJson = gson.toJson(branchInUse);
+                            out.println(branchJson);
+                            break;
+                        case "updateBranchPhoneNumber":
+                            branchDto = gson.fromJson(request, BranchDto.class);
+                            boolean isPhoneUpdated = managerBL.updateBranchPhoneNumber(branchDto.getPhone(),
+                                    branchDto.getBranchNumber());
+                            out.println(gson.toJson(isPhoneUpdated));
                             break;
                     }
 
 
-                    //cashierBL.createNewOrder(inventory, chosenClient, shoppingCart, Double.parseDouble(fieldInTotal.getText()));
-
                 }
 
             } catch (Exception ex) {
-                System.out.println("Unable to get streams from client");
+                ex.printStackTrace();
 //            } catch (JSONException e) {
 //                e.printStackTrace();
             } finally {
@@ -170,6 +211,13 @@ public class ServerTest {
                     // } object for each connection
                     //*this will allow multiple client connections
                     new SocketServer(server.accept());
+                    Thread thread = new Thread()
+                    {
+                        @Override
+                        public void run() {
+                            run();
+                        }
+                    };
                 }
             } catch (IOException ex) {
                 System.out.println("Unable to start server." + ex.getMessage());

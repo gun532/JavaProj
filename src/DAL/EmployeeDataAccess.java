@@ -59,7 +59,7 @@ public class EmployeeDataAccess {
 //                e1.setJobPos(Profession.valueOf(rs.getString("profession")));
             }
 
-            myConn.close();
+//            myConn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -105,7 +105,7 @@ public class EmployeeDataAccess {
 //                e.setJobPos(Profession.valueOf(rs.getString("profession")));
             }
 
-            myConn.close();
+//            myConn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {

@@ -1,6 +1,7 @@
 package BL;
 
 import DAL.ManagerDataAccess;
+import Entities.Branch;
 import Entities.Clients.Client;
 import Entities.Employee.Employee;
 import org.json.JSONArray;
@@ -36,8 +37,19 @@ public class ManagerBL {
         this.loginUtility = new LoginUtility();
     }
 
-    public void addEmployee(String name, String pass, int id, String phone, int accountNum, int branchNumber, String profession) {
-        managerDataAccess.addEmployee(name, pass, id, phone, accountNum, branchNumber, profession);
+    public boolean addEmployee(String name, String pass, int id, String phone, int accountNum, int branchNumber, String profession) {
+        return managerDataAccess.addEmployee(name, pass, id, phone, accountNum, branchNumber, profession);
+    }
+
+    public boolean deleteEmployee(int employeeNumber)
+    {
+        return managerDataAccess.deleteEmployee(employeeNumber);
+    }
+
+    public boolean updateEmployee(String name, int id, String phone, int accountNumber,
+                                  int branch, String profession, String pass, int employeeCode)
+    {
+        return managerDataAccess.updateEmployee(name,id,phone,accountNumber,branch,profession,pass,employeeCode);
     }
 
     public CashierBL getCashierBL() {
@@ -60,6 +72,26 @@ public class ManagerBL {
     public boolean updateClient(int clientID, String name, String phone, String type, int clientCode)
     {
         return managerDataAccess.updateClient(clientID,name,phone,type,clientCode);
+    }
+
+    public boolean increaseEmployeeInBranch(int branchNumber)
+    {
+        return managerDataAccess.increaseEmployeeInBranch(branchNumber);
+    }
+
+    public boolean decreaseEmployeeInBranch(int branchNumber)
+    {
+        return managerDataAccess.decreaseEmployeeInBranch(branchNumber);
+    }
+
+    public Branch selectBranchDetails(int branchNumber)
+    {
+        return managerDataAccess.selectBranchDetails(branchNumber);
+    }
+
+    public Boolean updateBranchPhoneNumber(String phone, int branchNumber)
+    {
+        return managerDataAccess.updateBranchPhoneNumber(phone, branchNumber);
     }
 
     public JSONArray createReportTotalPurchasesInBranch(int branchNumber) {

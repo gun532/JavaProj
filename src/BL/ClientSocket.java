@@ -1,5 +1,6 @@
 package BL;
 
+import Entities.Employee.Employee;
 import GUI.Controller;
 
 import java.io.BufferedReader;
@@ -59,4 +60,20 @@ public class ClientSocket {
             e.printStackTrace();
         }
     }
+
+//    private boolean checkIfConnected(Employee loggedInEmployee) throws Exception {
+//        if (connectedUsers.contains(loggedInEmployee)) {
+//            echoSocket.close();
+//            throw new Exception("user already logged in");
+//
+//        } else {
+//            if (loggedInEmployee != null) connectedUsers.add(loggedInEmployee);
+//            return false;
+//        }
+//    }
+
+//    public ArrayList<Socket> getConnectedUsers() {
+//        return connectedUsers;
+//    }
+
 }

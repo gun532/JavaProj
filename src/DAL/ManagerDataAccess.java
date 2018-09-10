@@ -1,5 +1,6 @@
 package DAL;
 
+import Entities.Branch;
 import Entities.Clients.Client;
 import Entities.Employee.*;
 
@@ -23,7 +24,7 @@ public class ManagerDataAccess {
         }
     }
 
-    public void addEmployee(String name, String pass, int id, String phone, int accountNum, int branchNumber, String profession) {
+    public boolean addEmployee(String name, String pass, int id, String phone, int accountNum, int branchNumber, String profession) {
         try {
 
             //change it later to something more secure
@@ -44,7 +45,7 @@ public class ManagerDataAccess {
             statement.setString(7, profession);
 
             statement.executeUpdate();
-
+            return true;
 //            myConn.close();
 
         } catch (SQLException e) {
@@ -52,6 +53,7 @@ public class ManagerDataAccess {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public boolean deleteClient(int clientID) {
@@ -71,39 +73,46 @@ public class ManagerDataAccess {
         return false;
     }
 
-    public void deleteEmployee(int empNum) {
+    public boolean deleteEmployee(int empNum) {
         try {
             Class.forName(myDriver);
-            String sql = "DELETE from employee where empNum = ?";
+            String sql = "DELETE from employee where employeeCode = ?";
             PreparedStatement statement = myConn.prepareStatement(sql);
             statement.setInt(1, empNum);
             statement.execute();
+            return true;
 //            myConn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
-    public void updateEmployee(Employee employee) {
+    public boolean updateEmployee(String name, int id, String phone, int accountNumber,
+                                  int branch, String profession, String pass, int employeeCode) {
         try {
             Class.forName(myDriver);
-            String sql = "UPDATE employee set name = ?, phone = ?, accountNum = ?, BranchNum = ?, profession = ? where employeeCode = ?";
+            String sql = "UPDATE employee set fullName = ?, ID = ?, phoneNum = ?, accountNumber = ?, branch = ?, profession = ?, password = ? where employeeCode = ?";
             PreparedStatement statement = myConn.prepareStatement(sql);
-            statement.setString(1, employee.getName());
-            statement.setString(2, employee.getPhone());
-            statement.setInt(3, employee.getAccountNum());
-            statement.setInt(4, employee.getBranchNumber());
-            statement.setString(5, employee.getJobPos().name());
-            statement.setInt(6, employee.getEmployeeNumber());
+            statement.setString(1, name);
+            statement.setInt(2, id);
+            statement.setString(3, phone);
+            statement.setInt(4, accountNumber);
+            statement.setInt(5, branch);
+            statement.setString(6, profession);
+            statement.setString(7, pass);
+            statement.setInt(8, employeeCode);
             statement.executeUpdate();
+            return true;
 //            myConn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public ArrayList<Employee> selectAllEmployees() {
@@ -172,7 +181,6 @@ public class ManagerDataAccess {
         }
         return 0;
     }
-
 
 
     private void createViewForTotalPurchasesForBranch(int branchNumber) {
@@ -247,6 +255,114 @@ public class ManagerDataAccess {
         }
 
         return false;
+    }
+
+    private int selectNumOfEmployeesInBranch(int branch) {
+        int numOfEmployees = 0;
+        try {
+            Class.forName(myDriver);
+            String sql = "SELECT numOfEmployees from branch where branchNumber = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, branch);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                numOfEmployees = rs.getInt("numOfEmployees");
+            }
+            return numOfEmployees;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return numOfEmployees;
+    }
+
+    public boolean increaseEmployeeInBranch(int branchNumber) {
+        try {
+            Class.forName(myDriver);
+            int numOfEmployees = selectNumOfEmployeesInBranch(branchNumber) + 1;
+            String sql = "UPDATE branch set numOfEmployees = ? where branchNumber = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, numOfEmployees);
+            statement.setInt(2, branchNumber);
+            statement.executeUpdate();
+            return true;
+//            myConn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean decreaseEmployeeInBranch(int branchNumber) {
+        try {
+            Class.forName(myDriver);
+            int numOfEmployees = selectNumOfEmployeesInBranch(branchNumber) - 1;
+            String sql = "UPDATE branch set numOfEmployees = ? where branchNumber = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, numOfEmployees);
+            statement.setInt(2, branchNumber);
+            statement.executeUpdate();
+            return true;
+//            myConn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public Branch selectBranchDetails(int branchNumber) {
+        try {
+            Class.forName(myDriver);
+            String sql = "SELECT * from branch where branchNumber = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, branchNumber);
+            ResultSet rs = statement.executeQuery();
+            Branch branch;
+            while (rs.next()) {
+                branch = new Branch(rs.getString("location"), rs.getInt("numOfEmployees"),
+                        rs.getString("phone"), rs.getInt("branchNumber"));
+                return branch;
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean updateBranchPhoneNumber(String phone, int branchNumber) {
+        try {
+            Class.forName(myDriver);
+            String sql = "UPDATE branch set phone = ? where branchNumber = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setString(1, phone);
+            statement.setInt(2, branchNumber);
+            statement.executeUpdate();
+            return true;
+//            myConn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public void closeConnection() {
+        try {
+            myConn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
 
