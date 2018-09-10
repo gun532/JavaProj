@@ -211,13 +211,6 @@ public class ServerTest {
                     // } object for each connection
                     //*this will allow multiple client connections
                     new SocketServer(server.accept());
-                    Thread thread = new Thread()
-                    {
-                        @Override
-                        public void run() {
-                            run();
-                        }
-                    };
                 }
             } catch (IOException ex) {
                 System.out.println("Unable to start server." + ex.getMessage());
