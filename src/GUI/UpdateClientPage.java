@@ -1,16 +1,22 @@
 package GUI;
 
+import BL.ClientSocket;
 import BL.ManagerBL;
 import DAL.ManagerDataAccess;
+import DTO.ClientDto;
 import Entities.Clients.Client;
 import Entities.Clients.ClientType;
 import Entities.Employee.Employee;
 import Entities.Employee.Profession;
+import com.google.gson.Gson;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 public class UpdateClientPage extends JFrame {
@@ -150,17 +156,9 @@ public class UpdateClientPage extends JFrame {
         btnUpdate.addActionListener(e -> {
             if (!fieldClientID.getText().isEmpty() && !fieldFullName.getText().isEmpty() && !fieldPhoneNumber.getText().isEmpty()) {
                 if (!isAlreadyExists()) {
+                    updateClient();
 
-                    // TODO: 03/09/2018 update client
-//                    managerBL.addEmployee(fieldFullName.getText(), encryptedPass ,Integer.parseInt(fieldClientID.getText()), fieldPhoneNumber.getText(),
-//                            Integer.parseInt(fieldAccountNum.getText()), emp.getBranchNumber(), cmbEmpType.getSelectedItem().toString());
 
-                    JOptionPane.showMessageDialog(new JFrame(), "Client " + fieldFullName.getText() + " was updated successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
-
-                    controller.getClientPage().setVisible(false);
-                    controller.showClientPage();
-
-                    setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(new JFrame(), "Client " + fieldClientID.getText() + " already in the Clients list!", "Already exists!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -171,6 +169,37 @@ public class UpdateClientPage extends JFrame {
         });
 
         btnCancel.addActionListener(e -> setVisible(false));
+    }
+
+    private void updateClient() {
+        try
+        {
+            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            Gson gson = new Gson();
+            ClientDto clientDto = new ClientDto("updateClient",Integer.parseInt(fieldClientID.getText()),
+                    fieldFullName.getText(),fieldPhoneNumber.getText(),
+                    ClientType.valueOf(cmbClientType.getSelectedItem().toString()),chosenClient.getClientCode());
+            out.println(gson.toJson(clientDto));
+
+            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            String response = in.readLine();
+
+            if(response.equals("true"))
+            {
+
+                JOptionPane.showMessageDialog(new JFrame(), "Client " + fieldFullName.getText() + " was updated successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+
+                controller.getClientPage().setVisible(false);
+                controller.showClientPage();
+
+                setVisible(false);
+            }
+            else {
+                JOptionPane.showMessageDialog(new JFrame(), "Client " + fieldClientID.getText() + " already in the Clients list!", "Already exists!", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
     }
 
     /*---/Page functions methods/-------------------------------------------------------------------------*/

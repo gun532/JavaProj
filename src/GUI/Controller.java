@@ -1,5 +1,7 @@
 package GUI;
 
+import BL.ClientSocket;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -26,14 +28,18 @@ public class Controller {
     private BranchPage branchPage;
     private Login login;
 
+    final String host = "127.0.0.1";
+    final int port = 8081;
+
     // Controller constructor holds all the app pages (panels)
     public Controller() throws Exception { }
 
     public void loadApp() throws IOException {
 
+        new ClientSocket(host,port);
         appFrame = new JFrame();
-        buildAppFrame();
 
+        buildAppFrame();
         showLoginPage();
     }
 

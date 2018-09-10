@@ -50,15 +50,10 @@ public class ClientsDataAccess {
                         clientArrayList.add(c);
                         break;
                 }
-//                c.setClientCode(rs.getInt("clientNumber"));
-//                c.setId(rs.getInt("clientID"));
-//                c.setFullName(rs.getString("fullName"));
-//                c.setPhoneNumber(rs.getString("phone"));
-//                c.setType(ClientType.valueOf(rs.getString("ClientType")));
-//                c.setDiscountRate(rs.getInt("discountRate"));
+
             }
 
-            myConn.close();
+//            myConn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -67,7 +62,8 @@ public class ClientsDataAccess {
         return clientArrayList;
     }
 
-    public void addNewClient(int ID, String fullName, String phoneNum, String clientType) {
+
+    public boolean addNewClient(int ID, String fullName, String phoneNum, String clientType) {
         try {
 
             //change it later to something more secure
@@ -86,14 +82,14 @@ public class ClientsDataAccess {
             statement.setInt(5, 0);
 
             statement.executeUpdate();
-
-            myConn.close();
+            return  true;
 
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
 
@@ -105,9 +101,9 @@ public class ClientsDataAccess {
             insertCartDetails(shoppingCart, total);
             insertToShoppingHistory(clientNum, shoppingCart.getCartID());
 
-            myConn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+//            myConn.close();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -167,7 +163,7 @@ public class ClientsDataAccess {
             //ResultSetMetaData metaData = rs.getMetaData();
             //int cols = metaData.getColumnCount();
             java.sql.Date sqlDate = new java.sql.Date(shoppingCart.getCartDate().getTime());
-            String sql = "INSERT INTO cart_details (cartID, total, branch_Number, employeeNum, date) values (?,?,?,?, ?)";
+            String sql = "INSERT INTO cart_details (cartID, total, branch_Number, employeeNum, date) values (?,?,?,?,?)";
             PreparedStatement statement = myConn.prepareStatement(sql);
 
             statement.setInt(1, shoppingCart.getCartID());
@@ -215,7 +211,7 @@ public class ClientsDataAccess {
 //                c.setDiscountRate(rs.getInt("discountRate"));
             }
 
-            myConn.close();
+//            myConn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {

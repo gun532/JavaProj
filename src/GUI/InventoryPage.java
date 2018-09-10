@@ -306,6 +306,8 @@ public class InventoryPage extends CJPanel {
 
     public Product getChosenProduct() { return chosenProduct; }
 
+
+
     @Override
     protected void paintComponent(Graphics g) { g.drawImage(controller.getInnerPageImage(),0,0,null); }
 }

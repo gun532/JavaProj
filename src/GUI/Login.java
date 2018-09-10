@@ -1,17 +1,32 @@
 package GUI;
 
 import BL.AuthService;
+import BL.ClientSocket;
+import BL.ServerTest;
+import DTO.LoginDetailsDto;
+import Entities.Employee.Cashier;
+import Entities.Employee.Employee;
+import Entities.Employee.Manager;
+import Entities.Employee.Seller;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import com.google.gson.Gson;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
 
 public class Login extends JPanel {
     private Controller controller;
@@ -111,26 +126,51 @@ public class Login extends JPanel {
     private void login() {
 
         try {
+            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
             int employeeInputId = Integer.parseInt(fieldID.getText());
             String passwordInput = String.valueOf(fieldPassword.getPassword());
-            fieldID.selectAll();
-            boolean isLoggedIn = AuthService.getInstance().login(employeeInputId, passwordInput);
+            Gson gson = new Gson();
+            LoginDetailsDto loginDetails = new LoginDetailsDto("login", employeeInputId, passwordInput);
+            out.println(gson.toJson(loginDetails));
 
-            if (isLoggedIn) {
-                SwingUtilities.invokeAndWait(() -> {
-                    try {
-                        controller.showMainMenuPage();
+            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            String response = in.readLine();
 
-                        //clear ID field
-                        fieldID.selectAll();
-                        fieldID.setText(null);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-            } else {
+            if (response.equals("null"))
+            {
                 JOptionPane.showMessageDialog(new JFrame(), "Unsuccessful login, please try again.", "Invalid input", JOptionPane.ERROR_MESSAGE);
+            }
+            else
+            {
+                String profession = new JSONObject(response).getString("jobPos");
+                Employee employee = null;
+                switch (profession)
+                {
+                    case "SELLER":
+                        employee = gson.fromJson(response, Seller.class);
+                        break;
+                    case "CASHIER":
+                        employee = gson.fromJson(response, Cashier.class);
+                        break;
+                    case "MANAGER":
+                        employee = gson.fromJson(response, Manager.class);
+                        break;
+                }
+                ArrayList<Employee> connectedUsers = ServerTest.getConnectedUsers();
+                if(connectedUsers.contains(employee))
+                {
+                    JOptionPane.showMessageDialog(new JFrame(), "Cannot log in Twice", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                else {
+                    AuthService.getInstance().setCurrentEmployee(employee);
+                    SwingUtilities.invokeAndWait(() -> {
+                        try {
+                            controller.showMainMenuPage();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
             }
 
         } catch (NumberFormatException e) {
@@ -139,13 +179,23 @@ public class Login extends JPanel {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         } finally {
-
             //clear password fieldPassword
             fieldPassword.selectAll();
             fieldPassword.setText(null);
+
+            //clear ID fieldPassword
+            fieldID.selectAll();
+            fieldID.setText(null);
         }
     }
+
+
+
     @Override
     protected void paintComponent(Graphics g) {
         g.drawImage(image,0,0,null);

@@ -2,22 +2,30 @@ package GUI;
 
 import BL.AuthService;
 import BL.CashierBL;
+import BL.ClientSocket;
 import DAL.ClientsDataAccess;
 import DAL.EmployeeDataAccess;
+import DTO.InventoryDto;
+import DTO.LoginDetailsDto;
+import DTO.OrderDto;
 import Entities.Clients.Client;
 import Entities.Clients.ClientType;
 import Entities.Deal;
+import Entities.Employee.Seller;
 import Entities.Inventory;
 import Entities.Product;
 import Entities.Employee.Employee;
 import DAL.InventoryDataAccess;
 import Entities.ShoppingCart;
+import com.google.gson.Gson;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -51,19 +59,19 @@ public class NewOrderPanel extends CJPanel {
     private JTextField fieldDiscount;
 
     private Employee emp = AuthService.getInstance().getCurrentEmployee();
-    private CashierBL cashierBL = new CashierBL(new EmployeeDataAccess(), new InventoryDataAccess(), new ClientsDataAccess());
-    private Inventory inventory = cashierBL.selectFromInventory(emp.getBranchNumber());
+    private Inventory inventory = new Inventory();
     private ShoppingCart shoppingCart = new ShoppingCart(emp);
 
     private Client chosenClient;
     private ClientPage clientPage;
-    private Map<ClientType,Deal> clientsDeals = getClientsDeals();
+    private Map<ClientType, Deal> clientsDeals = getClientsDeals();
     private double discountRate;
 
 
     public NewOrderPanel(Controller in_controller) throws Exception {
 
         this.controller = in_controller;
+
 
         //Create the layout and populate the main panel.
         setLayout(theLayout);
@@ -75,7 +83,6 @@ public class NewOrderPanel extends CJPanel {
         labelProduct = new JLabel("Product Code: ", JLabel.TRAILING);
         labelProduct.setFont(font);
         subPanel1.add(labelProduct);
-
         productCodeField = new JTextField(10);
         productCodeField.setFont(new Font("Arial", Font.BOLD, 20));
         productCodeField.setHorizontalAlignment(JTextField.CENTER);
@@ -195,20 +202,13 @@ public class NewOrderPanel extends CJPanel {
         btnFinish.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(chosenClient == null)
-                {
+                if (chosenClient == null) {
                     JOptionPane.showMessageDialog(new JFrame(), "Please choose a client", "Invalid input", JOptionPane.ERROR_MESSAGE);
                 } else {
 
-                    cashierBL.createNewOrder(inventory, chosenClient, shoppingCart, Double.parseDouble(fieldInTotal.getText()));
-                    setVisible(false);
-                    try {
-                        controller.showMainMenuPage();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
+                    createNewOrder();
                 }
-                }
+            }
         });
 
         btnCancel = new CJButton("Cancel", new Font("Candara", 0, 40));
@@ -233,12 +233,12 @@ public class NewOrderPanel extends CJPanel {
         buildTable();
 
         //build table bottom field panel
-        CJPanel subPanelTable = new CJPanel(new SpringLayout(),getFrameSizeWidth()*0.6,getFrameSizeHeight()*0.06);
+        CJPanel subPanelTable = new CJPanel(new SpringLayout(), getFrameSizeWidth() * 0.6, getFrameSizeHeight() * 0.06);
         subPanelTable.setBackground(Color.YELLOW);
 
-        theLayout.putConstraint(SpringLayout.NORTH,subPanelTable,0,SpringLayout.SOUTH,subPanel4);
-        theLayout.putConstraint(SpringLayout.EAST,subPanelTable,0,SpringLayout.EAST,this);
-        theLayout.putConstraint(SpringLayout.SOUTH,subPanelTable,0,SpringLayout.NORTH,subPanel3);
+        theLayout.putConstraint(SpringLayout.NORTH, subPanelTable, 0, SpringLayout.SOUTH, subPanel4);
+        theLayout.putConstraint(SpringLayout.EAST, subPanelTable, 0, SpringLayout.EAST, this);
+        theLayout.putConstraint(SpringLayout.SOUTH, subPanelTable, 0, SpringLayout.NORTH, subPanel3);
 
         JButton labelDiscount = new JButton("Discount Rate:");
         labelDiscount.setEnabled(false);
@@ -261,7 +261,7 @@ public class NewOrderPanel extends CJPanel {
         subPanelTable.add(fieldInTotal);
 
 
-        SpringUtilities.makeCompactGrid(subPanelTable,1,4,6,0,0,0);
+        SpringUtilities.makeCompactGrid(subPanelTable, 1, 4, 6, 0, 0, 0);
 
         add(subPanelTable);
 
@@ -272,9 +272,73 @@ public class NewOrderPanel extends CJPanel {
             fieldChosenClient.setText(chosenClient.getFullName());
             updateShoppingCartDeal();
         }
+
+        createInventory();
+
     }
 
+    private void createNewOrder() {
+        Thread thread = new Thread(() -> {
+
+            try {
+                PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+                Gson gson = new Gson();
+
+                OrderDto orderDto = new OrderDto("createNewOrder", inventory, chosenClient.getId(), shoppingCart, Double.parseDouble(fieldInTotal.getText()));
+
+                out.println(gson.toJson(orderDto));
+
+                DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+                String response = in.readLine();
+
+                if (response.equals("false")) {
+                    JOptionPane.showMessageDialog(new JFrame(), "can't create order", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    setVisible(false);
+                    try {
+                        controller.showMainMenuPage();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+
+        });
+        thread.start();
+    }
+
+
     //Class functions
+    private void createInventory() {
+        Thread thread = new Thread(() -> {
+
+            try {
+                PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+                Gson gson = new Gson();
+
+                InventoryDto inventoryDto = new InventoryDto("inverntoryByBranch", inventory.getMyInventory(),
+                        emp.getBranchNumber(), inventory.getTotalProducts(), inventory.getTotalItems(), inventory.getTotalValue());
+                out.println(gson.toJson(inventoryDto));
+
+                DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+                String response = in.readLine();
+
+                if (response.equals("null")) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Inventory does no exist", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    inventory = gson.fromJson(response, Inventory.class);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        });
+        thread.start();
+    }
 
     private void removeFromCart(int productCode, int amount) {
         try {
@@ -313,8 +377,8 @@ public class NewOrderPanel extends CJPanel {
             pTableModel.addToVectorM_Data(entry.getValue());
         });
 
-        if(discountRate != 0)
-        fieldInTotal.setText(String.format("%1$,.2f", shoppingCart.getTotalPrice()*discountRate));
+        if (discountRate != 0)
+            fieldInTotal.setText(String.format("%1$,.2f", shoppingCart.getTotalPrice() * discountRate));
         else
             fieldInTotal.setText(String.format("%1$,.2f", shoppingCart.getTotalPrice()));
 
@@ -351,12 +415,12 @@ public class NewOrderPanel extends CJPanel {
         add(subPanel4);
     }
 
-    public void updateShoppingCartDeal(){
+    public void updateShoppingCartDeal() {
         Deal currentDeal = this.clientsDeals.get(chosenClient.getType());
 
         // TODO: may need to add a discount method to ShoppingCart class for saving and displaying the correct order total price in DB.
-        fieldDiscount.setText(String.format("%,.0f%%",currentDeal.getDiscount()));
-        discountRate = (100-currentDeal.getDiscount())/100;
+        fieldDiscount.setText(String.format("%,.0f%%", currentDeal.getDiscount()));
+        discountRate = (100 - currentDeal.getDiscount()) / 100;
 
         // TODO: add free gits to inventory and then uncomment this section
 //        new SwingWorker() { //Open a new thread for add to cart.
@@ -372,28 +436,30 @@ public class NewOrderPanel extends CJPanel {
         updateTable();
     }
 
-    private Map<ClientType,Deal> getClientsDeals() {
+    private Map<ClientType, Deal> getClientsDeals() {
 
-        Map<ClientType,Deal> mapClientDeals = new LinkedHashMap<>();
+        Map<ClientType, Deal> mapClientDeals = new LinkedHashMap<>();
 
         //need to get Deals from a data source
 
         //---Example Data---------------------------------
         Deal deal1 = new Deal(0);
-        mapClientDeals.put(ClientType.NEWCLIENT,deal1);
+        mapClientDeals.put(ClientType.NEWCLIENT, deal1);
 
         Deal deal2 = new Deal(30);
         deal2.addGiftToDeal(1232323);
-        mapClientDeals.put(ClientType.RETURNCLIENT,deal2);
+        mapClientDeals.put(ClientType.RETURNCLIENT, deal2);
 
         Deal deal3 = new Deal(50);
         deal3.addGiftToDeal(2254323);
-        mapClientDeals.put(ClientType.VIPCLIENT,deal3);
+        mapClientDeals.put(ClientType.VIPCLIENT, deal3);
         //----------------------------------------------
 
         return mapClientDeals;
     }
 
     @Override
-    protected void paintComponent(Graphics g) { g.drawImage(controller.getInnerPageImage(),0,0,null); }
+    protected void paintComponent(Graphics g) {
+        g.drawImage(controller.getInnerPageImage(), 0, 0, null);
+    }
 }
