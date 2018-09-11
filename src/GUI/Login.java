@@ -16,21 +16,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+
 import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-
 public class Login extends JPanel {
     private Controller controller;
-    private Font font = new Font("Candara",Font.BOLD,30);
+    private Font font = new Font("Candara", Font.BOLD, 30);
     private Image image;
 
     private JLabel labelEmployeeID = new JLabel("Employee ID:", JLabel.TRAILING);
@@ -39,7 +36,7 @@ public class Login extends JPanel {
     private JPasswordField fieldPassword = new JPasswordField(10);
     private JLabel labelPassword = new JLabel("Password:", JLabel.TRAILING);
 
-    private CJButton loginButton = new CJButton("Login",new Font("Candara",0,30));
+    private CJButton loginButton = new CJButton("Login", new Font("Candara", 0, 30));
 
     public Login(Controller in_controller) throws IOException {
 
@@ -56,11 +53,11 @@ public class Login extends JPanel {
         SpringLayout theLayout = new SpringLayout();
         setLayout(theLayout);
 
-        CJPanel subPanel = new CJPanel(new SpringLayout(),controller.getAppFrame().getWidth()*0.7, controller.getAppFrame().getHeight()*0.5);
+        CJPanel subPanel = new CJPanel(new SpringLayout(), controller.getAppFrame().getWidth() * 0.7, controller.getAppFrame().getHeight() * 0.5);
         subPanel.setOpaque(false);
 
-        theLayout.putConstraint(SpringLayout.NORTH,subPanel,0,SpringLayout.NORTH,this);
-        theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER,subPanel,0,SpringLayout.HORIZONTAL_CENTER,this);
+        theLayout.putConstraint(SpringLayout.NORTH, subPanel, 0, SpringLayout.NORTH, this);
+        theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, subPanel, 0, SpringLayout.HORIZONTAL_CENTER, this);
 
         labelEmployeeID.setFont(font);
         labelEmployeeID.setBackground(new Color(255, 230, 230));
@@ -82,12 +79,12 @@ public class Login extends JPanel {
         labelPassword.setLabelFor(fieldPassword);
         subPanel.add(fieldPassword);
 
-        SpringUtilities.makeCompactGrid(subPanel,2,2,10,40,10,30);
+        SpringUtilities.makeCompactGrid(subPanel, 2, 2, 10, 40, 10, 30);
         add(subPanel);
 
         add(loginButton);
-        theLayout.putConstraint(SpringLayout.SOUTH,loginButton,-50,SpringLayout.SOUTH,this);
-        theLayout.putConstraint(SpringLayout.EAST,loginButton,-40,SpringLayout.EAST,this);
+        theLayout.putConstraint(SpringLayout.SOUTH, loginButton, -50, SpringLayout.SOUTH, this);
+        theLayout.putConstraint(SpringLayout.EAST, loginButton, -40, SpringLayout.EAST, this);
 
         fieldID.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
@@ -101,8 +98,7 @@ public class Login extends JPanel {
             public void keyTyped(KeyEvent e) {
                 if (fieldPassword.getPassword().length >= 20) // limits password fieldPassword to 20 characters
                     e.consume();
-                if (e.getKeyChar() == KeyEvent.VK_ENTER && !fieldID.getText().isEmpty())
-                {
+                if (e.getKeyChar() == KeyEvent.VK_ENTER && !fieldID.getText().isEmpty()) {
                     new SwingWorker() { //Open a login input check in a new thread.
                         @Override
                         protected Object doInBackground() throws Exception {
@@ -126,7 +122,7 @@ public class Login extends JPanel {
     private void login() {
 
         try {
-            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream(), true);
             int employeeInputId = Integer.parseInt(fieldID.getText());
             String passwordInput = String.valueOf(fieldPassword.getPassword());
             Gson gson = new Gson();
@@ -136,32 +132,25 @@ public class Login extends JPanel {
             DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
             String response = in.readLine();
 
-            if (response.equals("null"))
-            {
+            if (response.equals("null")) {
                 JOptionPane.showMessageDialog(new JFrame(), "Unsuccessful login, please try again.", "Invalid input", JOptionPane.ERROR_MESSAGE);
-            }
-            else
-            {
-                String profession = new JSONObject(response).getString("jobPos");
-                Employee employee = null;
-                switch (profession)
-                {
-                    case "SELLER":
-                        employee = gson.fromJson(response, Seller.class);
-                        break;
-                    case "CASHIER":
-                        employee = gson.fromJson(response, Cashier.class);
-                        break;
-                    case "MANAGER":
-                        employee = gson.fromJson(response, Manager.class);
-                        break;
-                }
-                ArrayList<Employee> connectedUsers = ServerTest.getConnectedUsers();
-                if(connectedUsers.contains(employee))
-                {
-                    JOptionPane.showMessageDialog(new JFrame(), "Cannot log in Twice", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-                else {
+            } else {
+                if (response.equals("true")) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Cannot log in twice", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    String profession = new JSONObject(response).getString("jobPos");
+                    Employee employee = null;
+                    switch (profession) {
+                        case "SELLER":
+                            employee = gson.fromJson(response, Seller.class);
+                            break;
+                        case "CASHIER":
+                            employee = gson.fromJson(response, Cashier.class);
+                            break;
+                        case "MANAGER":
+                            employee = gson.fromJson(response, Manager.class);
+                            break;
+                    }
                     AuthService.getInstance().setCurrentEmployee(employee);
                     SwingUtilities.invokeAndWait(() -> {
                         try {
@@ -195,9 +184,8 @@ public class Login extends JPanel {
     }
 
 
-
     @Override
     protected void paintComponent(Graphics g) {
-        g.drawImage(image,0,0,null);
+        g.drawImage(image, 0, 0, null);
     }
 }

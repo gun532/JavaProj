@@ -1,25 +1,28 @@
 package DAL;
 
+import BL.GlobalLogger;
 import Entities.Branch;
 import Entities.Clients.Client;
 import Entities.Employee.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 public class ManagerDataAccess {
     private final String myDriver = "org.gjt.mm.mysql.Driver";
     private final Connection myConn;
-
-    private InventoryDataAccess inventoryDataAccess;
+    private GlobalLogger log = new GlobalLogger("logs.log");
 
     public ManagerDataAccess() throws IllegalStateException {
         try {
             myConn = DriverManager.getConnection
                     ("jdbc:mysql://localhost:3306/test_db", "root", "12345");
-            inventoryDataAccess = new InventoryDataAccess();
-
+            log.logger.setLevel(Level.INFO);
+            log.logger.setLevel(Level.WARNING);
+            log.logger.setLevel(Level.SEVERE);
         } catch (Exception e) {
+            log.logger.severe(e.getMessage());
             throw new IllegalStateException("Cannot connect the database!", e);
         }
     }
@@ -45,12 +48,15 @@ public class ManagerDataAccess {
             statement.setString(7, profession);
 
             statement.executeUpdate();
+            log.logger.info("adding employee was successful");
             return true;
 //            myConn.close();
 
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -64,10 +70,13 @@ public class ManagerDataAccess {
             statement.setInt(1, clientID);
             statement.execute();
             //myConn.close();
+            log.logger.severe("deleting client with id: " + clientID + " was successful");
             return true;
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -80,11 +89,16 @@ public class ManagerDataAccess {
             PreparedStatement statement = myConn.prepareStatement(sql);
             statement.setInt(1, empNum);
             statement.execute();
+            log.logger.severe("deleting employee with employee number: " + empNum + " was successful");
+
             return true;
 //            myConn.close();
+
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -105,11 +119,15 @@ public class ManagerDataAccess {
             statement.setString(7, pass);
             statement.setInt(8, employeeCode);
             statement.executeUpdate();
+            log.logger.info("employee was updated successfully");
+
             return true;
 //            myConn.close();
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -146,19 +164,18 @@ public class ManagerDataAccess {
                         employeeArrayList.add(e);
                         break;
                 }
-//                c.setClientCode(rs.getInt("clientNumber"));
-//                c.setId(rs.getInt("clientID"));
-//                c.setFullName(rs.getString("fullName"));
-//                c.setPhoneNumber(rs.getString("phone"));
-//                c.setType(ClientType.valueOf(rs.getString("ClientType")));
-//                c.setDiscountRate(rs.getInt("discountRate"));
+
             }
 //            myConn.close();
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
+        log.logger.info("all employees was selected");
+
         return employeeArrayList;
     }
 
@@ -173,10 +190,13 @@ public class ManagerDataAccess {
             while (rs.next()) {
                 total = rs.getInt("totalPurchases");
             }
+            log.logger.info("total amount was calculated");
             return total;
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -191,9 +211,13 @@ public class ManagerDataAccess {
             PreparedStatement statement = myConn.prepareStatement(sql);
             statement.setInt(1, branchNumber);
             statement.executeUpdate();
+            log.logger.info("view in the db was created");
+
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             System.out.println("Table already exists!");
         }
     }
@@ -202,6 +226,7 @@ public class ManagerDataAccess {
         try {
             return rs.getMetaData();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -246,12 +271,16 @@ public class ManagerDataAccess {
             statement.setInt(5, clientCode);
 
             statement.executeUpdate();
+            log.logger.info("Client was updated");
             return true;
 //            myConn.close();
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
+
         }
 
         return false;
@@ -268,10 +297,13 @@ public class ManagerDataAccess {
             while (rs.next()) {
                 numOfEmployees = rs.getInt("numOfEmployees");
             }
+            log.logger.info("number of employees in branch " + branch + " was returned");
             return numOfEmployees;
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
         return numOfEmployees;
@@ -328,11 +360,14 @@ public class ManagerDataAccess {
             while (rs.next()) {
                 branch = new Branch(rs.getString("location"), rs.getInt("numOfEmployees"),
                         rs.getString("phone"), rs.getInt("branchNumber"));
+                log.logger.info("Branch details were returned");
                 return branch;
             }
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -346,11 +381,14 @@ public class ManagerDataAccess {
             statement.setString(1, phone);
             statement.setInt(2, branchNumber);
             statement.executeUpdate();
+            log.logger.info("phone number in branch " + branchNumber+ "was updated");
             return true;
 //            myConn.close();
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
 
@@ -360,7 +398,10 @@ public class ManagerDataAccess {
     public void closeConnection() {
         try {
             myConn.close();
+            log.logger.info("connection to db was terminated");
+
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
     }

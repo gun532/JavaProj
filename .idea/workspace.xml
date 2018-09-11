@@ -2,9 +2,33 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b26f134b-4a9e-49b5-9992-bf19207f1ecf" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/BL/GlobalLogger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/AddEmployeePage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/AddEmployeePage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/AddNewClientPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/AddNewClientPage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/BranchPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/BranchPage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/ClientPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/ClientPage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Controller$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Controller$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Controller$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Controller$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Controller.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/EmployeesPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/EmployeesPage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login$2$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login$2$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/Login.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/NewOrderPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/NewOrderPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/UpdateClientPage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/UpdateClientPage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/UpdateEmployeePage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JavaFinalProj/GUI/UpdateEmployeePage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BL/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BL/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BL/ClientSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BL/ClientSocket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BL/LoginUtility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BL/LoginUtility.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BL/ServerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BL/ServerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DAL/ClientsDataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DAL/ClientsDataAccess.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DAL/EmployeeDataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DAL/EmployeeDataAccess.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DAL/InventoryDataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DAL/InventoryDataAccess.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DAL/ManagerDataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DAL/ManagerDataAccess.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/Login.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,12 +36,12 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/JavaFinalProj$Controller.ic" NAME="Controller Coverage Results" MODIFIED="1536240021126" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/JavaFinalProj$Controller.ic" NAME="Controller Coverage Results" MODIFIED="1536601535159" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>GUI.*</FILTER>
     </SUITE>
   </component>
   <component name="CoverageViewManager">
-    <option name="myElementSize" value="218" />
+    <option name="myElementSize" value="228" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -75,7 +99,8 @@
           <entry key="form" value="2" />
           <entry key="iml" value="4" />
           <entry key="inventory" value="2" />
-          <entry key="java" value="331" />
+          <entry key="java" value="356" />
+          <entry key="log" value="3" />
           <entry key="md" value="1" />
           <entry key="shopping_history" value="1" />
           <entry key="sql" value="1" />
@@ -89,8 +114,9 @@
           <entry key="Database Element" value="9" />
           <entry key="GUI_DESIGNER_FORM" value="2" />
           <entry key="IDEA_MODULE" value="4" />
-          <entry key="JAVA" value="331" />
+          <entry key="JAVA" value="356" />
           <entry key="Markdown" value="1" />
+          <entry key="PLAIN_TEXT" value="3" />
           <entry key="SQL" value="1" />
           <entry key="XML" value="2" />
         </counts>
@@ -100,7 +126,7 @@
           <entry key="css" value="6" />
           <entry key="dummy" value="64" />
           <entry key="iml" value="1" />
-          <entry key="java" value="25143" />
+          <entry key="java" value="28275" />
           <entry key="sql" value="12" />
           <entry key="txt" value="272" />
         </counts>
@@ -109,7 +135,7 @@
         <counts>
           <entry key="CSS" value="6" />
           <entry key="IDEA_MODULE" value="1" />
-          <entry key="JAVA" value="25142" />
+          <entry key="JAVA" value="28274" />
           <entry key="PLAIN_TEXT" value="336" />
           <entry key="SQL" value="13" />
         </counts>
@@ -121,14 +147,61 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/BL/ServerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="292">
-              <caret line="213" selection-start-line="213" selection-end-line="213" />
+            <state relative-caret-position="167">
+              <caret line="83" column="8" selection-start-line="83" selection-start-column="8" selection-end-line="83" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#11240#11241#0" expanded="true" />
-                <element signature="e#11285#11286#0" expanded="true" />
-                <element signature="e#12201#12202#0" expanded="true" />
-                <element signature="e#12238#12239#0" expanded="true" />
+                <element signature="e#13288#13289#0" expanded="true" />
+                <element signature="e#13333#13334#0" expanded="true" />
+                <element signature="e#13350#13351#0" expanded="true" />
+                <element signature="e#13387#13388#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/DTO/LoginDetailsDto.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="160">
+              <caret line="22" selection-start-line="22" selection-end-line="22" />
+              <folding>
+                <element signature="e#326#327#0" expanded="true" />
+                <element signature="e#359#360#0" expanded="true" />
+                <element signature="e#518#519#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/BL/ServerThread.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="77">
+              <caret line="45" column="106" selection-end-line="212" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/BL/ClientSocket.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1309">
+              <caret line="117" column="33" lean-forward="true" selection-start-line="117" selection-start-column="33" selection-end-line="117" selection-end-column="33" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/BL/AuthService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="47">
+              <caret line="7" selection-start-line="7" selection-end-line="7" />
+              <folding>
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -137,44 +210,16 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/BL/chat/ChatServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="572">
-              <caret line="31" column="51" selection-start-line="31" selection-start-column="47" selection-end-line="31" selection-end-column="51" />
+            <state relative-caret-position="13">
+              <caret line="12" column="29" selection-start-line="12" selection-end-line="13" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/BL/chat/chat_server_return.java">
+        <entry file="file://$PROJECT_DIR$/src/BL/LoginUtility.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="21" column="31" lean-forward="true" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/GUI/BranchPage.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="167">
-              <caret line="194" column="50" selection-start-line="194" selection-start-column="50" selection-end-line="194" selection-end-column="51" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/GUI/UpdateEmployeePage.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="182" lean-forward="true" selection-start-line="182" selection-end-line="182" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/BL/GlobalLogger.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="10" column="28" lean-forward="true" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
+            <state>
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -185,8 +230,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/GUI/Controller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6">
-              <caret line="47" column="20" lean-forward="true" selection-start-line="47" selection-start-column="20" selection-end-line="47" selection-end-column="20" />
+            <state relative-caret-position="178">
+              <caret line="40" column="28" selection-start-line="40" selection-start-column="28" selection-end-line="40" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -197,42 +242,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/GUI/Login.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="94">
-              <caret line="158" column="41" selection-start-line="158" selection-end-line="159" />
+            <state relative-caret-position="178">
+              <caret line="134" column="20" lean-forward="true" selection-start-line="134" selection-start-column="20" selection-end-line="134" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/BL/ManagerBL.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="497">
-              <caret line="94" column="5" lean-forward="true" selection-start-line="94" selection-start-column="5" selection-end-line="94" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#addEmployee#0;class#ManagerBL#0" />
-                <element signature="method#updateEmployee#0;class#ManagerBL#0" />
-                <element signature="method#updateClient#0;class#ManagerBL#0" />
-                <element signature="method#increaseEmployeeInBranch#0;class#ManagerBL#0" />
-                <element signature="method#decreaseEmployeeInBranch#0;class#ManagerBL#0" />
-                <element signature="method#createReportTotalPurchasesInBranch#0;class#ManagerBL#0" />
-                <element signature="method#writeJSONToFile#0;class#ManagerBL#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DAL/ManagerDataAccess.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="79">
-              <caret line="340" column="42" selection-start-line="340" selection-start-column="19" selection-end-line="340" selection-end-column="42" />
-              <folding>
-                <element signature="method#increaseEmployeeInBranch#0;class#ManagerDataAccess#0" />
-                <element signature="method#decreaseEmployeeInBranch#0;class#ManagerDataAccess#0" />
+                <element signature="e#7362#7363#0" expanded="true" />
+                <element signature="e#7408#7409#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -249,10 +264,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>findpeers</find>
-      <find>ClientList</find>
-      <find>fieldPhoneNumber</find>
-      <find>buildTable</find>
       <find>cash</find>
       <find>Client c</find>
       <find>cas</find>
@@ -279,7 +290,14 @@
       <find>btnr</find>
       <find>btnRe</find>
       <find>login</find>
+      <find>addNewClient</find>
+      <find>za.s</find>
+      <find>OutputS</find>
+      <find>server</find>
     </findStrings>
+    <dirStrings>
+      <dir>C:\Users\IBM_ADMIN\IdeaProjects\JavaFinalProj\src</dir>
+    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -287,7 +305,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/trychat/ServerGUI.java" />
         <option value="$PROJECT_DIR$/src/trychat/ClientGUI.java" />
         <option value="$PROJECT_DIR$/src/GUI/ChatClientGUI.java" />
         <option value="$PROJECT_DIR$/src/Entities/Clients/ClientType.java" />
@@ -303,10 +320,7 @@
         <option value="$PROJECT_DIR$/src/Entities/Employee/Manager.java" />
         <option value="$PROJECT_DIR$/src/Entities/Employee/Seller.java" />
         <option value="$PROJECT_DIR$/src/GUI/AddRemoveEmployee.java" />
-        <option value="$PROJECT_DIR$/src/DAL/InventoryDataAccess.java" />
         <option value="$PROJECT_DIR$/src/BL/ClientTest.java" />
-        <option value="$PROJECT_DIR$/src/BL/LoginUtility.java" />
-        <option value="$PROJECT_DIR$/src/BL/AuthService.java" />
         <option value="$PROJECT_DIR$/src/DTO/InventoryDto.java" />
         <option value="$PROJECT_DIR$/src/BL/InventoryBL.java" />
         <option value="$PROJECT_DIR$/src/BL/ShoppingCartBL.java" />
@@ -315,29 +329,33 @@
         <option value="$PROJECT_DIR$/src/DTO/ClientDto.java" />
         <option value="$PROJECT_DIR$/src/GUI/ClientPage.java" />
         <option value="$PROJECT_DIR$/src/BL/CashierBL.java" />
-        <option value="$PROJECT_DIR$/src/DAL/ClientsDataAccess.java" />
         <option value="$PROJECT_DIR$/src/GUI/AddNewClientPage.java" />
         <option value="$PROJECT_DIR$/src/GUI/UpdateClientPage.java" />
-        <option value="$PROJECT_DIR$/src/GUI/MainMenuPage.java" />
         <option value="$PROJECT_DIR$/src/GUI/InventoryPage.java" />
         <option value="$PROJECT_DIR$/src/Entities/Inventory.java" />
         <option value="$PROJECT_DIR$/src/DTO/ClientsArrayDto.java" />
         <option value="$PROJECT_DIR$/src/DTO/EmployeeArrayDto.java" />
-        <option value="$PROJECT_DIR$/src/DAL/EmployeeDataAccess.java" />
         <option value="$PROJECT_DIR$/src/GUI/AddEmployeePage.java" />
         <option value="$PROJECT_DIR$/src/DTO/EmployeeDto.java" />
         <option value="$PROJECT_DIR$/src/GUI/EmployeesPage.java" />
         <option value="$PROJECT_DIR$/src/GUI/UpdateEmployeePage.java" />
         <option value="$PROJECT_DIR$/src/Entities/Branch.java" />
         <option value="$PROJECT_DIR$/src/DTO/BranchDto.java" />
-        <option value="$PROJECT_DIR$/src/GUI/Controller.java" />
-        <option value="$PROJECT_DIR$/src/BL/ClientSocket.java" />
-        <option value="$PROJECT_DIR$/src/GUI/Login.java" />
-        <option value="$PROJECT_DIR$/src/DAL/ManagerDataAccess.java" />
         <option value="$PROJECT_DIR$/src/BL/ManagerBL.java" />
         <option value="$PROJECT_DIR$/src/GUI/BranchPage.java" />
         <option value="$PROJECT_DIR$/src/BL/GlobalLogger.java" />
+        <option value="$PROJECT_DIR$/src/DAL/EmployeeDataAccess.java" />
+        <option value="$PROJECT_DIR$/src/DAL/ClientsDataAccess.java" />
+        <option value="$PROJECT_DIR$/src/DAL/InventoryDataAccess.java" />
+        <option value="$PROJECT_DIR$/src/DAL/ManagerDataAccess.java" />
+        <option value="$PROJECT_DIR$/src/GUI/MainMenuPage.java" />
+        <option value="$PROJECT_DIR$/src/BL/AuthService.java" />
+        <option value="$PROJECT_DIR$/src/BL/ServerThread.java" />
+        <option value="$PROJECT_DIR$/src/GUI/Controller.java" />
+        <option value="$PROJECT_DIR$/src/GUI/Login.java" />
+        <option value="$PROJECT_DIR$/src/BL/ClientSocket.java" />
         <option value="$PROJECT_DIR$/src/BL/ServerTest.java" />
+        <option value="$PROJECT_DIR$/src/BL/LoginUtility.java" />
       </list>
     </option>
   </component>
@@ -380,43 +398,6 @@
               <item name="JavaFinalProj" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="JavaFinalProj" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaFinalProj" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="BL" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaFinalProj" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaFinalProj" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="BL" type="462c0819:PsiDirectoryNode" />
-              <item name="chat" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaFinalProj" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaFinalProj" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="DAL" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaFinalProj" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaFinalProj" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="DTO" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaFinalProj" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaFinalProj" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Entities" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="JavaFinalProj" type="b2602c69:ProjectViewProjectNode" />
-              <item name="JavaFinalProj" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="GUI" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -425,9 +406,9 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://C:/Users/IBM_ADMIN/IdeaProjects/JavaFinalProj/src/BL/ServerTest.java&#10;addn&#9;FILE&#9;file://C:/Users/IBM_ADMIN/IdeaProjects/JavaFinalProj/src/GUI/AddNewClientPage.java&#10;dea&#9;FILE&#9;file://C:/Users/IBM_ADMIN/IdeaProjects/JavaFinalProj/src/Entities/Deal.java&#10;deal&#9;PSI&#9;JAVA://Entities.Deal" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1536577689818" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1536673161703" />
     <property name="database.console.LAST_STATE" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/gson-2.8.5.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../JavaFinalProj - Copy (3)" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -438,6 +419,7 @@
       <recent name="C:\Users\IBM_ADMIN\IdeaProjects\JavaFinalProj\src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\IBM_ADMIN\IdeaProjects\JavaFinalProj" />
       <recent name="C:\Users\IBM_ADMIN\IdeaProjects\JavaFinalProj\src" />
       <recent name="C:\Users\IBM_ADMIN\IdeaProjects\JavaFinalProj\src\BL\chat2" />
       <recent name="C:\Users\IBM_ADMIN\IdeaProjects\JavaFinalProj\src\New folder" />
@@ -457,12 +439,12 @@
     </option>
   </component>
   <component name="RunManager" selected="Application.Controller">
-    <configuration name="ChatClientGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="GUI.ChatClientGUI" />
+    <configuration name="ChatServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="BL.chat.ChatServer" />
       <module name="JavaFinalProj" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="GUI.*" />
+          <option name="PATTERN" value="BL.chat.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -523,19 +505,19 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.ChatClientGUI" />
       <item itemvalue="Application.Controller" />
       <item itemvalue="Application.ServerTest$SocketServer" />
       <item itemvalue="Application.ClientSocket" />
       <item itemvalue="Application.Employee" />
+      <item itemvalue="Application.ChatServer" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Controller" />
         <item itemvalue="Application.ServerTest$SocketServer" />
+        <item itemvalue="Application.ChatServer" />
         <item itemvalue="Application.Employee" />
         <item itemvalue="Application.ClientSocket" />
-        <item itemvalue="Application.ChatClientGUI" />
       </list>
     </recent_temporary>
   </component>
@@ -624,17 +606,24 @@
       <option name="project" value="LOCAL" />
       <updated>1536503851665</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="client server changes - &#10;client and order page completed">
+      <created>1536578419248</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1536578419248</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="173708000" />
+    <option name="totallyTimeSpent" value="193128000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1825" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18766066" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -642,9 +631,9 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32941177" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32941177" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39477125" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32839838" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32839838" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39434725" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -653,9 +642,9 @@
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5012854" side_tool="true" weight="0.32941177" />
       <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.49871466" weight="0.32941177" />
       <window_info anchor="bottom" id="Database Console" order="11" weight="0.32974428" />
-      <window_info anchor="bottom" id="Messages" order="12" weight="0.32941177" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.32839838" />
       <window_info active="true" anchor="bottom" id="SVN Repositories" order="13" visible="true" weight="0.32974428" />
-      <window_info anchor="right" id="Coverage" order="0" side_tool="true" />
+      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.32969153" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
@@ -686,7 +675,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/DAL/InventoryDataAccess.java</url>
-          <line>48</line>
+          <line>37</line>
           <properties />
           <option name="timeStamp" value="28" />
         </line-breakpoint>
@@ -722,7 +711,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/DAL/ClientsDataAccess.java</url>
-          <line>164</line>
+          <line>193</line>
           <properties />
           <option name="timeStamp" value="66" />
         </line-breakpoint>
@@ -788,15 +777,33 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/BL/ServerTest.java</url>
-          <line>46</line>
+          <line>54</line>
           <properties />
           <option name="timeStamp" value="179" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/GUI/Login.java</url>
-          <line>159</line>
+          <line>131</line>
           <properties />
-          <option name="timeStamp" value="180" />
+          <option name="timeStamp" value="189" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/GUI/Login.java</url>
+          <line>129</line>
+          <properties />
+          <option name="timeStamp" value="194" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/BL/ServerTest.java</url>
+          <line>81</line>
+          <properties />
+          <option name="timeStamp" value="195" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/BL/ServerTest.java</url>
+          <line>213</line>
+          <properties />
+          <option name="timeStamp" value="196" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/p2pchat/Peer.java</url>
@@ -813,8 +820,7 @@
         <watch expression="((LinkedHashMap.Entry)((LinkedHashMap)this.myInventory).entrySet().toArray()[4]).getValue()" custom="java.util.LinkedHashMap.Entry,java.util.LinkedHashMap" />
         <watch expression="((JDBC42PreparedStatement)statement).parameterTypes" custom="com.mysql.jdbc.JDBC42PreparedStatement" />
         <watch expression="shoppingCart.totalItems" />
-        <watch expression="inventoryDto" />
-        <watch expression="js" />
+        <watch expression="loginUtility" />
       </configuration>
     </watches-manager>
   </component>
@@ -835,6 +841,16 @@
       </expression>
     </expressions>
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>connectedUsers.get(i).getId() == loggedInEmployee.getId()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>connectedUsers.contains(loggedInEmployee)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>js.getInt(&quot;id&quot;)</expression-string>
         <language-id>JAVA</language-id>
@@ -870,77 +886,9 @@
         <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>in.toString()</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>isLoggedIn</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/Desktop/java-json.jar!/org/json/JSONObject.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="703" selection-start-line="703" selection-end-line="703" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DTO/DtoBase.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/BL/AuthService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="28" column="1" selection-start-line="28" selection-start-column="1" selection-end-line="28" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#582#583#0" expanded="true" />
-            <element signature="e#636#637#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DTO/LoginDetailsDto.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="7" column="38" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/Downloads/gson-2.8.5.jar!/com/google/gson/internal/Streams.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
-          <caret line="52" selection-start-line="52" selection-end-line="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/Downloads/gson-2.8.5.jar!/com/google/gson/stream/JsonWriter.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="65" selection-start-line="65" selection-end-line="65" />
-          <folding>
-            <element signature="e#1644#1645#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/Downloads/gson-2.8.5.jar!/com/google/gson/reflect/TypeToken.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="189" selection-start-line="189" selection-end-line="189" />
-          <folding>
-            <element signature="e#6654#6655#0" expanded="true" />
-            <element signature="e#6931#6932#0" expanded="true" />
-            <element signature="e#6973#6974#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/Downloads/gson-2.8.5.jar!/com/google/gson/TypeAdapter.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
@@ -1017,16 +965,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DAL/InventoryDataAccess.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="48" selection-start-line="48" selection-end-line="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Entities/ShoppingCart.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="36">
@@ -1045,16 +983,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-616">
           <caret line="9" selection-start-line="9" selection-end-line="15" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DAL/ClientsDataAccess.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="292">
-          <caret line="90" selection-start-line="90" selection-end-line="90" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1096,13 +1024,6 @@
             <element signature="e#1274#1275#0" expanded="true" />
             <element signature="e#1318#1319#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUI/MainMenuPage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="65" column="30" lean-forward="true" selection-start-line="65" selection-start-column="30" selection-end-line="65" selection-end-column="30" />
         </state>
       </provider>
     </entry>
@@ -1196,32 +1117,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/BL/LoginUtility.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="15" column="18" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/GUI/ClientPage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="426">
           <caret line="402" column="1" lean-forward="true" selection-start-line="402" selection-start-column="1" selection-end-line="425" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Entities/Employee/Employee.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="45" selection-start-line="45" selection-end-line="45" />
-          <folding>
-            <element signature="e#803#804#0" expanded="true" />
-            <element signature="e#840#841#0" expanded="true" />
-            <element signature="e#1038#1039#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1286,16 +1185,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DAL/EmployeeDataAccess.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="80" column="29" lean-forward="true" selection-start-line="80" selection-start-column="29" selection-end-line="80" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/GUI/EmployeesPage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="248">
@@ -1337,36 +1226,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/BL/ClientSocket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="173">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUI/Controller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6">
-          <caret line="47" column="20" lean-forward="true" selection-start-line="47" selection-start-column="20" selection-end-line="47" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUI/Login.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="94">
-          <caret line="158" column="41" selection-start-line="158" selection-end-line="159" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/BL/ManagerBL.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="497">
@@ -1384,24 +1243,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DAL/ManagerDataAccess.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="79">
-          <caret line="340" column="42" selection-start-line="340" selection-start-column="19" selection-end-line="340" selection-end-column="42" />
-          <folding>
-            <element signature="method#increaseEmployeeInBranch#0;class#ManagerDataAccess#0" />
-            <element signature="method#decreaseEmployeeInBranch#0;class#ManagerDataAccess#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/GUI/UpdateEmployeePage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="182" lean-forward="true" selection-start-line="182" selection-end-line="182" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/GUI/BranchPage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="167">
@@ -1409,10 +1250,178 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.base/java/net/Socket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="1586" column="19" selection-start-line="1586" selection-start-column="19" selection-end-line="1586" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUI/UpdateEmployeePage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="182" selection-start-line="182" selection-end-line="182" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/BL/GlobalLogger.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="10" column="28" lean-forward="true" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
+        <state relative-caret-position="308">
+          <caret line="14" column="34" selection-start-line="14" selection-start-column="34" selection-end-line="14" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DAL/ClientsDataAccess.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="638">
+          <caret line="29" column="46" selection-start-line="29" selection-start-column="46" selection-end-line="29" selection-end-column="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DAL/EmployeeDataAccess.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="24" selection-start-line="24" selection-end-line="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DAL/InventoryDataAccess.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="946">
+          <caret line="43" column="64" selection-start-line="43" selection-start-column="64" selection-end-line="43" selection-end-column="64" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DAL/ManagerDataAccess.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="14" column="53" selection-start-line="14" selection-start-column="53" selection-end-line="14" selection-end-column="53" />
+          <folding>
+            <element signature="method#increaseEmployeeInBranch#0;class#ManagerDataAccess#0" />
+            <element signature="method#decreaseEmployeeInBranch#0;class#ManagerDataAccess#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUI/MainMenuPage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="761">
+          <caret line="107" column="11" lean-forward="true" selection-start-line="107" selection-start-column="11" selection-end-line="107" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUI/ChatClientGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="68" selection-start-line="68" selection-end-line="69" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BL/chat/ChatClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="641">
+          <caret line="53" column="5" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logs.log">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BL/AuthService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="47">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BL/chat/ChatServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="13">
+          <caret line="12" column="29" selection-start-line="12" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BL/chat/chat_server_return.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="21" column="21" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Entities/Employee/Employee.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="29" selection-start-line="29" selection-end-line="29" />
+          <folding>
+            <element signature="e#765#766#0" expanded="true" />
+            <element signature="e#803#804#0" expanded="true" />
+            <element signature="e#840#841#0" expanded="true" />
+            <element signature="e#1003#1004#0" expanded="true" />
+            <element signature="e#1038#1039#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BL/ServerThread.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="77">
+          <caret line="45" column="106" selection-end-line="212" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/BL/ClientSocket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1309">
+          <caret line="117" column="33" lean-forward="true" selection-start-line="117" selection-start-column="33" selection-end-line="117" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DTO/LoginDetailsDto.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
+          <folding>
+            <element signature="e#326#327#0" expanded="true" />
+            <element signature="e#359#360#0" expanded="true" />
+            <element signature="e#518#519#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUI/Login.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="134" column="20" lean-forward="true" selection-start-line="134" selection-start-column="20" selection-end-line="134" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#7362#7363#0" expanded="true" />
+            <element signature="e#7408#7409#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/GUI/Controller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="40" column="28" selection-start-line="40" selection-start-column="28" selection-end-line="40" selection-end-column="28" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1421,29 +1430,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/BL/ServerTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="292">
-          <caret line="213" selection-start-line="213" selection-end-line="213" />
+        <state relative-caret-position="167">
+          <caret line="83" column="8" selection-start-line="83" selection-start-column="8" selection-end-line="83" selection-end-column="8" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#11240#11241#0" expanded="true" />
-            <element signature="e#11285#11286#0" expanded="true" />
-            <element signature="e#12201#12202#0" expanded="true" />
-            <element signature="e#12238#12239#0" expanded="true" />
+            <element signature="e#13288#13289#0" expanded="true" />
+            <element signature="e#13333#13334#0" expanded="true" />
+            <element signature="e#13350#13351#0" expanded="true" />
+            <element signature="e#13387#13388#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/BL/chat/ChatServer.java">
+    <entry file="file://$PROJECT_DIR$/src/BL/LoginUtility.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="31" column="51" selection-start-line="31" selection-start-column="47" selection-end-line="31" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/BL/chat/chat_server_return.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="21" column="31" lean-forward="true" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
+        <state>
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

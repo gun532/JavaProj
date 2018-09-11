@@ -13,15 +13,24 @@ import Entities.ShoppingCart;
 import com.google.gson.Gson;
 import org.json.*;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSocket;
 import javax.swing.*;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
+import java.security.Security;
 import java.util.ArrayList;
 
 
 public class ServerTest {
     private static ArrayList<Employee> connectedUsers = new ArrayList<>();
+    public static ArrayList<SSLSocket> connectionArray = new ArrayList<>(); //hold all the connections
 
 
     public static class SocketServer extends Thread {
@@ -34,10 +43,12 @@ public class ServerTest {
         static ServerSocket server = null;
         private ManagerBL managerBL = new ManagerBL(new ManagerDataAccess());
         private CashierBL cashierBL = new CashierBL(new EmployeeDataAccess(), new InventoryDataAccess(), new ClientsDataAccess());
+        static SSLServerSocket sslServerSocket;
+        static SSLServerSocketFactory sslServerSocketfactory;
+        static SSLSocket sslSocket;
 
-
-        private SocketServer(Socket socket) {
-            this.socket = socket;
+        private SocketServer(SSLSocket socket) {
+            this.sslSocket = socket;
             System.out.println("New client connected from " + socket.getInetAddress().getHostAddress());
             start();
         }
@@ -45,8 +56,10 @@ public class ServerTest {
         public void run() {
             try {
                 Inventory inventory;
-                in = new DataInputStream(socket.getInputStream());
-                out = new PrintStream(socket.getOutputStream());
+//                in = new DataInputStream(socket.getInputStream());
+//                out = new PrintStream(socket.getOutputStream());
+                in = new DataInputStream(sslSocket.getInputStream());
+                out = new PrintStream(sslSocket.getOutputStream());
                 BufferedReader br = new BufferedReader(new InputStreamReader(in));
 
                 String request;
@@ -70,10 +83,16 @@ public class ServerTest {
                             LoginDetailsDto loginDetailsDto = gson.fromJson(request, LoginDetailsDto.class);
                             Employee loggedInEmployee =
                                     loginUtility.login(loginDetailsDto.getEmployeeId(), loginDetailsDto.getPassword());
-                            Boolean ifConnected = checkIfConnected(loggedInEmployee);
-                            if (ifConnected == false || ifConnected == null) {
-                                String employeeJson = gson.toJson(loggedInEmployee);
-                                out.println(employeeJson);
+                            if (loggedInEmployee == null) out.println("null");
+                            else {
+                                Boolean ifConnected = checkIfConnected(loggedInEmployee);
+                                if (ifConnected) out.println(ifConnected);
+                                else {
+                                    if (ifConnected == false || ifConnected == null) {
+                                        String employeeJson = gson.toJson(loggedInEmployee);
+                                        out.println(employeeJson);
+                                    }
+                                }
                             }
                             break;
                         case "inverntoryByBranch":
@@ -122,7 +141,7 @@ public class ServerTest {
                         case "updateClient":
                             clientDto = gson.fromJson(request, ClientDto.class);
                             boolean isClientUpdated = managerBL.updateClient(clientDto.getId(),
-                                    clientDto.getFullName(),clientDto.getPhoneNumber(),clientDto.getType().toString(),
+                                    clientDto.getFullName(), clientDto.getPhoneNumber(), clientDto.getType().toString(),
                                     clientDto.getClientCode());
                             out.println(gson.toJson(isClientUpdated));
                             break;
@@ -133,15 +152,15 @@ public class ServerTest {
                             out.println(jsArray);
                             break;
                         case "addNewEmployee":
-                            employeeDto = gson.fromJson(request,EmployeeDto.class);
-                            boolean isEmployeeAdded = managerBL.addEmployee(employeeDto.getName(),employeeDto.getPass(),employeeDto.getId(),
-                                    employeeDto.getPhone(),employeeDto.getAccountNum(),
-                                    employeeDto.getBranchNumber(),employeeDto.getJobPos().toString());
+                            employeeDto = gson.fromJson(request, EmployeeDto.class);
+                            boolean isEmployeeAdded = managerBL.addEmployee(employeeDto.getName(), employeeDto.getPass(), employeeDto.getId(),
+                                    employeeDto.getPhone(), employeeDto.getAccountNum(),
+                                    employeeDto.getBranchNumber(), employeeDto.getJobPos().toString());
                             boolean isIncreasedInBranch = managerBL.increaseEmployeeInBranch(employeeDto.getBranchNumber());
                             out.println(gson.toJson(isEmployeeAdded && isIncreasedInBranch));
                             break;
                         case "removeEmployee":
-                            employeeDto = gson.fromJson(request,EmployeeDto.class);
+                            employeeDto = gson.fromJson(request, EmployeeDto.class);
                             boolean isEmployeeDeleted = managerBL.deleteEmployee(employeeDto.getEmployeeNumber());
                             boolean isDecreasedInBranch = managerBL.decreaseEmployeeInBranch(employeeDto.getBranchNumber());
 
@@ -149,9 +168,9 @@ public class ServerTest {
                             break;
                         case "updateEmployee":
                             employeeDto = gson.fromJson(request, EmployeeDto.class);
-                            boolean isEmployeeUpdated = managerBL.updateEmployee(employeeDto.getName(),employeeDto.getId(),
-                                    employeeDto.getPhone(),employeeDto.getAccountNum(),employeeDto.getBranchNumber(),
-                                    employeeDto.getJobPos().toString(),employeeDto.getPass(),employeeDto.getEmployeeNumber());
+                            boolean isEmployeeUpdated = managerBL.updateEmployee(employeeDto.getName(), employeeDto.getId(),
+                                    employeeDto.getPhone(), employeeDto.getAccountNum(), employeeDto.getBranchNumber(),
+                                    employeeDto.getJobPos().toString(), employeeDto.getPass(), employeeDto.getEmployeeNumber());
                             out.println(gson.toJson(isEmployeeUpdated));
                             break;
                         case "selectBranchDetails":
@@ -188,36 +207,43 @@ public class ServerTest {
         }
 
 
-        private boolean checkIfConnected(Employee loggedInEmployee) throws Exception {
-            if (connectedUsers.contains(loggedInEmployee)) {
-                socket.close();
-                throw new Exception("user already logged in");
-
-            } else {
-                if (loggedInEmployee != null) connectedUsers.add(loggedInEmployee);
-                return false;
-            }
-        }
-
-
         public static void main(String[] args) {
+            //System.setProperty("javax.net.ssl.keyStore", "myKeyStore.jks");
+            //System.setProperty("javax.net.ssl.keyStorePassword","123456");
+            //System.setProperty("javax.net.debug","all");
             System.out.println("SocketServer Example");
             //ServerSocket server = null;
             try {
-                server = new ServerSocket(PORT_NUMBER);
+                //Provider provider = SSLContext.getDefault().getProvider();
+                SSLContext context = SSLContext.getInstance("TLSv1.2");
+                context.init(null, null, null);
+                sslServerSocketfactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
+                sslServerSocket = (SSLServerSocket) sslServerSocketfactory.createServerSocket(PORT_NUMBER);
+                sslServerSocket.setEnabledCipherSuites(sslServerSocket.getSupportedCipherSuites());
+                //server = new ServerSocket(PORT_NUMBER);
                 while (true) {
                     //*create a new {
                     //      @link SocketServer
                     // } object for each connection
                     //*this will allow multiple client connections
-                    new SocketServer(server.accept());
+                    //new SocketServer(server.accept());
+                    new SocketServer((SSLSocket) sslServerSocket.accept());
+                    //sslSocket = (SSLSocket)sslServerSocket.accept();
+
+                    //connectionArray.add(socket);
                 }
             } catch (IOException ex) {
                 System.out.println("Unable to start server." + ex.getMessage());
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (KeyManagementException e) {
+                e.printStackTrace();
             } finally {
                 try {
-                    if (server != null)
-                        server.close();
+//                    if (server != null)
+//                        server.close();
+                    if (sslServerSocket != null)
+                        sslServerSocket.close();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -228,6 +254,30 @@ public class ServerTest {
             return connectedUsers;
         }
 
+
+        private boolean checkIfConnected(Employee loggedInEmployee) throws Exception {
+            if (connectedUsers.size() == 0) {
+                connectedUsers.add(loggedInEmployee);
+                connectionArray.add(sslSocket);
+                return false;
+            } else {
+                for (int i = 0; i < connectedUsers.size(); i++) {
+                    if (connectedUsers.get(i).getId() == loggedInEmployee.getId()) {
+                        return true;
+
+                    } else {
+                        if (loggedInEmployee != null) {
+                            connectedUsers.add(loggedInEmployee);
+                            connectionArray.add(sslSocket);
+                            return false;
+                        } else return true;
+                    }
+                }
+
+            }
+            return true;
+
+        }
 
 //        public static  void main(String[] args) {
 //            System.out.println("SocketServer Example");

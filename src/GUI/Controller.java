@@ -36,7 +36,10 @@ public class Controller {
 
         final String host = "127.0.0.1";
         final int port = 8081;
-        new ClientSocket(host,port);
+        ClientSocket clientSocket = new ClientSocket(host, port);
+//        Thread connThread = new Thread(clientSocket);
+//        connThread.start();
+
         appFrame = new JFrame();
 
         buildAppFrame();

@@ -1,28 +1,58 @@
 package DAL;
 
+import BL.GlobalLogger;
 import Entities.Inventory;
 import Entities.Product;
 
 import java.sql.*;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class InventoryDataAccess {
 
     private final String myDriver = "org.gjt.mm.mysql.Driver";
     private final Connection myConn;
+    private GlobalLogger log = new GlobalLogger("logs.log");
 
     public InventoryDataAccess() {
         try {
                 myConn = DriverManager.getConnection
                         ("jdbc:mysql://localhost:3306/test_db", "root", "12345");
+            log.logger.setLevel(Level.INFO);
+            log.logger.setLevel(Level.WARNING);
+            log.logger.setLevel(Level.SEVERE);
+
         } catch (Exception e) {
+            log.logger.severe(e.getMessage());
             throw new IllegalStateException("Cannot connect the database!", e);
         }
     }
 
+    public void updateInventory(Inventory inventory) {
 
+        try {
+            Class.forName(myDriver);
+            String sql = "UPDATE inventory set  numberOfItems = ? where productCode = ? and inventory_code = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(3, inventory.getInventoryNumber());
+            for (Map.Entry<Integer, Product> entry : inventory.getMyInventory().entrySet()) {
+                statement.setInt(1, entry.getValue().getAmount());
+                statement.setInt(2, entry.getKey());
+                statement.executeUpdate();
+            }
+            //myConn.close();
+            log.logger.info("inventory update was successful" );
 
-//    public void removeFromInventory(Product product, int branchNumber) throws Exception {
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    //    public void removeFromInventory(Product product, int branchNumber) throws Exception {
 //
 //        try {
 //            Class.forName(myDriver);
@@ -38,27 +68,6 @@ public class InventoryDataAccess {
 //            e.printStackTrace();
 //        }
 //    }
-
-    public void updateInventory(Inventory inventory) {
-
-        try {
-            Class.forName(myDriver);
-            String sql = "UPDATE inventory set  numberOfItems = ? where productCode = ? and inventory_code = ?";
-            PreparedStatement statement = myConn.prepareStatement(sql);
-            statement.setInt(3, inventory.getInventoryNumber());
-            for (Map.Entry<Integer, Product> entry : inventory.getMyInventory().entrySet()) {
-                statement.setInt(1, entry.getValue().getAmount());
-                statement.setInt(2, entry.getKey());
-                statement.executeUpdate();
-            }
-            myConn.close();
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
 //    public void addToInventory(Product product, int branchNumber) throws Exception {
 //        int code;
@@ -111,16 +120,17 @@ public class InventoryDataAccess {
                 p.setPrice(rs.getDouble("price"));
                 p.setAmount(rs.getInt("numberOfItems"));
                 p.setProductCode(rs.getInt("productCode"));
-//                this.addToInventory(p, branchNum);
-//                Product p = new Product(rs.getString("name"),rs.getDouble("price"),
-//                        rs.getInt("numberOfItems"),rs.getInt("productCode"));
                 inventory.addToInventory(p);
             }
+            log.logger.info("select from inventory in branch " +branchNum+ " was successful" );
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (Exception e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
 

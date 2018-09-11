@@ -5,7 +5,6 @@ import DAL.EmployeeDataAccess;
 
 public class AuthService {
 
-    private LoginUtility loginUtility = new LoginUtility();
     private static AuthService instance;
     private Employee currentEmployee;
 
