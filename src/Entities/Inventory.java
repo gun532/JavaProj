@@ -16,11 +16,13 @@ public class Inventory {
     private InventoryBL inventoryBL;
 
     public Inventory(){
-        this.myInventory = new LinkedHashMap<Integer, Product>();
+        this.myInventory = new LinkedHashMap<>();
         this.totalProducts = 0;
         inventoryBL = new InventoryBL(new InventoryDataAccess());
     }
 
+
+    //adding new item to inventory
     public void addToInventory(Product product) throws Exception {
 
         //Check if inventory already has this product.
@@ -69,23 +71,35 @@ public class Inventory {
     }
 
     public Product takeFromInventory(int productCode, int amount) throws Exception {
-        Product refProduct = this.myInventory.get(productCode);
-        if(refProduct != null){
-            if(refProduct.getAmount() - amount >=0) {
-                refProduct.setAmount(refProduct.getAmount() - amount);
-                this.totalItems -= amount;
-                this.totalValue -= refProduct.getPrice()*amount;
-                Product product = new Product(refProduct);
-                product.setAmount(amount);
-                return product;
-            }
-            else
-                throw new Exception("There's not enough items in the inventory.");
+        if(amount >= 0) {
+            Product refProduct = this.myInventory.get(productCode);
+            if (refProduct != null) {
+                if (refProduct.getAmount() - amount >= 0) {
+                    refProduct.setAmount(refProduct.getAmount() - amount);
+                    this.totalItems -= amount;
+                    this.totalValue -= refProduct.getPrice() * amount;
+                    Product product = new Product(refProduct);
+                    product.setAmount(amount);
+                    return product;
+                } else
+                    throw new Exception("There's not enough items in the inventory.");
+            } else
+                throw new Exception("The product is not in the inventory.");
+        }else {
+            throw new Exception("The product amount can't be negative.");
         }
-        else
-            throw new Exception("The product is not in the inventory.");
     }
 
+    public void updateInventory(Product p) throws Exception {
+
+        Product refProduct = this.myInventory.get(p.getProductCode());
+
+        if (refProduct != null) {
+            this.myInventory.replace(refProduct.getProductCode(),refProduct,p);
+        }else {
+            throw new Exception("The product is not in the inventory.");
+        }
+    }
 
     public Map<Integer, Product> getMyInventory() {
         return myInventory;
@@ -98,7 +112,7 @@ public class Inventory {
     public void setInventoryNumber(int inventoryNumber) {
         this.inventoryNumber = inventoryNumber;
     }
-
+    
     public int getTotalProducts() {
         return totalProducts;
     }
@@ -125,17 +139,6 @@ public class Inventory {
 
     public void setMyInventory(Map<Integer, Product> myInventory) {
         this.myInventory = myInventory;
-    }
-
-    public void updateInventory(Product p) throws Exception {
-
-        Product refProduct = this.myInventory.get(p.getProductCode());
-
-        if (refProduct != null) {
-            this.myInventory.replace(refProduct.getProductCode(),refProduct,p);
-        }else {
-            throw new Exception("The product is not in the inventory.");
-        }
     }
 
     @Override

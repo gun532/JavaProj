@@ -12,3 +12,6 @@ out/production/JavaFinalProj/Entities.Employee/ChatClientGUI$6.class
 out/production/JavaFinalProj/Entities.Employee/ChatClientGUI.class
 out/production/JavaFinalProj/Entities.Employee/ChatServer.class
 src/GUI/Login.java
+*.xml
+*.class
+*.class

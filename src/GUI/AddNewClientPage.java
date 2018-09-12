@@ -149,6 +149,7 @@ public class AddNewClientPage extends JFrame {
             if (!fieldClientID.getText().isEmpty() && !fieldFullName.getText().isEmpty() && !fieldPhoneNumber.getText().isEmpty()) {
                 if (!isAlreadyExists()) {
 
+                    cashierBL.addNewClient(Integer.parseInt(fieldClientID.getText()), fieldFullName.getText(), fieldPhoneNumber.getText(), cmbClientType.getSelectedItem().toString());
                     addNewClient();
                 }
                 else {

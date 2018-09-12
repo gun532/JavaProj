@@ -103,6 +103,26 @@ public abstract class Client {
         + "\nClient Type: " + this.type + "\nDiscount Rate: " + this.discountRate + "\nShopping History:\n" + this.shoppingHistory;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+
+        // If the object is compared with itself then return true
+        if (obj == this) {
+            return true;
+        }
+
+        /* Check if o is an instance of Complex or not
+          "null instanceof [type]" also returns false */
+        if (!(obj instanceof Client)) {
+            return false;
+        }
+
+        // typecast o to Complex so that we can compare data members
+        Client c = (Client) obj;
+
+        // Compare the data members and return accordingly
+        return this.id == c.id;
+    }
 
     public static void main(String args[]){
 

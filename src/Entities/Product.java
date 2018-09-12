@@ -109,6 +109,20 @@ public class Product {
     }
 
     @Override
+    public boolean equals(Object obj) {
+
+        if(this == obj)
+            return true;
+
+        if(!(obj instanceof Product))
+            return false;
+
+        Product p = (Product) obj;
+
+        return this.name.matches(p.name);
+    }
+
+    @Override
     public int hashCode() {
         int hash = 1;
         hash = hash + this.name.hashCode();
