@@ -2,7 +2,6 @@ package GUI;
 
 import BL.AuthService;
 import BL.ClientSocket;
-import BL.ServerTest;
 import DTO.LoginDetailsDto;
 import Entities.Employee.Cashier;
 import Entities.Employee.Employee;
@@ -18,11 +17,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 
 import com.google.gson.Gson;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 
 public class Login extends JPanel {

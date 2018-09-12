@@ -4,6 +4,7 @@ import BL.GlobalLogger;
 import Entities.Branch;
 import Entities.Clients.Client;
 import Entities.Employee.*;
+import Entities.Product;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -381,7 +382,7 @@ public class ManagerDataAccess {
             statement.setString(1, phone);
             statement.setInt(2, branchNumber);
             statement.executeUpdate();
-            log.logger.info("phone number in branch " + branchNumber+ "was updated");
+            log.logger.info("phone number in branch " + branchNumber + "was updated");
             return true;
 //            myConn.close();
         } catch (ClassNotFoundException e) {
@@ -393,6 +394,175 @@ public class ManagerDataAccess {
         }
 
         return false;
+    }
+
+    public boolean addNewProduct(String name, double price) {
+        try {
+            Class.forName(myDriver);
+            String sql = "INSERT INTO product (name, price) values (?,?)";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+
+            statement.setString(1, name);
+            statement.setDouble(2, price);
+
+            statement.executeUpdate();
+            log.logger.info("adding product was successful");
+            return true;
+//            myConn.close();
+
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public int addProductAmountToInventory(int inventoryCode, int productAmount, String productName) {
+        try {
+            int productCode = selectProductCodeByName(productName);
+            Class.forName(myDriver);
+            String sql = "INSERT INTO inventory (inventory_code, productCode, numberOfItems) values (?,?,?)";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+
+            statement.setInt(1, inventoryCode);
+            statement.setInt(2, productCode);
+            statement.setInt(3, productAmount);
+
+            statement.executeUpdate();
+            log.logger.info("adding product to inventory was successful");
+            return productCode;
+//            myConn.close();
+
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int selectProductCodeByName(String productName) {
+        try {
+            Class.forName(myDriver);
+            String sql = "SELECT productCode from product where name = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setString(1, productName);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int productCode = rs.getInt("productCode");
+                log.logger.info("Branch details were returned");
+                return productCode;
+            }
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public boolean updateProduct(String name, double price, int productCode) {
+        try {
+            Class.forName(myDriver);
+            String sql = "UPDATE product set name = ?, price = ? where productCode = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setString(1, name);
+            statement.setDouble(2, price);
+            statement.setInt(3, productCode);
+            statement.executeUpdate();
+            log.logger.info("product with code" + productCode + "was updated");
+            return true;
+//            myConn.close();
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    public boolean updateProductAmountInInventory(int amount, int inventoryCode, int productCode) {
+        try {
+            Class.forName(myDriver);
+            String sql = "UPDATE inventory set numberOfItems = ? where productCode = ? and inventory_code = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, amount);
+            statement.setInt(2, productCode);
+            statement.setInt(3, inventoryCode);
+            statement.executeUpdate();
+            log.logger.info("product amount with code" + productCode + "was updated");
+            return true;
+//            myConn.close();
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean removeProductFromInventory(int productCode, int inventoryCode) {
+        try {
+            Class.forName(myDriver);
+            String sql = "DELETE from inventory where productCode = ? and inventory_code = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, productCode);
+            statement.setInt(2, inventoryCode);
+            statement.execute();
+            //myConn.close();
+            log.logger.severe("deleting product with code: " + productCode + " from" +
+                    "branch number: " + inventoryCode + " was successful");
+            return true;
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    public ArrayList<Product> selectAllProducts() {
+        ArrayList<Product> productArrayList = new ArrayList<>();
+        try {
+            Class.forName(myDriver);
+            String sql = "SELECT * from product";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            //statement.setInt(1, empNum);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Product p = new Product(rs.getInt("productCode"),rs.getString("name"),
+                        rs.getDouble("price"));
+                productArrayList.add(p);
+                }
+            //            myConn.close();
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        log.logger.info("all employees was selected");
+
+        return productArrayList;
     }
 
     public void closeConnection() {

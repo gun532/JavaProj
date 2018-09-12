@@ -7,8 +7,6 @@ import java.util.logging.Logger;
 
 public class Manager extends Employee {
 
-    private static final Logger LOGGER = Logger.getLogger(Manager.class.getName());
-
     private ManagerDataAccess managerDataAccess;
 
 
@@ -16,36 +14,13 @@ public class Manager extends Employee {
         super(employeeNumber, name, id, phone, accountNum,branchNumber, Profession.MANAGER);
     }
 
-//    public void addEmployee(Employee emp) {
-//        managerDataAccess.addEmployee(emp);
-//        LOGGER.info("A ");
-//    }
 
-
-//    public void deleteEmployee(int empID) {
-//        managerDataAccess.deleteEmployee(empID);
-//    }
-//
-//    public void updateEmployee(Employee e1) {
-//        managerDataAccess.updateEmployee(e1);
-//     }
-
-//    @Override
-//    public String toString() {
-//        String str = super.toString();
-//        str = str + ", Employee's position: " + this.getJobPos() + ", Employee's branch number: " + this.getBranchNumber();
-//        return str;
-//    }
-
-
-//    Employee selectDetails(int empNum) {
-//        return managerDataAccess.selectDetails(empNum);
-//    }
-
-
-//    void createNewOrder(int branchName, int productCode, int amount) throws Exception {
-//        managerDataAccess.createNewOrder(branchName,productCode,amount);
-//    }
+    @Override
+    public String toString() {
+        String str = super.toString();
+        str = str + ", Employee's position: " + this.getJobPos() + ", Employee's branch number: " + this.getBranchNumber();
+        return str;
+    }
 
 
 

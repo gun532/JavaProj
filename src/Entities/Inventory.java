@@ -21,8 +21,6 @@ public class Inventory {
         inventoryBL = new InventoryBL(new InventoryDataAccess());
     }
 
-
-    //adding new item to inventory
     public void addToInventory(Product product) throws Exception {
 
         //Check if inventory already has this product.

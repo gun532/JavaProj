@@ -9,6 +9,7 @@ import Entities.Branch;
 import Entities.Clients.Client;
 import Entities.Employee.Employee;
 import Entities.Inventory;
+import Entities.Product;
 import Entities.ShoppingCart;
 import com.google.gson.Gson;
 import org.json.*;
@@ -28,9 +29,10 @@ import java.security.Security;
 import java.util.ArrayList;
 
 
-public class ServerTest {
+public class Server {
     private static ArrayList<Employee> connectedUsers = new ArrayList<>();
     public static ArrayList<SSLSocket> connectionArray = new ArrayList<>(); //hold all the connections
+    private JFrame appFrame;
 
 
     public static class SocketServer extends Thread {
@@ -46,6 +48,7 @@ public class ServerTest {
         static SSLServerSocket sslServerSocket;
         static SSLServerSocketFactory sslServerSocketfactory;
         static SSLSocket sslSocket;
+        static Employee  loggedInEmployee = null;
 
         private SocketServer(SSLSocket socket) {
             this.sslSocket = socket;
@@ -76,19 +79,20 @@ public class ServerTest {
                     JSONArray jsArray;
                     EmployeeDto employeeDto;
                     BranchDto branchDto;
+                    ProductDto productDto;
 
                     switch (dtoBase.getFunc()) {
                         case "login":
                             LoginUtility loginUtility = new LoginUtility();
                             LoginDetailsDto loginDetailsDto = gson.fromJson(request, LoginDetailsDto.class);
-                            Employee loggedInEmployee =
+                            loggedInEmployee =
                                     loginUtility.login(loginDetailsDto.getEmployeeId(), loginDetailsDto.getPassword());
                             if (loggedInEmployee == null) out.println("null");
                             else {
                                 Boolean ifConnected = checkIfConnected(loggedInEmployee);
                                 if (ifConnected) out.println(ifConnected);
                                 else {
-                                    if (ifConnected == false || ifConnected == null) {
+                                    if (ifConnected == false) {
                                         String employeeJson = gson.toJson(loggedInEmployee);
                                         out.println(employeeJson);
                                     }
@@ -185,13 +189,48 @@ public class ServerTest {
                                     branchDto.getBranchNumber());
                             out.println(gson.toJson(isPhoneUpdated));
                             break;
+                        case "addNewProduct":
+                            productDto = gson.fromJson(request, ProductDto.class);
+                            boolean isProductAdded = managerBL.addNewProduct(productDto.getName(),productDto.getPrice());
+                            out.println(gson.toJson(isProductAdded));
+                            break;
+                        case "addProductAmountToInventory":
+                            productDto = gson.fromJson(request, ProductDto.class);
+                            int isProductAmountAdded = managerBL.addProductAmountToInventory(productDto.getInventoryCode(),
+                                    productDto.getAmount(),productDto.getName());
+                            out.println(gson.toJson(isProductAmountAdded));
+                            break;
+                        case "updateProduct":
+                            productDto = gson.fromJson(request, ProductDto.class);
+                            boolean isProductUpdated = managerBL.updateProduct(productDto.getName(),productDto.getPrice(),
+                                    productDto.getProductCode());
+                            out.println(gson.toJson(isProductUpdated));
+                            break;
+                        case "updateProductAmountInInventory":
+                            productDto = gson.fromJson(request, ProductDto.class);
+                            boolean isProductAmountUpdated = managerBL.updateProductAmountInInventory
+                                    (productDto.getAmount(),productDto.getInventoryCode(),productDto.getProductCode());
+                            out.println(gson.toJson(isProductAmountUpdated));
+                            break;
+                        case "removeProductFromInventory":
+                            productDto = gson.fromJson(request, ProductDto.class);
+                            boolean isProductDeleted = managerBL.removeProductFromInventory(
+                                    productDto.getProductCode(),productDto.getInventoryCode());
+                            out.println(gson.toJson(isProductDeleted));
+                            break;
+                        case "selectAllProducts":
+                            //EmployeeArrayDto employeeArrayDto = gson.fromJson(request, EmployeeArrayDto.class);
+                            String products = gson.toJson(managerBL.selectAllProducts());
+                            jsArray = new JSONArray(products);
+                            out.println(jsArray);
+                            break;
                     }
-
 
                 }
 
             } catch (Exception ex) {
-                ex.printStackTrace();
+//                ex.printStackTrace();
+                System.out.println("Connection reset");
 //            } catch (JSONException e) {
 //                e.printStackTrace();
             } finally {
@@ -199,7 +238,12 @@ public class ServerTest {
                     System.out.println("Closed connection \n");
                     in.close();
                     out.close();
-                    socket.close();
+                    if(connectedUsers.size() != 0 && connectionArray.size() != 0)
+                    {
+                        connectedUsers.remove(loggedInEmployee);
+                        connectionArray.remove(sslSocket);
+                    }
+                    sslSocket.close();
                 } catch (IOException ex) {
                     JOptionPane.showMessageDialog(new JFrame(), "Same Employee can't logged in twice", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -207,11 +251,11 @@ public class ServerTest {
         }
 
 
-        public static void main(String[] args) {
+        public static void runSocket() {
             //System.setProperty("javax.net.ssl.keyStore", "myKeyStore.jks");
             //System.setProperty("javax.net.ssl.keyStorePassword","123456");
             //System.setProperty("javax.net.debug","all");
-            System.out.println("SocketServer Example");
+            System.out.println("SocketServer started");
             //ServerSocket server = null;
             try {
                 //Provider provider = SSLContext.getDefault().getProvider();
@@ -242,8 +286,9 @@ public class ServerTest {
                 try {
 //                    if (server != null)
 //                        server.close();
-                    if (sslServerSocket != null)
+                    if (sslServerSocket != null) {
                         sslServerSocket.close();
+                    }
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
@@ -278,7 +323,12 @@ public class ServerTest {
             return true;
 
         }
+    }
 
+    public static void main(String[] args) {
+        SocketServer.runSocket();
+    }
+}
 //        public static  void main(String[] args) {
 //            System.out.println("SocketServer Example");
 //            try {
@@ -300,9 +350,4 @@ public class ServerTest {
 //            }
 //        }
 
-    }
 
-    public static ArrayList<Employee> getConnectedUsers() {
-        return connectedUsers;
-    }
-}

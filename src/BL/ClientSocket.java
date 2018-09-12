@@ -3,10 +3,7 @@ package BL;
 import Entities.Employee.Employee;
 import GUI.Controller;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import javax.net.ssl.*;
@@ -17,7 +14,11 @@ import java.util.Scanner;
 public class ClientSocket implements Runnable {
     private final String host = "127.0.0.1";
     private final int port = 8081;
-    public static SSLSocket echoSocket = null;
+    public static SSLSocket echoSocket;
+    PrintStream out;
+    DataInputStream in;
+//    PrintWriter out = null;
+//    BufferedReader in = null;
 
     public ClientSocket(String host, int port) {
         //specifing the trustStore file which contains the certificate & public of the server
@@ -44,8 +45,7 @@ public class ClientSocket implements Runnable {
         }
     }
 
-        PrintWriter out = null;
-        BufferedReader in = null;
+
 
 
     //        finally {
@@ -69,9 +69,13 @@ public class ClientSocket implements Runnable {
 //                checkStream();
 //            }
             try {
+//
+//                out = new DataOutputStream(echoSocket.getOutputStream(), true);
+//                in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
 
-                out = new PrintWriter(echoSocket.getOutputStream(), true);
-                in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
+                out = new PrintStream(echoSocket.getOutputStream());
+                in = new DataInputStream(echoSocket.getInputStream());
+                in.readUTF();
                 while(true)
                 {
 
@@ -86,7 +90,7 @@ public class ClientSocket implements Runnable {
                 e.printStackTrace();
             }
         }
-            finally {
+        finally {
             try {
                 echoSocket.close();
             } catch (IOException e) {
@@ -106,7 +110,7 @@ public class ClientSocket implements Runnable {
 //                if ("q".equals(userInput)) {
 //                    break;
 //                }
-//                out.println(userInput);
+//                out.writeUTF(userInput);
 //                System.out.println("server: " + in.readLine());
 //            }
 //

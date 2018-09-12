@@ -32,18 +32,19 @@ public class Controller {
     private Login login;
 
 
+    final String host = "127.0.0.1";
+    final int port = 8081;
 
     // Controller constructor holds all the app pages (panels)
     public Controller() { }
 
     public void loadApp() throws IOException {
 
-        final String host = "127.0.0.1";
-        final int port = 8081;
-        ClientSocket clientSocket = new ClientSocket(host, port);
+
 //        Thread connThread = new Thread(clientSocket);
 //        connThread.start();
 
+        new ClientSocket(host, port);
         appFrame = new JFrame();
 
         buildAppFrame();
@@ -202,6 +203,7 @@ public class Controller {
                 }
             }
         });
+//        new ClientSocket(host, port, this);
     }
 
     public static void main(String[] args) throws Exception {

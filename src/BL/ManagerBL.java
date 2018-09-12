@@ -4,6 +4,7 @@ import DAL.ManagerDataAccess;
 import Entities.Branch;
 import Entities.Clients.Client;
 import Entities.Employee.Employee;
+import Entities.Product;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -89,11 +90,38 @@ public class ManagerBL {
         return managerDataAccess.selectBranchDetails(branchNumber);
     }
 
-    public Boolean updateBranchPhoneNumber(String phone, int branchNumber)
+    public boolean updateBranchPhoneNumber(String phone, int branchNumber)
     {
         return managerDataAccess.updateBranchPhoneNumber(phone, branchNumber);
     }
 
+    public boolean addNewProduct(String name, double price)
+    {
+        return managerDataAccess.addNewProduct(name, price);
+    }
+
+    //on success this function return the product code
+    public int addProductAmountToInventory(int inventoryCode, int productAmount, String productName)
+    {
+        return managerDataAccess.addProductAmountToInventory(inventoryCode,productAmount,productName);
+    }
+
+    public boolean updateProduct(String name, double price, int productCode)
+    {
+        return managerDataAccess.updateProduct(name,price,productCode);
+    }
+
+    public boolean updateProductAmountInInventory(int amount, int inventoryCode, int productCode)
+    {
+        return managerDataAccess.updateProductAmountInInventory(amount,inventoryCode,productCode);
+    }
+    public boolean removeProductFromInventory(int productCode, int inventoryCode) {
+        return  managerDataAccess.removeProductFromInventory(productCode,inventoryCode);
+    }
+
+    public ArrayList<Product> selectAllProducts() {
+        return managerDataAccess.selectAllProducts();
+    }
     public JSONArray createReportTotalPurchasesInBranch(int branchNumber) {
         try {
             JSONArray jsonArray = new JSONArray();
