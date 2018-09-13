@@ -1,14 +1,20 @@
 package GUI;
 
 import BL.AuthService;
+import BL.ClientSocket;
 import BL.ManagerBL;
 import DAL.ManagerDataAccess;
+import DTO.EmployeeDto;
 import Entities.Employee.Employee;
 import Entities.Employee.Profession;
+import com.google.gson.Gson;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 public class UpdateEmployeePage extends JFrame {
@@ -48,6 +54,7 @@ public class UpdateEmployeePage extends JFrame {
     private Employee chosenEmp;
 
     private boolean isPasswordValid = true;
+    private String newEncryptedPass = null;
 
     public UpdateEmployeePage(Controller in_controller, Employee chosenEmployee) {
         this.controller = in_controller;
@@ -191,20 +198,14 @@ public class UpdateEmployeePage extends JFrame {
 
                         }else {
                             isPasswordValid = true;
-                            String newEncryptedPass = managerBL.getEncryptedPass(String.valueOf(fieldPassword.getPassword()));
+                            newEncryptedPass = managerBL.getEncryptedPass(String.valueOf(fieldPassword.getPassword()));
                         }
                     }
 
                     if(isPasswordValid) {
-                        // TODO: 03/09/2018 update  employee
-//                    managerBL.addEmployee(fieldFullName.getText(), encryptedPass ,Integer.parseInt(fieldEmpID.getText()), fieldPhoneNumber.getText(),
-//                            Integer.parseInt(fieldAccountNum.getText()), emp.getBranchNumber(), cmbEmpType.getSelectedItem().toString());
 
-                        JOptionPane.showMessageDialog(new JFrame(), "Employee " + fieldFullName.getText() + " was updated successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                        updateEmployee();
 
-                        controller.getEmployeesPage().setVisible(false);
-                        controller.showEmployeesPage();
-                        setVisible(false);
                     }
 
                 } else {
@@ -220,7 +221,38 @@ public class UpdateEmployeePage extends JFrame {
     }
 
     /*---/Page functions methods/-------------------------------------------------------------------------*/
+    private void updateEmployee() {
+        // TODO: make the phone number field no more than 9 or 7 digits
+        try
+        {
+            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            Gson gson = new Gson();
+            EmployeeDto employeeDto = new EmployeeDto("updateEmployee",fieldFullName.getText(),
+                    Integer.parseInt(fieldEmpID.getText()),chosenEmp.getEmployeeNumber(),fieldPhoneNumber.getText(),
+                    Integer.parseInt(fieldAccountNum.getText()),chosenEmp.getBranchNumber(),
+                    Profession.valueOf(cmbEmpType.getSelectedItem().toString()),newEncryptedPass);
 
+            out.println(gson.toJson(employeeDto));
+
+            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            String response = in.readLine();
+
+            if(response.equals("true"))
+            {
+
+                JOptionPane.showMessageDialog(new JFrame(), "Employee " + fieldFullName.getText() + " was updated successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+
+                controller.getEmployeesPage().setVisible(false);
+                controller.showEmployeesPage();
+                setVisible(false);
+            }
+            else {
+                JOptionPane.showMessageDialog(new JFrame(), "One of the input fields is empty!", "Invalid input", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
     private boolean isAlreadyExists() {
         if(chosenEmp.getId() != Integer.parseInt(fieldEmpID.getText())) {
             ArrayList<Employee> listEmp = controller.getEmployeesPage().getListOfEmployees();

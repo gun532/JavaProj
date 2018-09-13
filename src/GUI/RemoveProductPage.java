@@ -1,11 +1,18 @@
 package GUI;
 
+import BL.AuthService;
+import BL.ClientSocket;
+import DTO.ProductDto;
 import Entities.Product;
+import com.google.gson.Gson;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 
 public class RemoveProductPage extends JFrame {
 
@@ -27,6 +34,8 @@ public class RemoveProductPage extends JFrame {
     private CJButton btnCancel = new CJButton("Cancel", font);
 
     private CJPanel mainPanel;
+
+    private int inventoryCode = AuthService.getInstance().getCurrentEmployee().getBranchNumber();
 
     private Product chosenProduct;
 
@@ -89,9 +98,10 @@ public class RemoveProductPage extends JFrame {
         });
 
         btnRemove.addActionListener(e -> {
-            setVisible(false);
-            controller.getInventoryPage().removeFromInventory(Integer.parseInt(fieldProductCode.getText()),Integer.parseInt(fieldProductAmount.getText()));
-            JOptionPane.showMessageDialog(new JFrame(), fieldProductAmount.getText() + " item/s of product code - " + fieldProductCode.getText() + " were removed successfully!", "Success!", JOptionPane.INFORMATION_MESSAGE);
-        });
+
+
+          });
     }
+
+
 }

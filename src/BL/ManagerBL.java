@@ -1,8 +1,10 @@
 package BL;
 
 import DAL.ManagerDataAccess;
+import Entities.Branch;
 import Entities.Clients.Client;
 import Entities.Employee.Employee;
+import Entities.Product;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,8 +38,19 @@ public class ManagerBL {
         this.loginUtility = new LoginUtility();
     }
 
-    public void addEmployee(String name, String pass, int id, String phone, int accountNum, int branchNumber, String profession) {
-        managerDataAccess.addEmployee(name, pass, id, phone, accountNum, branchNumber, profession);
+    public boolean addEmployee(String name, String pass, int id, String phone, int accountNum, int branchNumber, String profession) {
+        return managerDataAccess.addEmployee(name, pass, id, phone, accountNum, branchNumber, profession);
+    }
+
+    public boolean deleteEmployee(int employeeNumber)
+    {
+        return managerDataAccess.deleteEmployee(employeeNumber);
+    }
+
+    public boolean updateEmployee(String name, int id, String phone, int accountNumber,
+                                  int branch, String profession, String pass, int employeeCode)
+    {
+        return managerDataAccess.updateEmployee(name,id,phone,accountNumber,branch,profession,pass,employeeCode);
     }
 
     public CashierBL getCashierBL() {
@@ -62,6 +75,53 @@ public class ManagerBL {
         return managerDataAccess.updateClient(clientID,name,phone,type,clientCode);
     }
 
+    public boolean increaseEmployeeInBranch(int branchNumber)
+    {
+        return managerDataAccess.increaseEmployeeInBranch(branchNumber);
+    }
+
+    public boolean decreaseEmployeeInBranch(int branchNumber)
+    {
+        return managerDataAccess.decreaseEmployeeInBranch(branchNumber);
+    }
+
+    public Branch selectBranchDetails(int branchNumber)
+    {
+        return managerDataAccess.selectBranchDetails(branchNumber);
+    }
+
+    public boolean updateBranchPhoneNumber(String phone, int branchNumber)
+    {
+        return managerDataAccess.updateBranchPhoneNumber(phone, branchNumber);
+    }
+
+    public boolean addNewProduct(String name, double price)
+    {
+        return managerDataAccess.addNewProduct(name, price);
+    }
+
+    //on success this function return the product code
+    public int addProductAmountToInventory(int inventoryCode, int productAmount, String productName)
+    {
+        return managerDataAccess.addProductAmountToInventory(inventoryCode,productAmount,productName);
+    }
+
+    public boolean updateProduct(String name, double price, int productCode)
+    {
+        return managerDataAccess.updateProduct(name,price,productCode);
+    }
+
+    public boolean updateProductAmountInInventory(int amount, int inventoryCode, int productCode)
+    {
+        return managerDataAccess.updateProductAmountInInventory(amount,inventoryCode,productCode);
+    }
+    public boolean removeProductFromInventory(int productCode, int inventoryCode) {
+        return  managerDataAccess.removeProductFromInventory(productCode,inventoryCode);
+    }
+
+    public ArrayList<Product> selectAllProducts() {
+        return managerDataAccess.selectAllProducts();
+    }
     public JSONArray createReportTotalPurchasesInBranch(int branchNumber) {
         try {
             JSONArray jsonArray = new JSONArray();
