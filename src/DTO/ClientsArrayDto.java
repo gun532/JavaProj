@@ -1,11 +1,7 @@
 package DTO;
 
 import Entities.Clients.Client;
-import Entities.Clients.ClientType;
-import Entities.ShoppingCart;
-
 import java.util.ArrayList;
-import java.util.Map;
 
 public class ClientsArrayDto extends DtoBase{
 

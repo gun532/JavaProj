@@ -1,21 +1,26 @@
 package GUI;
 
 import BL.AuthService;
+import BL.ClientSocket;
+import DTO.BranchDto;
 import Entities.Branch;
 import Entities.Employee.Employee;
 import Entities.Employee.Profession;
+import com.google.gson.Gson;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 
 public class BranchPage extends JPanel {
 
     private Controller controller;
-    private Employee emp = AuthService.getInstance().getCurrentEmployee();
 
-    // TODO: 08/09/2018 get branch details from DB through current employee.
-    //private Branch branch = AuthService.getBranch;
+    private Employee emp = AuthService.getInstance().getCurrentEmployee();
+    private int currentBranchNumber = emp.getBranchNumber();
+
 
     private SpringLayout theLayout = new SpringLayout();
 
@@ -61,7 +66,7 @@ public class BranchPage extends JPanel {
         subPanel1.add(labelBranchNumber);
 
         fieldBranchNumber.setFont(new Font("Arial", Font.BOLD, fontSize));
-        fieldBranchNumber.setText(String.valueOf(emp.getBranchNumber())); // TODO: 08/09/2018 replace to branch.getNumber().
+        fieldBranchNumber.setText(String.valueOf(currentBranchNumber));
         fieldBranchNumber.setEditable(false);
         fieldBranchNumber.setHorizontalAlignment(JTextField.CENTER);
         labelBranchNumber.setLabelFor(fieldBranchNumber);
@@ -101,6 +106,34 @@ public class BranchPage extends JPanel {
                 10, 30);       //xPad, yPad
 
         add(subPanel1);
+
+        selectDetails();
+    }
+
+    private void selectDetails() {
+        try {
+            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            Gson gson = new Gson();
+            BranchDto branchDto = new BranchDto("selectBranchDetails", currentBranchNumber, null, 0, null);
+            out.println(gson.toJson(branchDto));
+
+            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            String response = in.readLine();
+
+            if (response.equals("null")) {
+                throw new Exception();
+            } else {
+                Branch branch = null;
+                branch = gson.fromJson(response, Branch.class);
+                fieldLocation.setText(branch.getLocation());
+                fieldNumberEmp.setText(String.valueOf(branch.getNumberOfEmployees()));
+                fieldPhoneNumber.setText(branch.getPhone());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void buildSubPanel2(){
@@ -134,12 +167,12 @@ public class BranchPage extends JPanel {
             if(!fieldPhoneNumber.isEditable()) {
                 fieldPhoneNumber.setEditable(true);
                 btnUpdate.setText("Confirm");
-            }else{
+            }else {
                 fieldPhoneNumber.setEditable(false);
                 btnUpdate.setText("Update Phone");
 
-                String newPhoneNumber = fieldPhoneNumber.getText();
-                // TODO: 08/09/2018 update new phone number in DB.
+                updatePhone();
+
             }
         });
 
@@ -153,6 +186,35 @@ public class BranchPage extends JPanel {
             btnUpdate.setEnabled(false);
             btnReports.setEnabled(false);
         }
+    }
+
+    private void updatePhone() {
+        try
+        {
+            String newPhoneNumber = fieldPhoneNumber.getText();
+
+            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            Gson gson = new Gson();
+            BranchDto branchDto = new BranchDto("updateBranchPhoneNumber", currentBranchNumber,
+                    fieldLocation.getText(), Integer.parseInt(fieldNumberEmp.getText()), newPhoneNumber);
+
+            out.println(gson.toJson(branchDto));
+
+            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            String response = in.readLine();
+
+            if (response.equals("true")) {
+
+                JOptionPane.showMessageDialog(new JFrame(), "Branch " + currentBranchNumber + " phone number was updated successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                throw new Exception("could'nt write the change");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

@@ -1,13 +1,21 @@
 package GUI;
 
 import BL.AuthService;
+import BL.ClientSocket;
 import BL.ManagerBL;
 import DAL.ManagerDataAccess;
+import DTO.ClientDto;
+import DTO.EmployeeDto;
+import Entities.Clients.ClientType;
 import Entities.Employee.*;
+import com.google.gson.Gson;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 public class AddEmployeePage extends JFrame {
@@ -191,16 +199,10 @@ public class AddEmployeePage extends JFrame {
             if (!fieldEmpID.getText().isEmpty() && !fieldFullName.getText().isEmpty() && !fieldPhoneNumber.getText().isEmpty() && isPasswordValid) {
                 if (!isAlreadyExists()) {
 
-                    String encryptedPass = managerBL.getEncryptedPass(String.valueOf(fieldPassword.getPassword()));
-                    managerBL.addEmployee(fieldFullName.getText(), encryptedPass ,Integer.parseInt(fieldEmpID.getText()), fieldPhoneNumber.getText(),
-                            Integer.parseInt(fieldAccountNum.getText()), emp.getBranchNumber(), cmbEmpType.getSelectedItem().toString());
 
-                    JOptionPane.showMessageDialog(new JFrame(), "New employee " + fieldFullName.getText() + " was added successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                    addNewEmployee();
 
-                    controller.getEmployeesPage().setVisible(false);
-                    controller.showEmployeesPage();
 
-                    setVisible(false);
                 } else {
                     JOptionPane.showMessageDialog(new JFrame(), "Employee " + fieldEmpID.getText() + " already in the Employees list!", "Already exists!", JOptionPane.ERROR_MESSAGE);
                 }
@@ -211,6 +213,38 @@ public class AddEmployeePage extends JFrame {
         });
 
         btnCancel.addActionListener(e -> setVisible(false));
+    }
+
+    private void addNewEmployee() {
+            try
+            {
+                String encryptedPass = managerBL.getEncryptedPass(String.valueOf(fieldPassword.getPassword()));
+                PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+                Gson gson = new Gson();
+                EmployeeDto employeeDto = new EmployeeDto("addNewEmployee",fieldFullName.getText(),Integer.parseInt(fieldEmpID.getText()),
+                        0,fieldPhoneNumber.getText(),Integer.parseInt(fieldAccountNum.getText()),
+                        emp.getBranchNumber(),Profession.valueOf(cmbEmpType.getSelectedItem().toString()),encryptedPass);
+                out.println(gson.toJson(employeeDto));
+
+                DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+                String response = in.readLine();
+
+                if(response.equals("true"))
+                {
+
+                    JOptionPane.showMessageDialog(new JFrame(), "New employee " + fieldFullName.getText() + " was added successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+
+                    controller.getEmployeesPage().setVisible(false);
+                    controller.showEmployeesPage();
+
+                    setVisible(false);
+                }
+                else {
+                    JOptionPane.showMessageDialog(new JFrame(), "Employee " + fieldEmpID.getText() + " already in the Employees list!", "Already exists!", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
     }
 
     /*---/Page functions methods/-------------------------------------------------------------------------*/

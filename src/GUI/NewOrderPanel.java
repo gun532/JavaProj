@@ -273,8 +273,6 @@ public class NewOrderPanel extends CJPanel {
     }
 
     private void createNewOrder() {
-        Thread thread = new Thread(() -> {
-
             try {
                 PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
                 Gson gson = new Gson();
@@ -299,16 +297,11 @@ public class NewOrderPanel extends CJPanel {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-
-
-        });
-        thread.start();
     }
 
 
     //Class functions
     private void createInventory() {
-        Thread thread = new Thread(() -> {
 
             try {
                 PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
@@ -330,9 +323,6 @@ public class NewOrderPanel extends CJPanel {
                 e.printStackTrace();
             }
 
-
-        });
-        thread.start();
     }
 
     private void removeFromCart(int productCode, int amount) {

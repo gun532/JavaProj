@@ -1,29 +1,34 @@
 package DAL;
 
+import BL.GlobalLogger;
+import Entities.Branch;
 import Entities.Clients.Client;
 import Entities.Employee.*;
+import Entities.Product;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 public class ManagerDataAccess {
     private final String myDriver = "org.gjt.mm.mysql.Driver";
     private final Connection myConn;
-
-    private InventoryDataAccess inventoryDataAccess;
+    private GlobalLogger log = new GlobalLogger("logs.log");
 
     public ManagerDataAccess() throws IllegalStateException {
         try {
             myConn = DriverManager.getConnection
                     ("jdbc:mysql://localhost:3306/test_db", "root", "12345");
-            inventoryDataAccess = new InventoryDataAccess();
-
+            log.logger.setLevel(Level.INFO);
+            log.logger.setLevel(Level.WARNING);
+            log.logger.setLevel(Level.SEVERE);
         } catch (Exception e) {
+            log.logger.severe(e.getMessage());
             throw new IllegalStateException("Cannot connect the database!", e);
         }
     }
 
-    public void addEmployee(String name, String pass, int id, String phone, int accountNum, int branchNumber, String profession) {
+    public boolean addEmployee(String name, String pass, int id, String phone, int accountNum, int branchNumber, String profession) {
         try {
 
             //change it later to something more secure
@@ -44,14 +49,18 @@ public class ManagerDataAccess {
             statement.setString(7, profession);
 
             statement.executeUpdate();
-
+            log.logger.info("adding employee was successful");
+            return true;
 //            myConn.close();
 
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
+        return false;
     }
 
     public boolean deleteClient(int clientID) {
@@ -62,48 +71,67 @@ public class ManagerDataAccess {
             statement.setInt(1, clientID);
             statement.execute();
             //myConn.close();
+            log.logger.severe("deleting client with id: " + clientID + " was successful");
             return true;
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
         return false;
     }
 
-    public void deleteEmployee(int empNum) {
+    public boolean deleteEmployee(int empNum) {
         try {
             Class.forName(myDriver);
-            String sql = "DELETE from employee where empNum = ?";
+            String sql = "DELETE from employee where employeeCode = ?";
             PreparedStatement statement = myConn.prepareStatement(sql);
             statement.setInt(1, empNum);
             statement.execute();
+            log.logger.severe("deleting employee with employee number: " + empNum + " was successful");
+
+            return true;
 //            myConn.close();
+
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
+        return false;
     }
 
-    public void updateEmployee(Employee employee) {
+    public boolean updateEmployee(String name, int id, String phone, int accountNumber,
+                                  int branch, String profession, String pass, int employeeCode) {
         try {
             Class.forName(myDriver);
-            String sql = "UPDATE employee set name = ?, phone = ?, accountNum = ?, BranchNum = ?, profession = ? where employeeCode = ?";
+            String sql = "UPDATE employee set fullName = ?, ID = ?, phoneNum = ?, accountNumber = ?, branch = ?, profession = ?, password = ? where employeeCode = ?";
             PreparedStatement statement = myConn.prepareStatement(sql);
-            statement.setString(1, employee.getName());
-            statement.setString(2, employee.getPhone());
-            statement.setInt(3, employee.getAccountNum());
-            statement.setInt(4, employee.getBranchNumber());
-            statement.setString(5, employee.getJobPos().name());
-            statement.setInt(6, employee.getEmployeeNumber());
+            statement.setString(1, name);
+            statement.setInt(2, id);
+            statement.setString(3, phone);
+            statement.setInt(4, accountNumber);
+            statement.setInt(5, branch);
+            statement.setString(6, profession);
+            statement.setString(7, pass);
+            statement.setInt(8, employeeCode);
             statement.executeUpdate();
+            log.logger.info("employee was updated successfully");
+
+            return true;
 //            myConn.close();
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
+        return false;
     }
 
     public ArrayList<Employee> selectAllEmployees() {
@@ -137,19 +165,18 @@ public class ManagerDataAccess {
                         employeeArrayList.add(e);
                         break;
                 }
-//                c.setClientCode(rs.getInt("clientNumber"));
-//                c.setId(rs.getInt("clientID"));
-//                c.setFullName(rs.getString("fullName"));
-//                c.setPhoneNumber(rs.getString("phone"));
-//                c.setType(ClientType.valueOf(rs.getString("ClientType")));
-//                c.setDiscountRate(rs.getInt("discountRate"));
+
             }
 //            myConn.close();
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
+        log.logger.info("all employees was selected");
+
         return employeeArrayList;
     }
 
@@ -164,15 +191,17 @@ public class ManagerDataAccess {
             while (rs.next()) {
                 total = rs.getInt("totalPurchases");
             }
+            log.logger.info("total amount was calculated");
             return total;
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
         return 0;
     }
-
 
 
     private void createViewForTotalPurchasesForBranch(int branchNumber) {
@@ -183,9 +212,13 @@ public class ManagerDataAccess {
             PreparedStatement statement = myConn.prepareStatement(sql);
             statement.setInt(1, branchNumber);
             statement.executeUpdate();
+            log.logger.info("view in the db was created");
+
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             System.out.println("Table already exists!");
         }
     }
@@ -194,6 +227,7 @@ public class ManagerDataAccess {
         try {
             return rs.getMetaData();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -238,6 +272,53 @@ public class ManagerDataAccess {
             statement.setInt(5, clientCode);
 
             statement.executeUpdate();
+            log.logger.info("Client was updated");
+            return true;
+//            myConn.close();
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+
+        }
+
+        return false;
+    }
+
+    private int selectNumOfEmployeesInBranch(int branch) {
+        int numOfEmployees = 0;
+        try {
+            Class.forName(myDriver);
+            String sql = "SELECT numOfEmployees from branch where branchNumber = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, branch);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                numOfEmployees = rs.getInt("numOfEmployees");
+            }
+            log.logger.info("number of employees in branch " + branch + " was returned");
+            return numOfEmployees;
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        return numOfEmployees;
+    }
+
+    public boolean increaseEmployeeInBranch(int branchNumber) {
+        try {
+            Class.forName(myDriver);
+            int numOfEmployees = selectNumOfEmployeesInBranch(branchNumber) + 1;
+            String sql = "UPDATE branch set numOfEmployees = ? where branchNumber = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, numOfEmployees);
+            statement.setInt(2, branchNumber);
+            statement.executeUpdate();
             return true;
 //            myConn.close();
         } catch (ClassNotFoundException e) {
@@ -247,6 +328,252 @@ public class ManagerDataAccess {
         }
 
         return false;
+    }
+
+    public boolean decreaseEmployeeInBranch(int branchNumber) {
+        try {
+            Class.forName(myDriver);
+            int numOfEmployees = selectNumOfEmployeesInBranch(branchNumber) - 1;
+            String sql = "UPDATE branch set numOfEmployees = ? where branchNumber = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, numOfEmployees);
+            statement.setInt(2, branchNumber);
+            statement.executeUpdate();
+            return true;
+//            myConn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public Branch selectBranchDetails(int branchNumber) {
+        try {
+            Class.forName(myDriver);
+            String sql = "SELECT * from branch where branchNumber = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, branchNumber);
+            ResultSet rs = statement.executeQuery();
+            Branch branch;
+            while (rs.next()) {
+                branch = new Branch(rs.getString("location"), rs.getInt("numOfEmployees"),
+                        rs.getString("phone"), rs.getInt("branchNumber"));
+                log.logger.info("Branch details were returned");
+                return branch;
+            }
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean updateBranchPhoneNumber(String phone, int branchNumber) {
+        try {
+            Class.forName(myDriver);
+            String sql = "UPDATE branch set phone = ? where branchNumber = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setString(1, phone);
+            statement.setInt(2, branchNumber);
+            statement.executeUpdate();
+            log.logger.info("phone number in branch " + branchNumber + "was updated");
+            return true;
+//            myConn.close();
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean addNewProduct(String name, double price) {
+        try {
+            Class.forName(myDriver);
+            String sql = "INSERT INTO product (name, price) values (?,?)";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+
+            statement.setString(1, name);
+            statement.setDouble(2, price);
+
+            statement.executeUpdate();
+            log.logger.info("adding product was successful");
+            return true;
+//            myConn.close();
+
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public int addProductAmountToInventory(int inventoryCode, int productAmount, String productName) {
+        try {
+            int productCode = selectProductCodeByName(productName);
+            Class.forName(myDriver);
+            String sql = "INSERT INTO inventory (inventory_code, productCode, numberOfItems) values (?,?,?)";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+
+            statement.setInt(1, inventoryCode);
+            statement.setInt(2, productCode);
+            statement.setInt(3, productAmount);
+
+            statement.executeUpdate();
+            log.logger.info("adding product to inventory was successful");
+            return productCode;
+//            myConn.close();
+
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int selectProductCodeByName(String productName) {
+        try {
+            Class.forName(myDriver);
+            String sql = "SELECT productCode from product where name = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setString(1, productName);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int productCode = rs.getInt("productCode");
+                log.logger.info("Branch details were returned");
+                return productCode;
+            }
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public boolean updateProduct(String name, double price, int productCode) {
+        try {
+            Class.forName(myDriver);
+            String sql = "UPDATE product set name = ?, price = ? where productCode = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setString(1, name);
+            statement.setDouble(2, price);
+            statement.setInt(3, productCode);
+            statement.executeUpdate();
+            log.logger.info("product with code" + productCode + "was updated");
+            return true;
+//            myConn.close();
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    public boolean updateProductAmountInInventory(int amount, int inventoryCode, int productCode) {
+        try {
+            Class.forName(myDriver);
+            String sql = "UPDATE inventory set numberOfItems = ? where productCode = ? and inventory_code = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, amount);
+            statement.setInt(2, productCode);
+            statement.setInt(3, inventoryCode);
+            statement.executeUpdate();
+            log.logger.info("product amount with code" + productCode + "was updated");
+            return true;
+//            myConn.close();
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean removeProductFromInventory(int productCode, int inventoryCode) {
+        try {
+            Class.forName(myDriver);
+            String sql = "DELETE from inventory where productCode = ? and inventory_code = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, productCode);
+            statement.setInt(2, inventoryCode);
+            statement.execute();
+            //myConn.close();
+            log.logger.severe("deleting product with code: " + productCode + " from" +
+                    "branch number: " + inventoryCode + " was successful");
+            return true;
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    public ArrayList<Product> selectAllProducts() {
+        ArrayList<Product> productArrayList = new ArrayList<>();
+        try {
+            Class.forName(myDriver);
+            String sql = "SELECT * from product";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            //statement.setInt(1, empNum);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                Product p = new Product(rs.getInt("productCode"),rs.getString("name"),
+                        rs.getDouble("price"));
+                productArrayList.add(p);
+                }
+            //            myConn.close();
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        log.logger.info("all employees was selected");
+
+        return productArrayList;
+    }
+
+    public void closeConnection() {
+        try {
+            myConn.close();
+            log.logger.info("connection to db was terminated");
+
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
 
