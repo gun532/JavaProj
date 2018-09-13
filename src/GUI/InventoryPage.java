@@ -263,14 +263,14 @@ public class InventoryPage extends CJPanel {
 
     private void createInventory() {
         try {
-            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
             Gson gson = new Gson();
 
             InventoryDto inventoryDto = new InventoryDto("inverntoryByBranch", inventory.getMyInventory(),
                     emp.getBranchNumber(), inventory.getTotalProducts(), inventory.getTotalItems(), inventory.getTotalValue());
             out.println(gson.toJson(inventoryDto));
 
-            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
             String response = in.readLine();
 
             if (response.equals("null")) {
@@ -339,14 +339,14 @@ public class InventoryPage extends CJPanel {
 
     private void removeProductFromInventory(Product product, int inventoryCode) {
         try {
-            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
             Gson gson = new Gson();
 
             ProductDto productDto = new ProductDto("removeProductFromInventory", product.getName(),product.getPrice(),
                     product.getAmount(),product.getProductCode(), inventoryCode);
             out.println(gson.toJson(productDto));
 
-            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
             String response = in.readLine();
 
             if (response.equals("true")) {

@@ -1,6 +1,5 @@
 package GUI;
 
-import BL.ClientSocket;
 import BL.ManagerBL;
 import DAL.ManagerDataAccess;
 import DTO.ClientDto;
@@ -174,14 +173,14 @@ public class UpdateClientPage extends JFrame {
     private void updateClient() {
         try
         {
-            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
             Gson gson = new Gson();
             ClientDto clientDto = new ClientDto("updateClient",Integer.parseInt(fieldClientID.getText()),
                     fieldFullName.getText(),fieldPhoneNumber.getText(),
                     ClientType.valueOf(cmbClientType.getSelectedItem().toString()),chosenClient.getClientCode());
             out.println(gson.toJson(clientDto));
 
-            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
             String response = in.readLine();
 
             if(response.equals("true"))

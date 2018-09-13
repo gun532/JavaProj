@@ -1,7 +1,6 @@
 package GUI;
 
 import BL.AuthService;
-import BL.ClientSocket;
 import BL.ManagerBL;
 import DAL.ManagerDataAccess;
 import DTO.EmployeeDto;
@@ -225,7 +224,7 @@ public class UpdateEmployeePage extends JFrame {
         // TODO: make the phone number field no more than 9 or 7 digits
         try
         {
-            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
             Gson gson = new Gson();
             EmployeeDto employeeDto = new EmployeeDto("updateEmployee",fieldFullName.getText(),
                     Integer.parseInt(fieldEmpID.getText()),chosenEmp.getEmployeeNumber(),fieldPhoneNumber.getText(),
@@ -234,7 +233,7 @@ public class UpdateEmployeePage extends JFrame {
 
             out.println(gson.toJson(employeeDto));
 
-            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
             String response = in.readLine();
 
             if(response.equals("true"))

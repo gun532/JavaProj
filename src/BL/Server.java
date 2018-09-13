@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 
 public class Server {
-    private static ArrayList<Employee> connectedUsers = new ArrayList<>();
+    public static ArrayList<Employee> connectedUsers = new ArrayList<>();
     public static ArrayList<SSLSocket> connectionArray = new ArrayList<>(); //hold all the connections
     private JFrame appFrame;
 
@@ -41,14 +41,14 @@ public class Server {
         public static final int PORT_NUMBER = 8081;
         static DataInputStream in = null;
         static PrintStream out = null;
-        static Socket socket;
-        static ServerSocket server = null;
+        //static Socket socket;
+        //static ServerSocket server = null;
         private ManagerBL managerBL = new ManagerBL(new ManagerDataAccess());
         private CashierBL cashierBL = new CashierBL(new EmployeeDataAccess(), new InventoryDataAccess(), new ClientsDataAccess());
         static SSLServerSocket sslServerSocket;
         static SSLServerSocketFactory sslServerSocketfactory;
         static SSLSocket sslSocket;
-        static Employee  loggedInEmployee = null;
+        static Employee loggedInEmployee = null;
 
         private SocketServer(SSLSocket socket) {
             this.sslSocket = socket;
@@ -191,31 +191,31 @@ public class Server {
                             break;
                         case "addNewProduct":
                             productDto = gson.fromJson(request, ProductDto.class);
-                            boolean isProductAdded = managerBL.addNewProduct(productDto.getName(),productDto.getPrice());
+                            boolean isProductAdded = managerBL.addNewProduct(productDto.getName(), productDto.getPrice());
                             out.println(gson.toJson(isProductAdded));
                             break;
                         case "addProductAmountToInventory":
                             productDto = gson.fromJson(request, ProductDto.class);
                             int isProductAmountAdded = managerBL.addProductAmountToInventory(productDto.getInventoryCode(),
-                                    productDto.getAmount(),productDto.getName());
+                                    productDto.getAmount(), productDto.getName());
                             out.println(gson.toJson(isProductAmountAdded));
                             break;
                         case "updateProduct":
                             productDto = gson.fromJson(request, ProductDto.class);
-                            boolean isProductUpdated = managerBL.updateProduct(productDto.getName(),productDto.getPrice(),
+                            boolean isProductUpdated = managerBL.updateProduct(productDto.getName(), productDto.getPrice(),
                                     productDto.getProductCode());
                             out.println(gson.toJson(isProductUpdated));
                             break;
                         case "updateProductAmountInInventory":
                             productDto = gson.fromJson(request, ProductDto.class);
                             boolean isProductAmountUpdated = managerBL.updateProductAmountInInventory
-                                    (productDto.getAmount(),productDto.getInventoryCode(),productDto.getProductCode());
+                                    (productDto.getAmount(), productDto.getInventoryCode(), productDto.getProductCode());
                             out.println(gson.toJson(isProductAmountUpdated));
                             break;
                         case "removeProductFromInventory":
                             productDto = gson.fromJson(request, ProductDto.class);
                             boolean isProductDeleted = managerBL.removeProductFromInventory(
-                                    productDto.getProductCode(),productDto.getInventoryCode());
+                                    productDto.getProductCode(), productDto.getInventoryCode());
                             out.println(gson.toJson(isProductDeleted));
                             break;
                         case "selectAllProducts":
@@ -223,6 +223,13 @@ public class Server {
                             String products = gson.toJson(managerBL.selectAllProducts());
                             jsArray = new JSONArray(products);
                             out.println(jsArray);
+                            break;
+                        case "reportByDate":
+                            DateReportDto dateReportDto = gson.fromJson(request, DateReportDto.class);
+                            boolean isReportCreated =
+                                    managerBL.createReport_totalPurchasesInBranchByDate
+                                            (dateReportDto.getBranchNumber(), dateReportDto.getDate());
+                            out.println(gson.toJson(isReportCreated));
                             break;
                     }
 
@@ -238,8 +245,7 @@ public class Server {
                     System.out.println("Closed connection \n");
                     in.close();
                     out.close();
-                    if(connectedUsers.size() != 0 && connectionArray.size() != 0)
-                    {
+                    if (connectedUsers.size() != 0 && connectionArray.size() != 0) {
                         connectedUsers.remove(loggedInEmployee);
                         connectionArray.remove(sslSocket);
                     }
@@ -258,7 +264,6 @@ public class Server {
             System.out.println("SocketServer started");
             //ServerSocket server = null;
             try {
-                //Provider provider = SSLContext.getDefault().getProvider();
                 SSLContext context = SSLContext.getInstance("TLSv1.2");
                 context.init(null, null, null);
                 sslServerSocketfactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
@@ -323,7 +328,10 @@ public class Server {
             return true;
 
         }
+
     }
+
+
 
     public static void main(String[] args) {
         SocketServer.runSocket();

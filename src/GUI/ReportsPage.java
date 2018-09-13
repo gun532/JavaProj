@@ -1,13 +1,23 @@
 package GUI;
 
+import BL.AuthService;
+import DTO.DateReportDto;
+import DTO.EmployeeDto;
+import Entities.Employee.Profession;
+import com.google.gson.Gson;
 import com.toedter.calendar.JCalendar;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class ReportsPage extends JPanel {
 
@@ -56,7 +66,7 @@ public class ReportsPage extends JPanel {
 
         add(calendarPanel);
 
-        fieldCalendar.addPropertyChangeListener(evt -> chosenDate = new SimpleDateFormat("dd/MM/yy").format(fieldCalendar.getDate()));
+        fieldCalendar.addPropertyChangeListener(evt -> chosenDate = new SimpleDateFormat("yyyy-MM-dd").format(fieldCalendar.getDate()));
     }
 
     private void buildSubPanel(){
@@ -81,8 +91,7 @@ public class ReportsPage extends JPanel {
         });
 
         btnWordFile.addActionListener(e ->  {
-            try {
-                if (Desktop.isDesktopSupported()) {
+
                     /* TODO: 10/09/2018
                      1) Create the desired report word file using the String date from this.chosenDate.
                      2) Save the file in the path mentioned below ".idea/dataSources/wordReportsFiles/" recommend to save file name same as date.
@@ -90,18 +99,44 @@ public class ReportsPage extends JPanel {
                     */
 
                     //Example word file
-                    Desktop.getDesktop().open(new File(".idea/dataSources/wordReportsFiles/Example.docx"));
+                    //+"dateReport" + date+ ".docx"
+                    try
+                    {
+                        if (Desktop.isDesktopSupported()) {
+                            DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                            Date date = format.parse(chosenDate);
+                            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
+                            Gson gson = new Gson();
+                            DateReportDto dateReportDto = new DateReportDto("reportByDate", date,
+                                    AuthService.getInstance().getCurrentEmployee().getBranchNumber());
+
+                            out.println(gson.toJson(dateReportDto));
+
+                            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
+                            String response = in.readLine();
+
+                            if (response.equals("true")) {
+
+                                Desktop.getDesktop().open(new File(".idea/dataSources/wordReportsFiles/" + "dateReport" + chosenDate + ".docx"));
+                            } else {
+                                JOptionPane.showMessageDialog(new JFrame(), "report can;t be created!", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+
+                    //Desktop.getDesktop().open(new File(".idea/dataSources/wordReportsFiles/Example.docx"));
                     // Desktop.getDesktop().open(new File(".idea/dataSources/wordReportsFiles/" + fileName + ".docx"));
-                }
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
         });
 
         btnShowReport.addActionListener(e -> {
             //maybe show report using Json like in WebBrowser?
         });
     }
+
 
     @Override
     protected void paintComponent(Graphics g) { g.drawImage(controller.getInnerPageImage(),0,0,null); }

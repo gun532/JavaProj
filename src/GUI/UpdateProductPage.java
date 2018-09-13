@@ -1,7 +1,6 @@
 package GUI;
 
 import BL.AuthService;
-import BL.ClientSocket;
 import BL.ManagerBL;
 import DAL.ManagerDataAccess;
 import DTO.ProductDto;
@@ -176,14 +175,14 @@ public class UpdateProductPage extends JFrame {
 
     private void updateProduct(Product product, int inventoryCode) {
         try {
-            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
             Gson gson = new Gson();
 
             ProductDto productDto = new ProductDto("updateProduct", product.getName(),product.getPrice(),
                     product.getAmount(),product.getProductCode(), inventoryCode);
             out.println(gson.toJson(productDto));
 
-            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
             String response = in.readLine();
 
             if (response.equals("true")) {
@@ -200,14 +199,14 @@ public class UpdateProductPage extends JFrame {
 
     private void updateProductAmountInInventory(Product product) {
         try {
-            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
             Gson gson = new Gson();
 
             ProductDto productDto = new ProductDto("updateProductAmountInInventory", product.getName(),product.getPrice(),
                     product.getAmount(),product.getProductCode(), inventoryCode);
             out.println(gson.toJson(productDto));
 
-            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
             String response = in.readLine();
 
             if (response.equals("true")) {

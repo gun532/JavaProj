@@ -1,8 +1,8 @@
 package GUI;
 
-import BL.ClientSocket;
-
 import javax.imageio.ImageIO;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -10,6 +10,8 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -27,13 +29,12 @@ public class Controller {
     private ClientPage clientPage;
     private InventoryPage inventoryPage;
     private EmployeesPage employeesPage;
-    private BranchPage branchPage;
     private ReportsPage reportsPage;
-    private Login login;
 
 
-    final String host = "127.0.0.1";
-    final int port = 8081;
+    private final String host = "127.0.0.1";
+    private final int port = 8081;
+    public static SSLSocket echoSocket;
 
     // Controller constructor holds all the app pages (panels)
     public Controller() { }
@@ -41,10 +42,24 @@ public class Controller {
     public void loadApp() throws IOException {
 
 
-//        Thread connThread = new Thread(clientSocket);
+//        Thread connThread = new Thread(Controller);
 //        connThread.start();
+        try {
+            SSLContext context = SSLContext.getInstance("TLSv1.2");
+            context.init(null,null,null);
 
-        new ClientSocket(host, port);
+            System.out.println("Connecting to host " + host + " on port " + port + ".");
+            echoSocket = (SSLSocket) context.getSocketFactory().getDefault().createSocket(host, port);
+            echoSocket.setEnabledCipherSuites(echoSocket.getSupportedCipherSuites());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        }
+
+//        new Controller(host, port);
         appFrame = new JFrame();
 
         buildAppFrame();
@@ -199,11 +214,16 @@ public class Controller {
                 if (JOptionPane.showConfirmDialog(appFrame, "Are you sure you want to close this window?", "Close Window?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
                 {
                     // TODO: 10/09/2018 call function for closing socket and deleting login array.
+                    try {
+                        echoSocket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     System.exit(0);
                 }
             }
         });
-//        new ClientSocket(host, port, this);
+//        new Controller(host, port, this);
     }
 
     public static void main(String[] args) throws Exception {

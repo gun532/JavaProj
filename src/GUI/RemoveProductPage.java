@@ -1,18 +1,13 @@
 package GUI;
 
 import BL.AuthService;
-import BL.ClientSocket;
-import DTO.ProductDto;
 import Entities.Product;
-import com.google.gson.Gson;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.PrintStream;
+
 
 public class RemoveProductPage extends JFrame {
 

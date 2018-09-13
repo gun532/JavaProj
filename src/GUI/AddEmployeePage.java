@@ -1,7 +1,6 @@
 package GUI;
 
 import BL.AuthService;
-import BL.ClientSocket;
 import BL.ManagerBL;
 import DAL.ManagerDataAccess;
 import DTO.ClientDto;
@@ -219,14 +218,14 @@ public class AddEmployeePage extends JFrame {
             try
             {
                 String encryptedPass = managerBL.getEncryptedPass(String.valueOf(fieldPassword.getPassword()));
-                PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+                PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
                 Gson gson = new Gson();
                 EmployeeDto employeeDto = new EmployeeDto("addNewEmployee",fieldFullName.getText(),Integer.parseInt(fieldEmpID.getText()),
                         0,fieldPhoneNumber.getText(),Integer.parseInt(fieldAccountNum.getText()),
                         emp.getBranchNumber(),Profession.valueOf(cmbEmpType.getSelectedItem().toString()),encryptedPass);
                 out.println(gson.toJson(employeeDto));
 
-                DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+                DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
                 String response = in.readLine();
 
                 if(response.equals("true"))
