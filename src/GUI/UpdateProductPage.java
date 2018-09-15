@@ -1,15 +1,21 @@
 package GUI;
 
+import BL.AuthService;
 import BL.ManagerBL;
 import DAL.ManagerDataAccess;
+import DTO.ProductDto;
 import Entities.Employee.Employee;
 import Entities.Employee.Profession;
 import Entities.Product;
+import com.google.gson.Gson;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 public class UpdateProductPage extends JFrame {
@@ -38,7 +44,8 @@ public class UpdateProductPage extends JFrame {
     private CJButton btnUpdate = new CJButton("Update", font);
     private CJButton btnCancel = new CJButton("Cancel", font);
 
-    private ManagerBL managerBL = new ManagerBL(new ManagerDataAccess());
+    private int inventoryCode = AuthService.getInstance().getCurrentEmployee().getBranchNumber();
+
 
     private Product chosenProduct;
 
@@ -153,9 +160,7 @@ public class UpdateProductPage extends JFrame {
             if (!fieldProductName.getText().isEmpty() && !fieldAmount.getText().isEmpty() && !fieldProductPrice.getText().isEmpty()) {
                 try {
                     Product p = new Product(fieldProductName.getText(), Double.parseDouble(fieldProductPrice.getText()), Integer.parseInt(fieldAmount.getText()), chosenProduct.getProductCode());
-                    controller.getInventoryPage().updateInventory(p);
-                    JOptionPane.showMessageDialog(new JFrame(), "Product code - " + p.getProductCode() + " was updated successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
-                    setVisible(false);
+                    updateProduct(p,inventoryCode);
 
                 } catch (Exception e1) {
                     e1.printStackTrace();
@@ -166,6 +171,56 @@ public class UpdateProductPage extends JFrame {
         });
 
         btnCancel.addActionListener(e -> setVisible(false));
+    }
+
+    private void updateProduct(Product product, int inventoryCode) {
+        try {
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
+            Gson gson = new Gson();
+
+            ProductDto productDto = new ProductDto("updateProduct", product.getName(),product.getPrice(),
+                    product.getAmount(),product.getProductCode(), inventoryCode);
+            out.println(gson.toJson(productDto));
+
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
+            String response = in.readLine();
+
+            if (response.equals("true")) {
+                updateProductAmountInInventory(product);
+
+            } else {
+                JOptionPane.showMessageDialog(new JFrame(), "Error updating product", "Error", JOptionPane.ERROR_MESSAGE);
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateProductAmountInInventory(Product product) {
+        try {
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
+            Gson gson = new Gson();
+
+            ProductDto productDto = new ProductDto("updateProductAmountInInventory", product.getName(),product.getPrice(),
+                    product.getAmount(),product.getProductCode(), inventoryCode);
+            out.println(gson.toJson(productDto));
+
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
+            String response = in.readLine();
+
+            if (response.equals("true")) {
+                controller.getInventoryPage().updateInventory(product);
+                JOptionPane.showMessageDialog(new JFrame(), "Product code - " + product.getProductCode() + " was updated successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+
+                setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(new JFrame(), "Error adding new product to DB", "Error", JOptionPane.ERROR_MESSAGE);
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /*---/Page functions methods/-------------------------------------------------------------------------*/

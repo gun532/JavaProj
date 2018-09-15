@@ -83,9 +83,9 @@ public class MainMenuPage extends CJPanel {
             public void actionPerformed(ActionEvent e) {
                 //go to chat page use the controller
 
-                ManagerBL managerBL = new ManagerBL(new ManagerDataAccess());
-                JSONArray jsonArray = managerBL.createReportTotalPurchasesInBranch(2);
-                managerBL.writeJSONToFile(jsonArray);
+//                ManagerBL managerBL = new ManagerBL(new ManagerDataAccess());
+//                JSONArray jsonArray = managerBL.createReportTotalPurchasesInBranch(2);
+//                managerBL.writeJSONToFile(jsonArray);
 
             }
         });

@@ -1,19 +1,25 @@
 package GUI;
 
 import javax.imageio.ImageIO;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Controller {
     private JFrame appFrame;
     //Take user screen size
-    private int screenSizeWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().width;
-    private int screenSizeHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().height;
+    private int screenSizeWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+    private int screenSizeHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
 
     private ImageIcon icon;
     private Image innerPageImage;
@@ -23,22 +29,46 @@ public class Controller {
     private ClientPage clientPage;
     private InventoryPage inventoryPage;
     private EmployeesPage employeesPage;
-    private BranchPage branchPage;
-    private Login login;
+    private ReportsPage reportsPage;
+
+
+    private final String host = "127.0.0.1";
+    private final int port = 8081;
+    public static SSLSocket echoSocket;
 
     // Controller constructor holds all the app pages (panels)
-    public Controller() throws Exception { }
+    public Controller() { }
 
     public void loadApp() throws IOException {
 
-        appFrame = new JFrame();
-        buildAppFrame();
 
+//        Thread connThread = new Thread(Controller);
+//        connThread.start();
+        try {
+            SSLContext context = SSLContext.getInstance("TLSv1.2");
+            context.init(null,null,null);
+
+            System.out.println("Connecting to host " + host + " on port " + port + ".");
+            echoSocket = (SSLSocket) context.getSocketFactory().getDefault().createSocket(host, port);
+            echoSocket.setEnabledCipherSuites(echoSocket.getSupportedCipherSuites());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        }
+
+//        new Controller(host, port);
+        appFrame = new JFrame();
+
+        buildAppFrame();
         showLoginPage();
     }
 
     public void showLoginPage() throws IOException {
 
+        Login login;
         appFrame.setSize((int)(screenSizeWidth* 0.45),(int)(screenSizeHeight* 0.4));
         appFrame.setLocationRelativeTo(null);
 
@@ -121,11 +151,26 @@ public class Controller {
     }
 
     public void showBranchPage() {
+        BranchPage branchPage;
         try{
             branchPage = new BranchPage(this);
             appFrame.setTitle("Branch Details");
             branchPage.setVisible(true);
             appFrame.setContentPane(branchPage);
+        }
+        catch (Exception e)
+        {
+            //TODO:write to logger
+            e.printStackTrace();
+        }
+    }
+
+    public void showReportsPage() {
+        try{
+            reportsPage = new ReportsPage(this);
+            appFrame.setTitle("Reports");
+            reportsPage.setVisible(true);
+            appFrame.setContentPane(reportsPage);
         }
         catch (Exception e)
         {
@@ -150,7 +195,7 @@ public class Controller {
         //Build the frame
         appFrame.setLocationRelativeTo(null);
         appFrame.setResizable(false);
-        appFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        appFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         //Get and set app image icon
         SwingUtilities.invokeLater(new Runnable() {
@@ -162,19 +207,33 @@ public class Controller {
                 appFrame.setIconImage(icon.getImage());
             }
         });
+
+        appFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                if (JOptionPane.showConfirmDialog(appFrame, "Are you sure you want to close this window?", "Close Window?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
+                {
+                    // TODO: 10/09/2018 call function for closing socket and deleting login array.
+                    try {
+                        echoSocket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.exit(0);
+                }
+            }
+        });
+//        new Controller(host, port, this);
     }
 
     public static void main(String[] args) throws Exception {
 
         //Run GUI in a thread
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    new Controller().loadApp();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        SwingUtilities.invokeLater(() -> {
+            try {
+                new Controller().loadApp();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }

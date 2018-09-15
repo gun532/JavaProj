@@ -1,17 +1,22 @@
 package GUI;
 
-import BL.CashierBL;
-import DAL.ClientsDataAccess;
-import Entities.Clients.Client;
-import Entities.Clients.ClientType;
+import BL.AuthService;
+import DTO.ProductArrayDto;
+import DTO.ProductDto;
+
 import Entities.Product;
+import com.google.gson.Gson;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 public class AddNewProductPage extends JFrame {
@@ -37,7 +42,8 @@ public class AddNewProductPage extends JFrame {
     private CJButton btnAdd = new CJButton("Add", font);
     private CJButton btnCancel = new CJButton("Cancel", font);
 
-    //private CashierBL cashierBL = new CashierBL(new ClientsDataAccess());
+    private int inventoryCode = AuthService.getInstance().getCurrentEmployee().getBranchNumber();
+    private ArrayList<Product> listOfProducts = new ArrayList<>();
 
 
     public AddNewProductPage(Controller in_controller) {
@@ -141,15 +147,30 @@ public class AddNewProductPage extends JFrame {
 
         btnAdd.addActionListener(e -> {
             if (!fieldPrice.getText().isEmpty() && !fieldProductName.getText().isEmpty() && !fieldAmount.getText().isEmpty()) {
-
                 String pName = fieldProductName.getText();
                 double pPrice = Double.parseDouble(fieldPrice.getText());
                 int pAmount = Integer.parseInt(fieldAmount.getText());
 
                 try {
-                    Product p = new Product(pName, pPrice, pAmount);
-                    controller.getInventoryPage().addToInventory(p);
-                    setVisible(false);
+                    Product p;
+                    p = existsInProducts(pName);
+                    if(p != null) {
+                        int success = addProductAmountToInventory(inventoryCode,pName,pAmount);
+                        if(success != 0)
+                        {
+                            controller.getInventoryPage().addToInventory(p);
+                            setVisible(false);
+                        }
+                        else
+                            JOptionPane.showMessageDialog(new JFrame(), "Error adding new product to inventory", "Error", JOptionPane.ERROR_MESSAGE);
+
+                    }
+                    else
+                    {
+                        p = new Product(pName, pPrice, pAmount);
+                        addNewProduct(p,inventoryCode);
+                    }
+
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
@@ -162,6 +183,103 @@ public class AddNewProductPage extends JFrame {
 
         setVisible(true);
     }
+
+    private Product existsInProducts(String pName) {
+
+        try {
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
+            Gson gson = new Gson();
+
+            ProductArrayDto productArrayDto = new ProductArrayDto("selectAllProducts", listOfProducts);
+            out.println(gson.toJson(productArrayDto));
+
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
+            String response = in.readLine();
+
+            Product product;
+
+            if (response != null) {
+                JSONArray array = new JSONArray(response); //object.getJSONArray("");
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject js = array.getJSONObject(i);
+                    int productCode = js.getInt("productCode");
+                    String name = js.getString("name");
+                    double price = js.getDouble("price");
+                    product = new Product(productCode, name, price);
+                    listOfProducts.add(product);
+                }
+            }
+
+            for (int i = 0; i < listOfProducts.size(); i++) {
+                if(listOfProducts.get(i).getName().equals(pName)) return listOfProducts.get(i);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private int addProductAmountToInventory(int inventoryCode, String pName, int pAmount) {
+        try {
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
+            Gson gson = new Gson();
+
+            ProductDto productDto = new ProductDto("addProductAmountToInventory",
+                    pName,0,
+                    pAmount,0,inventoryCode);
+            out.println(gson.toJson(productDto));
+
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
+            String response = in.readLine();
+
+            if (response.equals("null")) {
+                //TODO: write succes to logger
+                JOptionPane.showMessageDialog(new JFrame(), "Error adding new product to inventory", "Error", JOptionPane.ERROR_MESSAGE);
+
+            } else {
+                int productCode = gson.fromJson(response, Integer.class);
+                return productCode;
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    private void addNewProduct(Product product, int inventoryCode) {
+        try {
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
+            Gson gson = new Gson();
+
+            ProductDto productDto = new ProductDto("addNewProduct", product.getName(),product.getPrice(),
+                    product.getAmount(),0, inventoryCode);
+            out.println(gson.toJson(productDto));
+
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
+            String response = in.readLine();
+
+            if (response.equals("null")) {
+                JOptionPane.showMessageDialog(new JFrame(), "Error adding new product to DB", "Error", JOptionPane.ERROR_MESSAGE);
+
+            } else {
+                int productCode = addProductAmountToInventory(inventoryCode,product.getName(),product.getAmount());
+                product.setProductCode(productCode);
+                controller.getInventoryPage().addToInventory(product);
+                JOptionPane.showMessageDialog(new JFrame(), "New Product " + product.getName() + " was added successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                setVisible(false);
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /*---/Page functions methods/-------------------------------------------------------------------------*/
 

@@ -7,7 +7,7 @@ import DAL.InventoryDataAccess;
 
 public class InventoryBL {
 
-    private InventoryDataAccess inventoryDataAccess;
+    private transient InventoryDataAccess inventoryDataAccess;
 
     public InventoryBL(InventoryDataAccess inventoryDataAccess) {
         this.inventoryDataAccess = inventoryDataAccess;

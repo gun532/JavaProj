@@ -2,8 +2,10 @@ package GUI;
 
 import BL.CashierBL;
 import DAL.ClientsDataAccess;
+import DTO.ClientDto;
 import Entities.Clients.Client;
 import Entities.Clients.ClientType;
+import com.google.gson.Gson;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +13,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 public class AddNewClientPage extends JFrame {
@@ -142,16 +147,11 @@ public class AddNewClientPage extends JFrame {
         btnAdd.addActionListener(e -> {
             if (!fieldClientID.getText().isEmpty() && !fieldFullName.getText().isEmpty() && !fieldPhoneNumber.getText().isEmpty()) {
                 if (!isAlreadyExists()) {
-                    // TODO: 03/09/2018 need the option to add client type of a new client into DB.
-                    cashierBL.addNewClient(Integer.parseInt(fieldClientID.getText()), fieldFullName.getText(), fieldPhoneNumber.getText());
 
-                    JOptionPane.showMessageDialog(new JFrame(), "New client " + fieldFullName.getText() + " was added successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
-
-                    controller.getClientPage().setVisible(false);
-                    controller.showClientPage();
-
-                    setVisible(false);
-                } else {
+                    cashierBL.addNewClient(Integer.parseInt(fieldClientID.getText()), fieldFullName.getText(), fieldPhoneNumber.getText(), cmbClientType.getSelectedItem().toString());
+                    addNewClient();
+                }
+                else {
                     JOptionPane.showMessageDialog(new JFrame(), "Client " + fieldClientID.getText() + " already in the clients list!", "Already exists!", JOptionPane.ERROR_MESSAGE);
                 }
 
@@ -161,6 +161,36 @@ public class AddNewClientPage extends JFrame {
         });
 
         btnCancel.addActionListener(e -> setVisible(false));
+    }
+
+    private void addNewClient() {
+        try
+        {
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
+            Gson gson = new Gson();
+            ClientDto clientDto = new ClientDto("addNewClient",Integer.parseInt(fieldClientID.getText()),
+                    fieldFullName.getText(),fieldPhoneNumber.getText(),
+                    ClientType.valueOf(cmbClientType.getSelectedItem().toString()),0);
+            out.println(gson.toJson(clientDto));
+
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
+            String response = in.readLine();
+
+            if(response.equals("true"))
+            {
+                JOptionPane.showMessageDialog(new JFrame(), "New client " + fieldFullName.getText() + " was added successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+
+                controller.getClientPage().setVisible(false);
+                controller.showClientPage();
+
+                setVisible(false);
+            }
+            else {
+                JOptionPane.showMessageDialog(new JFrame(), "Client " + fieldClientID.getText() + " already in the clients list!", "Already exists!", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
     }
 
     /*---/Page functions methods/-------------------------------------------------------------------------*/
