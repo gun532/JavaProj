@@ -1,16 +1,8 @@
 package GUI;
 
 import BL.AuthService;
-import BL.ClientSocket;
-import BL.ManagerBL;
-import DAL.ManagerDataAccess;
-import DTO.ClientsArrayDto;
 import DTO.EmployeeArrayDto;
 import DTO.EmployeeDto;
-import Entities.Clients.Client;
-import Entities.Clients.NewClient;
-import Entities.Clients.ReturnClient;
-import Entities.Clients.VipClient;
 import Entities.Employee.*;
 import com.google.gson.Gson;
 import org.json.JSONArray;
@@ -175,14 +167,14 @@ public class EmployeesPage extends JFrame {
 
     private void removeEmployee() {
             try {
-                PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+                PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
                 Gson gson = new Gson();
                 EmployeeDto employeeDto = new EmployeeDto("removeEmployee",chosenEmployee.getName(),chosenEmployee.getId(),
                         chosenEmployee.getEmployeeNumber(),chosenEmployee.getPhone(),chosenEmployee.getAccountNum(),
                         chosenEmployee.getBranchNumber(),chosenEmployee.getJobPos(),"null");
                 out.println(gson.toJson(employeeDto));
 
-                DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+                DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
                 String response = in.readLine();
                 if(response.equals("true"))
                 {
@@ -257,13 +249,13 @@ public class EmployeesPage extends JFrame {
     private void selectAllEmployees() {
 
         try {
-            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
             Gson gson = new Gson();
 
             EmployeeArrayDto employeeArrayDto = new EmployeeArrayDto("selectAllEmployess", listOfEmployees);
             out.println(gson.toJson(employeeArrayDto));
 
-            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
             String response = in.readLine();
 
             Employee employee;

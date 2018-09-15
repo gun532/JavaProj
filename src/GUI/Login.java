@@ -1,7 +1,6 @@
 package GUI;
 
 import BL.AuthService;
-import BL.ClientSocket;
 import DTO.LoginDetailsDto;
 import Entities.Employee.Cashier;
 import Entities.Employee.Employee;
@@ -118,14 +117,14 @@ public class Login extends JPanel {
     private void login() {
 
         try {
-            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream(), true);
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream(), true);
             int employeeInputId = Integer.parseInt(fieldID.getText());
             String passwordInput = String.valueOf(fieldPassword.getPassword());
             Gson gson = new Gson();
             LoginDetailsDto loginDetails = new LoginDetailsDto("login", employeeInputId, passwordInput);
             out.println(gson.toJson(loginDetails));
 
-            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
             String response = in.readLine();
 
             if (response.equals("null")) {

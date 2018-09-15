@@ -1,7 +1,6 @@
 package GUI;
 
 import BL.CashierBL;
-import BL.ClientSocket;
 import DAL.ClientsDataAccess;
 import DTO.ClientDto;
 import Entities.Clients.Client;
@@ -167,14 +166,14 @@ public class AddNewClientPage extends JFrame {
     private void addNewClient() {
         try
         {
-            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
             Gson gson = new Gson();
             ClientDto clientDto = new ClientDto("addNewClient",Integer.parseInt(fieldClientID.getText()),
                     fieldFullName.getText(),fieldPhoneNumber.getText(),
                     ClientType.valueOf(cmbClientType.getSelectedItem().toString()),0);
             out.println(gson.toJson(clientDto));
 
-            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
             String response = in.readLine();
 
             if(response.equals("true"))

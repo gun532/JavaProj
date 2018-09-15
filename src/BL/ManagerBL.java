@@ -22,6 +22,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ManagerBL {
     private CashierBL cashierBL;
@@ -122,49 +123,54 @@ public class ManagerBL {
     public ArrayList<Product> selectAllProducts() {
         return managerDataAccess.selectAllProducts();
     }
-    public JSONArray createReportTotalPurchasesInBranch(int branchNumber) {
-        try {
-            JSONArray jsonArray = new JSONArray();
-            JSONObject jsonObject = null;
-            int i = 0;
-            ResultSet rs = managerDataAccess.totalClientPurchasesInBranch(branchNumber);
-            ResultSetMetaData resultSetMetaData = managerDataAccess.getResultSetMetaData(rs);
-            while (rs.next()) {
-                int numColumns = resultSetMetaData.getColumnCount();
-                jsonObject = new JSONObject();
-                for ( i = 1; i < numColumns + 1; i++) {
-                    String column_name = resultSetMetaData.getColumnName(i);
-                    if (resultSetMetaData.getColumnType(i) == Types.VARCHAR) {
-                        jsonObject.put(column_name, rs.getString(column_name));
-                    } else if (resultSetMetaData.getColumnType(i) == Types.DOUBLE) {
-                        jsonObject.put(column_name, rs.getDouble(column_name));
-                    }
-                }
-                jsonArray.put(jsonObject);
-            }
-            jsonObject = new JSONObject();
-            jsonObject.put("Total Amount:",managerDataAccess.getTotalAmountInBranch(branchNumber));
-            jsonArray.put(jsonObject);
-            //jsonArray.put(i-1,managerDataAccess.getTotalAmountInBranch(branchNumber));
-            //jsonArray.put(jsonObject.put("Total Amount:", managerDataAccess.getTotalAmountInBranch(branchNumber)));
-            return jsonArray;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
+
+    public boolean createReport_totalPurchasesInBranchByDate(int branchNumber, java.util.Date date) {
+        return managerDataAccess.createReport_totalPurchasesInBranchByDate(branchNumber,date);
     }
 
-    public void writeJSONToFile(JSONArray jsonArray) {
-        try (FileWriter file = new FileWriter("/Users/IBM_ADMIN/Desktop/file1.json")) {
-            file.write(jsonArray.toString());
-            System.out.println("Successfully Copied JSON Object to File...");
-            //System.out.println("\nJSON Object: " + obj);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//    public JSONArray createReportTotalPurchasesInBranch(int branchNumber) {
+//        try {
+//            JSONArray jsonArray = new JSONArray();
+//            JSONObject jsonObject = null;
+//            int i = 0;
+//            ResultSet rs = managerDataAccess.totalClientPurchasesInBranch(branchNumber);
+//            ResultSetMetaData resultSetMetaData = managerDataAccess.getResultSetMetaData(rs);
+//            while (rs.next()) {
+//                int numColumns = resultSetMetaData.getColumnCount();
+//                jsonObject = new JSONObject();
+//                for ( i = 1; i < numColumns + 1; i++) {
+//                    String column_name = resultSetMetaData.getColumnName(i);
+//                    if (resultSetMetaData.getColumnType(i) == Types.VARCHAR) {
+//                        jsonObject.put(column_name, rs.getString(column_name));
+//                    } else if (resultSetMetaData.getColumnType(i) == Types.DOUBLE) {
+//                        jsonObject.put(column_name, rs.getDouble(column_name));
+//                    }
+//                }
+//                jsonArray.put(jsonObject);
+//            }
+//            jsonObject = new JSONObject();
+//            jsonObject.put("Total Amount:",managerDataAccess.getTotalAmountInBranch(branchNumber));
+//            jsonArray.put(jsonObject);
+//            //jsonArray.put(i-1,managerDataAccess.getTotalAmountInBranch(branchNumber));
+//            //jsonArray.put(jsonObject.put("Total Amount:", managerDataAccess.getTotalAmountInBranch(branchNumber)));
+//            return jsonArray;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
-    }
+//    public void writeJSONToFile(JSONArray jsonArray) {
+//        try (FileWriter file = new FileWriter("/Users/IBM_ADMIN/Desktop/file1.json")) {
+//            file.write(jsonArray.toString());
+//            System.out.println("Successfully Copied JSON Object to File...");
+//            //System.out.println("\nJSON Object: " + obj);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
 }

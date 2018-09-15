@@ -1,21 +1,14 @@
 package GUI;
 
 import BL.AuthService;
-import BL.CashierBL;
-import BL.ClientSocket;
-import DAL.ClientsDataAccess;
-import DAL.EmployeeDataAccess;
 import DTO.InventoryDto;
-import DTO.LoginDetailsDto;
 import DTO.OrderDto;
 import Entities.Clients.Client;
 import Entities.Clients.ClientType;
 import Entities.Deal;
-import Entities.Employee.Seller;
 import Entities.Inventory;
 import Entities.Product;
 import Entities.Employee.Employee;
-import DAL.InventoryDataAccess;
 import Entities.ShoppingCart;
 import com.google.gson.Gson;
 
@@ -274,14 +267,14 @@ public class NewOrderPanel extends CJPanel {
 
     private void createNewOrder() {
             try {
-                PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+                PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
                 Gson gson = new Gson();
 
                 OrderDto orderDto = new OrderDto("createNewOrder", inventory, chosenClient.getId(), shoppingCart, Double.parseDouble(fieldInTotal.getText()));
 
                 out.println(gson.toJson(orderDto));
 
-                DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+                DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
                 String response = in.readLine();
 
                 if (response.equals("false")) {
@@ -304,14 +297,14 @@ public class NewOrderPanel extends CJPanel {
     private void createInventory() {
 
             try {
-                PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+                PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
                 Gson gson = new Gson();
 
                 InventoryDto inventoryDto = new InventoryDto("inverntoryByBranch", inventory.getMyInventory(),
                         emp.getBranchNumber(), inventory.getTotalProducts(), inventory.getTotalItems(), inventory.getTotalValue());
                 out.println(gson.toJson(inventoryDto));
 
-                DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+                DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
                 String response = in.readLine();
 
                 if (response.equals("null")) {

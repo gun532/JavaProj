@@ -1,13 +1,9 @@
 package GUI;
 
 import BL.AuthService;
-import BL.CashierBL;
-import BL.ClientSocket;
-import DAL.ClientsDataAccess;
 import DTO.ProductArrayDto;
 import DTO.ProductDto;
-import Entities.Clients.Client;
-import Entities.Clients.ClientType;
+
 import Entities.Product;
 import com.google.gson.Gson;
 import org.json.JSONArray;
@@ -16,8 +12,6 @@ import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.DataInputStream;
@@ -193,13 +187,13 @@ public class AddNewProductPage extends JFrame {
     private Product existsInProducts(String pName) {
 
         try {
-            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
             Gson gson = new Gson();
 
             ProductArrayDto productArrayDto = new ProductArrayDto("selectAllProducts", listOfProducts);
             out.println(gson.toJson(productArrayDto));
 
-            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
             String response = in.readLine();
 
             Product product;
@@ -232,7 +226,7 @@ public class AddNewProductPage extends JFrame {
 
     private int addProductAmountToInventory(int inventoryCode, String pName, int pAmount) {
         try {
-            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
             Gson gson = new Gson();
 
             ProductDto productDto = new ProductDto("addProductAmountToInventory",
@@ -240,7 +234,7 @@ public class AddNewProductPage extends JFrame {
                     pAmount,0,inventoryCode);
             out.println(gson.toJson(productDto));
 
-            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
             String response = in.readLine();
 
             if (response.equals("null")) {
@@ -260,14 +254,14 @@ public class AddNewProductPage extends JFrame {
 
     private void addNewProduct(Product product, int inventoryCode) {
         try {
-            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
             Gson gson = new Gson();
 
             ProductDto productDto = new ProductDto("addNewProduct", product.getName(),product.getPrice(),
                     product.getAmount(),0, inventoryCode);
             out.println(gson.toJson(productDto));
 
-            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
             String response = in.readLine();
 
             if (response.equals("null")) {

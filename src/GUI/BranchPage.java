@@ -1,7 +1,6 @@
 package GUI;
 
 import BL.AuthService;
-import BL.ClientSocket;
 import DTO.BranchDto;
 import Entities.Branch;
 import Entities.Employee.Employee;
@@ -112,12 +111,12 @@ public class BranchPage extends JPanel {
 
     private void selectDetails() {
         try {
-            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
             Gson gson = new Gson();
             BranchDto branchDto = new BranchDto("selectBranchDetails", currentBranchNumber, null, 0, null);
             out.println(gson.toJson(branchDto));
 
-            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
             String response = in.readLine();
 
             if (response.equals("null")) {
@@ -193,14 +192,14 @@ public class BranchPage extends JPanel {
         {
             String newPhoneNumber = fieldPhoneNumber.getText();
 
-            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
             Gson gson = new Gson();
             BranchDto branchDto = new BranchDto("updateBranchPhoneNumber", currentBranchNumber,
                     fieldLocation.getText(), Integer.parseInt(fieldNumberEmp.getText()), newPhoneNumber);
 
             out.println(gson.toJson(branchDto));
 
-            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
             String response = in.readLine();
 
             if (response.equals("true")) {

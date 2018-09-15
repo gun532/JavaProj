@@ -25,10 +25,6 @@ public class CashierBL {
         this.clientsDataAccess = clientsDataAccess;
     }
 
-    public CashierBL(EmployeeDataAccess employeeDataAccess) {
-        this.employeeDataAccess = employeeDataAccess;
-    }
-
 
     public Employee selectEmpDetailsById(int id) {
         return employeeDataAccess.selectEmpDetailsById(id);

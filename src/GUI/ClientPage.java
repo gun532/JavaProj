@@ -2,7 +2,6 @@ package GUI;
 
 import BL.AuthService;
 import BL.CashierBL;
-import BL.ClientSocket;
 import DAL.ClientsDataAccess;
 import DTO.ClientDto;
 import DTO.ClientsArrayDto;
@@ -304,13 +303,13 @@ public class ClientPage extends JFrame {
 
     private void chooseAllClients() {
             try {
-                PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+                PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
                 Gson gson = new Gson();
 
                 ClientsArrayDto clientsArrayDtoDto = new ClientsArrayDto("selectAllClients", listOfClients);
                 out.println(gson.toJson(clientsArrayDtoDto));
 
-                DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+                DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
                 String response = in.readLine();
 
                 Client client;
@@ -402,13 +401,13 @@ public class ClientPage extends JFrame {
 
     private void removeClient() {
         try {
-            PrintStream out = new PrintStream(ClientSocket.echoSocket.getOutputStream());
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
             Gson gson = new Gson();
             ClientDto clientDto = new ClientDto("removeClient", chosenClient.getId(), chosenClient.getFullName(),
                     chosenClient.getPhoneNumber(), chosenClient.getType(), chosenClient.getClientCode());
             out.println(gson.toJson(clientDto));
 
-            DataInputStream in = new DataInputStream(ClientSocket.echoSocket.getInputStream());
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
             String response = in.readLine();
             if(response.equals("true"))
             {
