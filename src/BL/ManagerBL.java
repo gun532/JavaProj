@@ -54,9 +54,6 @@ public class ManagerBL {
         return managerDataAccess.updateEmployee(name,id,phone,accountNumber,branch,profession,pass,employeeCode);
     }
 
-    public CashierBL getCashierBL() {
-        return cashierBL;
-    }
 
     public String getEncryptedPass(String pass) {
         return loginUtility.getEncryptedPass(pass);
