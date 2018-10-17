@@ -78,20 +78,15 @@ public class MainMenuPage extends CJPanel {
 
         btnChat = new CJButton("Chat", font);
         subPanel.add(btnChat);
-        btnChat.addActionListener(e ->{
 
+        btnChat.addActionListener(e ->{
             setVisible(false);
             controller.showChatPage();
             JOptionPane.showMessageDialog(new JFrame(), "Click on an employee from the list to start chat with.", "Chat", JOptionPane.INFORMATION_MESSAGE);
         });
 
         btnEmployees = new CJButton("Employees", font);
-        btnEmployees.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.showEmployeesPage();
-            }
-        });
+        btnEmployees.addActionListener(e -> controller.showEmployeesPage());
         subPanel.add(btnEmployees);
 
         btnNewOrder = new CJButton("New Order", font);

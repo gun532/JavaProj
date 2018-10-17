@@ -2,8 +2,7 @@ package GUI;
 
 import BL.AuthService;
 import DTO.DateReportDto;
-import DTO.EmployeeDto;
-import Entities.Employee.Profession;
+import Entities.Product;
 import com.google.gson.Gson;
 import com.toedter.calendar.JCalendar;
 
@@ -17,7 +16,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 public class ReportsPage extends JPanel {
 
@@ -27,20 +25,23 @@ public class ReportsPage extends JPanel {
     private int fontSize = 30;
     private Font font = new Font("Candara", 0, fontSize); //Custom page font
 
-    private JLabel labelPickDate = new JLabel("Daily Reports:", JLabel.TRAILING);
+    private JLabel labelPickDate = new JLabel("Reports:", JLabel.TRAILING);
     private CJPanel calendarPanel;
     private JCalendar fieldCalendar = new JCalendar();
     private String chosenDate;
 
     private CJPanel subPanel;
     private CJButton btnBack = new CJButton("Back",font);
-    private CJButton btnWordFile = new CJButton("Open in Word",font);
-    private CJButton btnShowReport = new CJButton("Show Report",font);
+    private CJButton btnDateReport = new CJButton("By Date",font);
+    private CJButton btnTotalReport = new CJButton("By Branch",font);
+    private CJButton btnProductReport = new CJButton("By Product",font);
 
+    private ProductReportPage productReportPage;
 
     public ReportsPage(Controller controller) throws HeadlessException {
 
         this.controller = controller;
+        this.productReportPage = new ProductReportPage(controller);
 
         setLayout(theLayout);
 
@@ -75,13 +76,15 @@ public class ReportsPage extends JPanel {
 
         theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, subPanel, 0, SpringLayout.HORIZONTAL_CENTER, this);
         theLayout.putConstraint(SpringLayout.NORTH, subPanel, 70, SpringLayout.SOUTH, calendarPanel);
-
+        theLayout.putConstraint(SpringLayout.WEST, subPanel, 10, SpringLayout.WEST, this);
+        theLayout.putConstraint(SpringLayout.EAST, subPanel, 10, SpringLayout.EAST, this);
 
         subPanel.add(btnBack);
-        subPanel.add(btnWordFile);
-        subPanel.add(btnShowReport);
+        subPanel.add(btnDateReport);
+        subPanel.add(btnTotalReport);
+        subPanel.add(btnProductReport);
 
-        SpringUtilities.makeCompactGrid(subPanel,1,3,25,10,50,5);
+        SpringUtilities.makeCompactGrid(subPanel,1,4,10,10,10,5);
 
         add(subPanel);
 
@@ -90,16 +93,7 @@ public class ReportsPage extends JPanel {
             controller.showBranchPage();
         });
 
-        btnWordFile.addActionListener(e ->  {
-
-                    /* TODO: 10/09/2018
-                     1) Create the desired report word file using the String date from this.chosenDate.
-                     2) Save the file in the path mentioned below ".idea/dataSources/wordReportsFiles/" recommend to save file name same as date.
-                     3) Open file using the file's path like example below.
-                    */
-
-                    //Example word file
-                    //+"dateReport" + date+ ".docx"
+        btnDateReport.addActionListener(e ->  {
                     try
                     {
                         if (Desktop.isDesktopSupported()) {
@@ -123,8 +117,6 @@ public class ReportsPage extends JPanel {
                             }
                         }
 
-                    //Desktop.getDesktop().open(new File(".idea/dataSources/wordReportsFiles/Example.docx"));
-                    // Desktop.getDesktop().open(new File(".idea/dataSources/wordReportsFiles/" + fileName + ".docx"));
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     } catch (ParseException e1) {
@@ -132,8 +124,13 @@ public class ReportsPage extends JPanel {
                     }
         });
 
-        btnShowReport.addActionListener(e -> {
-            //maybe show report using Json like in WebBrowser?
+        btnTotalReport.addActionListener(e -> {
+            // TODO: 17/10/2018 open report of branch sales.
+        });
+
+        btnProductReport.addActionListener(e -> {
+            this.productReportPage.setVisible(true);
+            JOptionPane.showMessageDialog(new JFrame(), "Click on product from table to show detailed report", "Report by Product", JOptionPane.INFORMATION_MESSAGE);
         });
     }
 

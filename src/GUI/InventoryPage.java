@@ -146,7 +146,6 @@ public class InventoryPage extends CJPanel {
             @Override
             protected Object doInBackground() {
                 if (chosenProduct != null) {
-                    //removeProductPage = new RemoveProductPage(controller);
 
                     removeProductFromInventory(chosenProduct, emp.getBranchNumber());
                     updateTable();
@@ -186,9 +185,8 @@ public class InventoryPage extends CJPanel {
 
         //Finish button was pressed
         btnFinish.addActionListener(e -> {
-            // TODO: 01/09/2018 apply changes to DB... currently not working.
             setVisible(false);
-            //inventoryBL.createNewOrder(inventory);
+
             try {
                 controller.showMainMenuPage();
             } catch (IOException e1) {
@@ -283,19 +281,6 @@ public class InventoryPage extends CJPanel {
         }
     }
 
-//    public void removeFromInventory(int productCode, int amount) {
-//        try {
-//
-//            inventory.takeFromInventory(productCode, amount);
-//            updateTable();
-//
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "Invalid input", JOptionPane.ERROR_MESSAGE);
-//            //e.printStackTrace();
-//        }
-//
-//    }
-
     public void addToInventory(Product p) {
         try {
 
@@ -350,9 +335,7 @@ public class InventoryPage extends CJPanel {
             String response = in.readLine();
 
             if (response.equals("true")) {
-                //setVisible(false);
 
-                //controller.getInventoryPage().removeFromInventory(chosenProduct.);
                 JOptionPane.showMessageDialog(new JFrame(), "product with code - " + chosenProduct.getProductCode() + " were removed successfully!", "Success!", JOptionPane.INFORMATION_MESSAGE);
 
             } else {

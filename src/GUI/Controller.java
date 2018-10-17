@@ -61,10 +61,9 @@ public class Controller {
             echoSocket.setEnabledCipherSuites(echoSocket.getSupportedCipherSuites());
             appFrame = new JFrame();
 
-
-
             buildAppFrame();
             showLoginPage();
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {
@@ -232,7 +231,6 @@ public class Controller {
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
                 if (JOptionPane.showConfirmDialog(appFrame, "Are you sure you want to close this window?", "Close Window?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
                 {
-                    // TODO: 10/09/2018 call function for closing socket and deleting login array.
                     try {
                         echoSocket.close();
                     } catch (IOException e) {
