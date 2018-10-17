@@ -42,7 +42,7 @@ public class ClientPage extends JFrame {
     private SpringLayout theLayout = new SpringLayout();
     private CJPanel mainPanel;
 
-    private JTextField searchField = new JTextField("Search Client...");
+    private JTextField searchField = new JTextField("Search BL.Client...");
 
     private CJButton btnAddNewClient = new CJButton("Add", font);
     private CJButton btnRemoveClient = new CJButton("Remove", font);
@@ -52,7 +52,7 @@ public class ClientPage extends JFrame {
     private CJButton btnCancel = new CJButton("Cancel", font);
 
     //Defining table headers and columns type
-    private String[] colNames = {"Client Code", "Client ID", "Client Name", "Phone Number", "Client Type"};
+    private String[] colNames = {"BL.Client Code", "BL.Client ID", "BL.Client Name", "Phone Number", "BL.Client Type"};
     private Class[] colClasses = {Integer.class, Integer.class, String.class, String.class, ClientType.class};
 
     private ClientTableModal clientTableModal = new ClientTableModal(colNames, colClasses);
@@ -62,7 +62,7 @@ public class ClientPage extends JFrame {
     private TableRowSorter<ClientTableModal> sorter = new TableRowSorter<>(clientTableModal);
     private AddNewClientPage addNewClientPage;
 
-    //Client data
+    //BL.Client data
     private CashierBL cashierBL = new CashierBL(new ClientsDataAccess());
     private Client chosenClient;
     private ArrayList<Client> listOfClients = new ArrayList<>();
@@ -108,7 +108,7 @@ public class ClientPage extends JFrame {
 //
 //            @Override
 //            public void focusLost(FocusEvent e) {
-//                searchField.setText("Search Client...");
+//                searchField.setText("Search BL.Client...");
 //            }
 //        });
 
@@ -274,7 +274,7 @@ public class ClientPage extends JFrame {
         int selectedRowIndex = clientTable.getSelectedRow();
         selectedRowIndex = clientTable.convertRowIndexToModel(selectedRowIndex);
 
-        // set the selected row data into Client
+        // set the selected row data into BL.Client
         int clientCode = (int) (clientTableModal.getValueAt(selectedRowIndex, 0));
         int clientID = (int) (clientTableModal.getValueAt(selectedRowIndex, 1));
         String clientName = (clientTableModal.getValueAt(selectedRowIndex, 2).toString());
@@ -357,13 +357,13 @@ public class ClientPage extends JFrame {
 
                     //here use the json to parse into your custom object
 
-//                    ArrayList<Client> arrayList = new ArrayList(array.size());
+//                    ArrayList<BL.Client> arrayList = new ArrayList(array.size());
 //                    for(int i=0;i < array.size();i++){
 //                       String id = array.get(0).toString();
 //                    }
 
 
-                    //listOfClients = new Gson().fromJson(response, new TypeToken<ArrayList<Client>>(){}.getType());
+                    //listOfClients = new Gson().fromJson(response, new TypeToken<ArrayList<BL.Client>>(){}.getType());
 
 //                    int id = listOfClients.get(0).getId();
 
@@ -411,7 +411,7 @@ public class ClientPage extends JFrame {
             String response = in.readLine();
             if(response.equals("true"))
             {
-                JOptionPane.showMessageDialog(new JFrame(), "Client " + chosenClient.getFullName() + " was removed successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(new JFrame(), "BL.Client " + chosenClient.getFullName() + " was removed successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
 
                 controller.getClientPage().setVisible(false);
                 controller.showClientPage();

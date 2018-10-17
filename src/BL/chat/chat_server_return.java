@@ -54,7 +54,7 @@ public class chat_server_return implements Runnable{
                     }
                     msg = input.nextLine();
 
-                    System.out.println("Client Said: " +msg);
+                    System.out.println("BL.Client Said: " +msg);
 
                     for(int i = 1; i<= ChatServer.connectionArray.size();i++)
                     {

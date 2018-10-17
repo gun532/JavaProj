@@ -71,7 +71,7 @@ public class AnnotationTests {
     @Test
     public void clientTest1(){
 
-        System.out.println("Client assertion test 2 objects same id.");
+        System.out.println("BL.Client assertion test 2 objects same id.");
 
         NewClient c1 = new NewClient(123456789,"Client1 Client1","012-3456789",1);
         NewClient c2 = new NewClient(123456789,"Client2 Client2","052-1234567",2);

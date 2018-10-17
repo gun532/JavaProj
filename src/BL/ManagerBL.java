@@ -59,6 +59,10 @@ public class ManagerBL {
         return loginUtility.getEncryptedPass(pass);
     }
 
+    public ArrayList<Employee> selectAllEmployeesByBranch(int branch) {
+        return managerDataAccess.selectAllEmployeesByBranch(branch);
+    }
+
     public ArrayList<Employee> selectAllEmployees() {
         return managerDataAccess.selectAllEmployees();
     }

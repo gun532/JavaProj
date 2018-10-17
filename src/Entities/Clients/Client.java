@@ -99,8 +99,8 @@ public abstract class Client {
 
     @Override
     public String toString() {
-        return "\nClient Details:\n" + "Client Code: " + this.hashCode() + "\nClient id: " + this.id + "\nClient full name: " + this.fullName + "\nClient phone number: " + this.phoneNumber
-        + "\nClient Type: " + this.type + "\nDiscount Rate: " + this.discountRate + "\nShopping History:\n" + this.shoppingHistory;
+        return "\nBL.Client Details:\n" + "BL.Client Code: " + this.hashCode() + "\nBL.Client id: " + this.id + "\nBL.Client full name: " + this.fullName + "\nBL.Client phone number: " + this.phoneNumber
+        + "\nBL.Client Type: " + this.type + "\nDiscount Rate: " + this.discountRate + "\nShopping History:\n" + this.shoppingHistory;
     }
 
     @Override

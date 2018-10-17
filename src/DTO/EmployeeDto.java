@@ -1,5 +1,6 @@
 package DTO;
 
+import Entities.Employee.Employee;
 import Entities.Employee.Profession;
 
 public class EmployeeDto extends DtoBase{
@@ -24,6 +25,19 @@ public class EmployeeDto extends DtoBase{
         this.jobPos = jobPos;
         this.pass = pass;
     }
+
+    public EmployeeDto(String func, Employee emp)
+    {
+        super(func);
+        this.name = emp.getName();
+        this.id = emp.getId();
+        this.employeeNumber = emp.getEmployeeNumber();
+        this.phone = emp.getPhone();
+        this.accountNum = emp.getAccountNum();
+        this.branchNumber = emp.getBranchNumber();
+        this.jobPos = emp.getJobPos();
+    }
+
 
     public String getPass() {
         return pass;

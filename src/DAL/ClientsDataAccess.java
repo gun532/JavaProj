@@ -100,7 +100,7 @@ public class ClientsDataAccess {
             }
 
             statement.executeUpdate();
-            log.logger.info("Client with id " + ID + " was added");
+            log.logger.info("BL.Client with id " + ID + " was added");
             return true;
 
         } catch (ClassNotFoundException e) {

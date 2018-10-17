@@ -146,13 +146,59 @@ public class ManagerDataAccess {
         return false;
     }
 
+    public ArrayList<Employee> selectAllEmployeesByBranch(int branch) {
+        ArrayList<Employee> employeeArrayList = new ArrayList<>();
+        try {
+            Class.forName(myDriver);
+            String sql = "SELECT * from employee where branch = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, branch);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String type = rs.getString("profession");
+                Employee e;
+                switch (type) {
+                    case "SELLER":
+                        e = new Seller(rs.getInt("employeeCode"), rs.getString("fullName"), rs.getInt("ID"),
+                                rs.getString("phoneNum"), rs.getInt("accountNumber"),
+                                rs.getInt("branch"));
+                        employeeArrayList.add(e);
+                        break;
+                    case "CASHIER":
+                        e = new Cashier(rs.getInt("employeeCode"), rs.getString("fullName"), rs.getInt("ID"),
+                                rs.getString("phoneNum"), rs.getInt("accountNumber"),
+                                rs.getInt("branch"));
+                        employeeArrayList.add(e);
+                        break;
+                    case "MANAGER":
+                        e = new Manager(rs.getInt("employeeCode"), rs.getString("fullName"), rs.getInt("ID"),
+                                rs.getString("phoneNum"), rs.getInt("accountNumber"),
+                                rs.getInt("branch"));
+                        employeeArrayList.add(e);
+                        break;
+                }
+
+            }
+//            myConn.close();
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        log.logger.info("all employees was selected");
+
+        return employeeArrayList;
+    }
+
     public ArrayList<Employee> selectAllEmployees() {
         ArrayList<Employee> employeeArrayList = new ArrayList<>();
         try {
             Class.forName(myDriver);
             String sql = "SELECT * from employee";
             PreparedStatement statement = myConn.prepareStatement(sql);
-            //statement.setInt(1, empNum);
+//            statement.setInt(1, branch);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 String type = rs.getString("profession");
@@ -284,7 +330,7 @@ public class ManagerDataAccess {
             statement.setInt(5, clientCode);
 
             statement.executeUpdate();
-            log.logger.info("Client was updated");
+            log.logger.info("BL.Client was updated");
             return true;
 //            myConn.close();
         } catch (ClassNotFoundException e) {

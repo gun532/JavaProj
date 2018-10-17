@@ -1,5 +1,7 @@
 package GUI;
 
+import BL.Channel;
+
 import javax.imageio.ImageIO;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
@@ -7,8 +9,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -30,10 +37,11 @@ public class Controller {
     private InventoryPage inventoryPage;
     private EmployeesPage employeesPage;
     private ReportsPage reportsPage;
+    private ChatPage chatPage;
 
 
-    private final String host = "127.0.0.1";
-    private final int port = 8081;
+    private final String host = "localhost";
+    private final int port = 9999;
     public static SSLSocket echoSocket;
 
     // Controller constructor holds all the app pages (panels)
@@ -48,9 +56,15 @@ public class Controller {
             SSLContext context = SSLContext.getInstance("TLSv1.2");
             context.init(null,null,null);
 
-            System.out.println("Connecting to host " + host + " on port " + port + ".");
             echoSocket = (SSLSocket) context.getSocketFactory().getDefault().createSocket(host, port);
+            System.out.println("Connecting to host " + host + " on port " + port + ".");
             echoSocket.setEnabledCipherSuites(echoSocket.getSupportedCipherSuites());
+            appFrame = new JFrame();
+
+
+
+            buildAppFrame();
+            showLoginPage();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {
@@ -60,10 +74,7 @@ public class Controller {
         }
 
 //        new Controller(host, port);
-        appFrame = new JFrame();
 
-        buildAppFrame();
-        showLoginPage();
     }
 
     public void showLoginPage() throws IOException {
@@ -190,6 +201,14 @@ public class Controller {
         }
     }
 
+    public void showChatPage() {
+
+        chatPage = new ChatPage(this);
+        appFrame.setTitle("Chat");
+        chatPage.setVisible(true);
+        appFrame.setContentPane(chatPage);
+    }
+
     public void buildAppFrame(){
 
         //Build the frame
@@ -225,6 +244,7 @@ public class Controller {
         });
 //        new Controller(host, port, this);
     }
+
 
     public static void main(String[] args) throws Exception {
 

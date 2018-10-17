@@ -325,7 +325,7 @@ public class InventoryPage extends CJPanel {
         int selectedRowIndex = productTable.getSelectedRow();
         selectedRowIndex = productTable.convertRowIndexToModel(selectedRowIndex);
 
-        // set the selected row data into Client
+        // set the selected row data into BL.Client
         int pCode = (int) (pTableModel.getValueAt(selectedRowIndex, 0));
         String pName = (pTableModel.getValueAt(selectedRowIndex, 1).toString());
         int pAmount = (int) (pTableModel.getValueAt(selectedRowIndex, 2));
