@@ -314,10 +314,13 @@ public class SocketServer extends Thread{
 
 
     private String checkMessages(int employeeNumber) {
-        String msg= null;
+        String msg ="";
         if(messagesToSend.containsKey(employeeNumber))
         {
-            msg += messagesToSend.get(employeeNumber).getMsg();
+            for(int i =0; i<messagesToSend.get(employeeNumber).getAllMessages().size(); i++)
+                msg += messagesToSend.get(employeeNumber).getAllMessages().get(i) + "~";
+            //messagesToSend.get(employeeNumber).getAllMessages().clear();
+            messagesToSend.remove(employeeNumber);
             return msg;
         }
         else

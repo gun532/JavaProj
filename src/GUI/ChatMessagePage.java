@@ -89,6 +89,12 @@ public class ChatMessagePage extends JFrame {
             checkForNewMessages(currentEmployee);
             firstTime++;
         }
+        //connected for the first time
+//        if(firstTime == 0)
+//        {
+//            firstTime = 1;
+//            checkForNewMessages(currentEmployee);
+//        }
 
     }
 
@@ -137,7 +143,11 @@ public class ChatMessagePage extends JFrame {
 
 
                 if (!response.equals("false")) {
-                    textArea.append(response + "\n");
+                    String[] allMsg = response.split("~");
+                    for(int i = 0; i<allMsg.length; i++)
+                    {
+                        textArea.append(allMsg[i] + "\n");
+                    }
 //                    channel.sendTo(address, response);
                 }
             }
@@ -171,6 +181,9 @@ public class ChatMessagePage extends JFrame {
                     textField.setText("Type a message...");
             }
         });
+
+        Message msgSendLater = new Message(currentEmployee.getId());
+
 
         textField.addKeyListener(new KeyAdapter() {
             @Override
@@ -215,8 +228,9 @@ public class ChatMessagePage extends JFrame {
                     } else {
                         String msgToSend = textField.getText();
                         msgToSend = currentEmployee.getName() + ": " + msgToSend;
-                        Message msg = new Message(msgToSend, currentEmployee.getId());
-                        sendLater(chosenEmployee.getEmployeeNumber(), msg);
+//                        Message msg = new Message(msgToSend, currentEmployee.getId());
+                        msgSendLater.getAllMessages().add(msgToSend);
+                        sendLater(chosenEmployee.getEmployeeNumber(), msgSendLater);
 //                        messagesToSend.put(chosenEmployee.getEmployeeNumber(), msg);
                         textArea.append(msgToSend + "\n");
 
