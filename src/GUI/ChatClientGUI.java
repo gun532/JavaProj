@@ -284,7 +284,7 @@ public class ChatClientGUI {
     }
 
     public static void ACTION_B_HELP(){
-        JOptionPane.showMessageDialog(null, "Multi-Client CHAT program");
+        JOptionPane.showMessageDialog(null, "Multi-BL.Client CHAT program");
     }
 
 }

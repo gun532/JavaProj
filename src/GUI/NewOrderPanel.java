@@ -147,8 +147,8 @@ public class NewOrderPanel extends CJPanel {
 
         SpringUtilities.makeGrid(subPanel2, 1, 2, 50, 10, 30, 6);
 
-        //Create "Choose a Client" button
-        btnChooseClient = new CJButton("Choose a Client", font);
+        //Create "Choose a BL.Client" button
+        btnChooseClient = new CJButton("Choose a BL.Client", font);
         btnChooseClient.setSize(50, 50);
 
         theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnChooseClient, 0, SpringLayout.HORIZONTAL_CENTER, subPanel2);
@@ -158,7 +158,7 @@ public class NewOrderPanel extends CJPanel {
         add(btnChooseClient);
 
         //Choose a client label and field
-        labelChosenClient = new JLabel("Chosen Client: ", JLabel.TRAILING);
+        labelChosenClient = new JLabel("Chosen BL.Client: ", JLabel.TRAILING);
         labelChosenClient.setFont(font);
         labelChosenClient.setLabelFor(fieldChosenClient);
         add(labelChosenClient);

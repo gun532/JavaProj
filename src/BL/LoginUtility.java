@@ -17,8 +17,6 @@ public class LoginUtility {
 
     public LoginUtility() {
         log.logger.setLevel(Level.INFO);
-        log.logger.setLevel(Level.WARNING);
-        log.logger.setLevel(Level.SEVERE);
     }
 
     public String getEncryptedPass(String pass) {

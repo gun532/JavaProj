@@ -23,7 +23,7 @@ public class ChatServer {
                 Socket SOCK = SERVER.accept();
                 connectionArray.add(SOCK);
 
-                System.out.println("Client Connected from: " + SOCK.getLocalAddress().getHostName());
+                System.out.println("BL.Client Connected from: " + SOCK.getLocalAddress().getHostName());
 
                 addUserName(SOCK);
 

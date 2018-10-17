@@ -284,10 +284,10 @@ public class AddNewProductPage extends JFrame {
     /*---/Page functions methods/-------------------------------------------------------------------------*/
 
 //    private boolean isAlreadyExists() {
-//        ArrayList<Client> listClients = controller.getClientPage().getListOfClients();
+//        ArrayList<BL.Client> listClients = controller.getClientPage().getListOfClients();
 //        int clientID = Integer.parseInt(fieldPrice.getText());
 //
-//        for (Client c : listClients) {
+//        for (BL.Client c : listClients) {
 //            if (c.getId() == clientID)
 //                return true;
 //        }

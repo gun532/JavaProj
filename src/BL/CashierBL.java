@@ -62,7 +62,7 @@ public class CashierBL {
     }
 
 
-//    private void insertShoppingCart(ShoppingCart shoppingCart, Client client)
+//    private void insertShoppingCart(ShoppingCart shoppingCart, BL.Client client)
 //    {
 //        clientsDataAccess.insertShoppingCart(shoppingCart);
 //        clientsDataAccess.insertCartDetails(shoppingCart);

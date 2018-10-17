@@ -220,7 +220,7 @@ public class EmployeesPage extends JFrame {
         int selectedRowIndex = employeesTable.getSelectedRow();
         selectedRowIndex = employeesTable.convertRowIndexToModel(selectedRowIndex);
 
-        // set the selected row data into Client
+        // set the selected row data into BL.Client
         int employeeCode = (int) (employeeTableModel.getValueAt(selectedRowIndex, 0));
         int employeeID = (int) (employeeTableModel.getValueAt(selectedRowIndex, 1));
         String employeeName = (employeeTableModel.getValueAt(selectedRowIndex, 2).toString());
@@ -252,7 +252,7 @@ public class EmployeesPage extends JFrame {
             PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
             Gson gson = new Gson();
 
-            EmployeeArrayDto employeeArrayDto = new EmployeeArrayDto("selectAllEmployess", listOfEmployees);
+            EmployeeArrayDto employeeArrayDto = new EmployeeArrayDto("selectAllEmployessByBranch", listOfEmployees, emp.getBranchNumber());
             out.println(gson.toJson(employeeArrayDto));
 
             DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
