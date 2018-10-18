@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Logger;
 
+//This project was created by Guy Cohen - ID 307992958 and Roy Bar - ID 304989171
 public class Controller {
     private JFrame appFrame;
     //Take user screen size
