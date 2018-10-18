@@ -8,8 +8,8 @@ import Entities.ShoppingCart;
 
 public class ShoppingCartBL {
 
-    private InventoryDataAccess inventoryDataAccess;
-    private ClientsDataAccess clientsDataAccess;
+    private transient InventoryDataAccess inventoryDataAccess;
+    private transient ClientsDataAccess clientsDataAccess;
 
     public ShoppingCartBL(InventoryDataAccess inventoryDataAccess, ClientsDataAccess clientsDataAccess) {
         this.inventoryDataAccess = inventoryDataAccess;

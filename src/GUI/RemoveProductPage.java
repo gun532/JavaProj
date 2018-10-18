@@ -1,9 +1,13 @@
 package GUI;
 
+import BL.AuthService;
 import Entities.Product;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
 
 public class RemoveProductPage extends JFrame {
 
@@ -26,6 +30,8 @@ public class RemoveProductPage extends JFrame {
 
     private CJPanel mainPanel;
 
+    private int inventoryCode = AuthService.getInstance().getCurrentEmployee().getBranchNumber();
+
     private Product chosenProduct;
 
     public RemoveProductPage(Controller in_controller) {
@@ -43,7 +49,7 @@ public class RemoveProductPage extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
 
-        setTitle("Add New Employee");
+        setTitle("Remove Product");
 
         mainPanel = new CJPanel(theLayout, frameSizeWidth*0.9, frameSizeHeight*0.9);
 
@@ -75,14 +81,22 @@ public class RemoveProductPage extends JFrame {
         setContentPane(mainPanel);
         setVisible(true);
 
+        fieldProductAmount.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                if (fieldProductAmount.getText().length() >= 10 || e.getKeyChar() < '0' || e.getKeyChar() > '9') // limits text field to 9 characters
+                        e.consume();
+            }
+        });
+
         btnCancel.addActionListener(e -> {
             setVisible(false);
         });
 
         btnRemove.addActionListener(e -> {
-            setVisible(false);
-            controller.getInventoryPage().removeFromInventory(Integer.parseInt(fieldProductCode.getText()),Integer.parseInt(fieldProductAmount.getText()));
-            JOptionPane.showMessageDialog(new JFrame(), fieldProductAmount.getText() + " item/s of product code - " + fieldProductCode.getText() + " were removed successfully!", "Success!", JOptionPane.INFORMATION_MESSAGE);
-        });
+
+
+          });
     }
+
+
 }

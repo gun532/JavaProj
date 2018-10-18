@@ -99,10 +99,30 @@ public abstract class Client {
 
     @Override
     public String toString() {
-        return "\nClient Details:\n" + "Client Code: " + this.hashCode() + "\nClient id: " + this.id + "\nClient full name: " + this.fullName + "\nClient phone number: " + this.phoneNumber
-        + "\nClient Type: " + this.type + "\nDiscount Rate: " + this.discountRate + "\nShopping History:\n" + this.shoppingHistory;
+        return "\nBL.Client Details:\n" + "BL.Client Code: " + this.hashCode() + "\nBL.Client id: " + this.id + "\nBL.Client full name: " + this.fullName + "\nBL.Client phone number: " + this.phoneNumber
+        + "\nBL.Client Type: " + this.type + "\nDiscount Rate: " + this.discountRate + "\nShopping History:\n" + this.shoppingHistory;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+
+        // If the object is compared with itself then return true
+        if (obj == this) {
+            return true;
+        }
+
+        /* Check if o is an instance of Complex or not
+          "null instanceof [type]" also returns false */
+        if (!(obj instanceof Client)) {
+            return false;
+        }
+
+        // typecast o to Complex so that we can compare data members
+        Client c = (Client) obj;
+
+        // Compare the data members and return accordingly
+        return this.id == c.id;
+    }
 
     public static void main(String args[]){
 

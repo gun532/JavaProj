@@ -1,19 +1,28 @@
 package GUI;
 
+import BL.Channel;
+import BL.GlobalLogger;
+
 import javax.imageio.ImageIO;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocket;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Logger;
 
 public class Controller {
     private JFrame appFrame;
     //Take user screen size
-    private int screenSizeWidth = (int) Toolkit.getDefaultToolkit().getScreenSize().width;
-    private int screenSizeHeight = (int) Toolkit.getDefaultToolkit().getScreenSize().height;
+    private int screenSizeWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+    private int screenSizeHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
 
     private ImageIcon icon;
     private Image innerPageImage;
@@ -23,22 +32,52 @@ public class Controller {
     private ClientPage clientPage;
     private InventoryPage inventoryPage;
     private EmployeesPage employeesPage;
-    private BranchPage branchPage;
-    private Login login;
+    private ReportsPage reportsPage;
+    private ChatPage chatPage;
+
+
+    private final String host = "localhost";
+    private final int port = 9999;
+    public static SSLSocket echoSocket;
+//    private final static Logger log = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private GlobalLogger log = new GlobalLogger("logs.log");
 
     // Controller constructor holds all the app pages (panels)
-    public Controller() throws Exception { }
+    public Controller() {
+
+    }
 
     public void loadApp() throws IOException {
+//        Thread connThread = new Thread(Controller);
+//        connThread.start();
+        try {
+            SSLContext context = SSLContext.getInstance("TLSv1.2");
+            context.init(null,null,null);
 
-        appFrame = new JFrame();
-        buildAppFrame();
+            //establish ssl connection with the server
+            echoSocket = (SSLSocket) context.getSocketFactory().getDefault().createSocket(host, port);
+            System.out.println("Connecting to host " + host + " on port " + port + ".");
+            echoSocket.setEnabledCipherSuites(echoSocket.getSupportedCipherSuites());
+            appFrame = new JFrame();
 
-        showLoginPage();
+            buildAppFrame();
+            showLoginPage();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        }
+
+//        new Controller(host, port);
+
     }
 
     public void showLoginPage() throws IOException {
 
+        Login login;
         appFrame.setSize((int)(screenSizeWidth* 0.45),(int)(screenSizeHeight* 0.4));
         appFrame.setLocationRelativeTo(null);
 
@@ -89,8 +128,7 @@ public class Controller {
         }
         catch (Exception e)
         {
-            //TODO:write to logger
-            e.printStackTrace();
+            log.logger.severe(e.getMessage());
         }
     }
 
@@ -101,8 +139,7 @@ public class Controller {
         }
         catch (Exception e)
         {
-            //TODO:write to logger
-            e.printStackTrace();
+            log.logger.severe(e.getMessage());
         }
     }
 
@@ -115,12 +152,12 @@ public class Controller {
         }
         catch (Exception e)
         {
-            //TODO:write to logger
-            e.printStackTrace();
+            log.logger.severe(e.getMessage());
         }
     }
 
     public void showBranchPage() {
+        BranchPage branchPage;
         try{
             branchPage = new BranchPage(this);
             appFrame.setTitle("Branch Details");
@@ -129,8 +166,20 @@ public class Controller {
         }
         catch (Exception e)
         {
-            //TODO:write to logger
-            e.printStackTrace();
+            log.logger.severe(e.getMessage());
+        }
+    }
+
+    public void showReportsPage() {
+        try{
+            reportsPage = new ReportsPage(this);
+            appFrame.setTitle("Reports");
+            reportsPage.setVisible(true);
+            appFrame.setContentPane(reportsPage);
+        }
+        catch (Exception e)
+        {
+            log.logger.severe(e.getMessage());
         }
     }
 
@@ -140,9 +189,16 @@ public class Controller {
             employeesPage.setVisible(true);
 
         } catch (Exception e) {
-            //TODO:write to logger
-            e.printStackTrace();
+            log.logger.severe(e.getMessage());
         }
+    }
+
+    public void showChatPage() {
+
+        chatPage = new ChatPage(this);
+        appFrame.setTitle("Chat");
+        chatPage.setVisible(true);
+        appFrame.setContentPane(chatPage);
     }
 
     public void buildAppFrame(){
@@ -150,7 +206,7 @@ public class Controller {
         //Build the frame
         appFrame.setLocationRelativeTo(null);
         appFrame.setResizable(false);
-        appFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        appFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         //Get and set app image icon
         SwingUtilities.invokeLater(new Runnable() {
@@ -162,19 +218,33 @@ public class Controller {
                 appFrame.setIconImage(icon.getImage());
             }
         });
+
+        appFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                if (JOptionPane.showConfirmDialog(appFrame, "Are you sure you want to close this window?", "Close Window?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
+                {
+                    try {
+                        echoSocket.close(); //closes the connection to the server when a window is closed
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.exit(0);
+                }
+            }
+        });
+//        new Controller(host, port, this);
     }
+
 
     public static void main(String[] args) throws Exception {
 
         //Run GUI in a thread
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    new Controller().loadApp();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        SwingUtilities.invokeLater(() -> {
+            try {
+                new Controller().loadApp();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }

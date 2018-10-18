@@ -15,7 +15,7 @@ public class VipClient extends Client {
         this.discountRate = (30);
     }
 
-//    public  VipClient(Client client)
+//    public  VipClient(BL.Client client)
 //    {
 //        super(client);
 //        this.setType(ClientType.VIPCLIENT);

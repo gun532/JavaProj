@@ -14,6 +14,17 @@ public class Product {
         this.productCode = 0;
     }
 
+    public Product(int productCode, String name, double price) throws Exception {
+        if(price >= 0) {
+            this.name = name;
+            this.price = price;
+            this.productCode = productCode;
+        }
+        else {
+            throw new Exception("Invalid input! price and amount can't be a negative number.");
+        }
+    }
+
     public Product(String name, double price, int amount, int productCode) throws Exception {
         if(price >= 0 && amount >= 0) {
             this.name = name;
@@ -106,6 +117,20 @@ public class Product {
     public String toString() {
         return "Product code" + "\nName: " + this.name + "\nPrice: " + this.price
                 + "\nAmount: " + this.amount + "\nTotal Value: " + this.price*this.amount + '\n';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if(this == obj)
+            return true;
+
+        if(!(obj instanceof Product))
+            return false;
+
+        Product p = (Product) obj;
+
+        return this.name.matches(p.name);
     }
 
     @Override

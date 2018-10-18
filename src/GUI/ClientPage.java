@@ -3,9 +3,20 @@ package GUI;
 import BL.AuthService;
 import BL.CashierBL;
 import DAL.ClientsDataAccess;
+import DTO.ClientDto;
+import DTO.ClientsArrayDto;
+import DTO.LoginDetailsDto;
 import Entities.Clients.*;
 import Entities.Employee.Employee;
-import Entities.Employee.Profession;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -13,7 +24,12 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ClientPage extends JFrame {
     private Controller controller;
@@ -46,10 +62,10 @@ public class ClientPage extends JFrame {
     private TableRowSorter<ClientTableModal> sorter = new TableRowSorter<>(clientTableModal);
     private AddNewClientPage addNewClientPage;
 
-    //Client data
+    //BL.Client data
     private CashierBL cashierBL = new CashierBL(new ClientsDataAccess());
     private Client chosenClient;
-    private ArrayList<Client> listOfClients;
+    private ArrayList<Client> listOfClients = new ArrayList<>();
 
     private Employee emp = AuthService.getInstance().getCurrentEmployee();
 
@@ -76,7 +92,7 @@ public class ClientPage extends JFrame {
         mainPanel.add(buildTable());
 
         //Build sub panel #1
-        CJPanel subPanel1 = new CJPanel(new SpringLayout(), frameSizeWidth*0.97, frameSizeHeight * 0.1);
+        CJPanel subPanel1 = new CJPanel(new SpringLayout(), frameSizeWidth * 0.97, frameSizeHeight * 0.1);
 
         theLayout.putConstraint(SpringLayout.NORTH, subPanel1, 0, SpringLayout.SOUTH, tablePanel);
         theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, subPanel1, 0, SpringLayout.HORIZONTAL_CENTER, mainPanel);
@@ -92,7 +108,7 @@ public class ClientPage extends JFrame {
 //
 //            @Override
 //            public void focusLost(FocusEvent e) {
-//                searchField.setText("Search Client...");
+//                searchField.setText("Search BL.Client...");
 //            }
 //        });
 
@@ -129,7 +145,7 @@ public class ClientPage extends JFrame {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates
             }
         });
 
@@ -144,15 +160,11 @@ public class ClientPage extends JFrame {
         subPanel1.add(btnAddNewClient);
 
         btnRemoveClient.addActionListener(e -> {
-            if (chosenClient != null){
+            if (chosenClient != null) {
 
-                // TODO: 03/09/2018 remove employee from DB.
+                removeClient();
 
-                JOptionPane.showMessageDialog(new JFrame(), "Client " + chosenClient.getFullName() + " was removed successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
-
-                controller.getClientPage().setVisible(false);
-                controller.showClientPage();
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(new JFrame(), "Please choose client from table, to be removed", "Invalid input", JOptionPane.ERROR_MESSAGE);
             }
         });
@@ -161,9 +173,9 @@ public class ClientPage extends JFrame {
         btnUpdateClient.addActionListener(e -> {
             //if first time entry -> create the page
             if (chosenClient != null) {
-                updateClientPage = new UpdateClientPage(controller,  chosenClient);
+                updateClientPage = new UpdateClientPage(controller, chosenClient);
                 updateClientPage.setVisible(true);
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(new JFrame(), "Please choose client from table, to be updated", "Invalid input", JOptionPane.ERROR_MESSAGE);
             }
         });
@@ -187,7 +199,7 @@ public class ClientPage extends JFrame {
                 //send chosen client data back to new order and main page
                 controller.getMainMenuPage().setChosenClient(chosenClient);
 
-                if(controller.getNewOrderPanel().isShowing()) {
+                if (controller.getNewOrderPanel().isShowing()) {
                     controller.getNewOrderPanel().setChosenClient(chosenClient);
                     controller.getNewOrderPanel().getFieldChosenClient().setText(chosenClient.getFullName());
                     controller.getNewOrderPanel().updateShoppingCartDeal();
@@ -229,6 +241,7 @@ public class ClientPage extends JFrame {
         }
     }
 
+
     private JScrollPane buildTable() {
 
 
@@ -245,7 +258,9 @@ public class ClientPage extends JFrame {
         clientTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 if (evt.getClickCount() >= 1) {
-                    chooseClientFromTable();
+                    try {
+                        chooseClientFromTable();
+                    }catch (IndexOutOfBoundsException e){ }
                 }
             }
         });
@@ -261,7 +276,7 @@ public class ClientPage extends JFrame {
         int selectedRowIndex = clientTable.getSelectedRow();
         selectedRowIndex = clientTable.convertRowIndexToModel(selectedRowIndex);
 
-        // set the selected row data into Client
+        // set the selected row data into BL.Client
         int clientCode = (int) (clientTableModal.getValueAt(selectedRowIndex, 0));
         int clientID = (int) (clientTableModal.getValueAt(selectedRowIndex, 1));
         String clientName = (clientTableModal.getValueAt(selectedRowIndex, 2).toString());
@@ -277,16 +292,70 @@ public class ClientPage extends JFrame {
         //Clear old data stored in table
         clientTableModal.clearDate();
 
-        listOfClients = cashierBL.selectAllClients();
-        for (int i = 0; i < listOfClients.size(); i++) {
-            clientTableModal.addToVectorM_Data(listOfClients.get(i));
-        }
+        chooseAllClients();
 
         //update table graphics
         clientTableModal.fireTableDataChanged();
 
         clientTable.validate();
         clientTable.repaint();
+
+
+    }
+
+    private void chooseAllClients() {
+            try {
+                PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
+                Gson gson = new Gson();
+
+                ClientsArrayDto clientsArrayDtoDto = new ClientsArrayDto("selectAllClients", listOfClients);
+                out.println(gson.toJson(clientsArrayDtoDto));
+
+                DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
+                String response = in.readLine();
+
+                Client client;
+
+                if (response != null) {
+                    //JSONObject object = new JSONObject(response);
+                    //JSONArray array = object.getJSONArray(response);
+                    //JsonArray array = gson.fromJson(response, JsonArray.class);
+                    JSONArray array = new JSONArray(response); //object.getJSONArray("");
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject js = array.getJSONObject(i);
+                        int id = js.getInt("id");
+                        String name = js.getString("fullName");
+                        String phone = js.getString("phoneNumber");
+                        String type = js.getString("type");
+                        //double discount = js.getDouble("discountRate");
+                        int code = js.getInt("clientCode");
+                        switch (type) {
+                            case "NEWCLIENT":
+                                client = new NewClient(id,name,phone,code);
+                                listOfClients.add(client);
+                                break;
+                            case "RETURNCLIENT":
+                                client = new ReturnClient(id,name,phone,code);
+                                listOfClients.add(client);
+                                break;
+                            case "VIPCLIENT":
+                                client = new VipClient(id,name,phone,code);
+                                listOfClients.add(client);
+                                break;
+                        }
+                    }
+
+                    for (int i = 0; i < listOfClients.size(); i++) {
+                        clientTableModal.addToVectorM_Data(listOfClients.get(i));
+                    }
+                }
+
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
     }
 
     private void selectedClient(int clientCode, int clientID, String clientName, String clientPhone, ClientType clientType) {
@@ -305,7 +374,32 @@ public class ClientPage extends JFrame {
         }
     }
 
-    public ArrayList<Client> getListOfClients() {
+    private void removeClient() {
+        try {
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
+            Gson gson = new Gson();
+            ClientDto clientDto = new ClientDto("removeClient", chosenClient.getId(), chosenClient.getFullName(),
+                    chosenClient.getPhoneNumber(), chosenClient.getType(), chosenClient.getClientCode());
+            out.println(gson.toJson(clientDto));
+
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
+            String response = in.readLine();
+            if(response.equals("true"))
+            {
+                JOptionPane.showMessageDialog(new JFrame(), "Client " + chosenClient.getFullName() + " was removed successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+
+                controller.getClientPage().setVisible(false);
+                controller.showClientPage();
+            }
+            else
+                JOptionPane.showMessageDialog(new JFrame(), "Please choose client from table, to be removed", "Invalid input", JOptionPane.ERROR_MESSAGE);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+        public ArrayList<Client> getListOfClients() {
         return listOfClients;
     }
 }

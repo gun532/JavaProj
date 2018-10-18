@@ -1,5 +1,6 @@
 package DAL;
 
+import BL.GlobalLogger;
 import Entities.Clients.*;
 import Entities.Employee.Employee;
 import Entities.Employee.Profession;
@@ -9,11 +10,14 @@ import Entities.ShoppingCart;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ClientsDataAccess {
 
     private final String myDriver = "org.gjt.mm.mysql.Driver";
     private final Connection myConn;
+    private GlobalLogger log = new GlobalLogger("logs.log");
 
     public ClientsDataAccess() {
 
@@ -21,6 +25,7 @@ public class ClientsDataAccess {
             myConn = DriverManager.getConnection
                     ("jdbc:mysql://localhost:3306/test_db", "root", "12345");
         } catch (Exception e) {
+            log.logger.severe(e.getMessage());
             throw new IllegalStateException("Cannot connect the database!", e);
         }
     }
@@ -35,39 +40,36 @@ public class ClientsDataAccess {
             while (rs.next()) {
                 String type = rs.getString("ClientType");
                 Client c;
-                switch (type)
-                {
+                switch (type) {
                     case "NEWCLIENT":
-                        c = new NewClient(rs.getInt("clientID"), rs.getString("fullName"), rs.getString("phone") ,rs.getInt("clientNumber"));
+                        c = new NewClient(rs.getInt("clientID"), rs.getString("fullName"), rs.getString("phone"), rs.getInt("clientNumber"));
                         clientArrayList.add(c);
                         break;
                     case "RETURNCLIENT":
-                        c = new ReturnClient(rs.getInt("clientID"), rs.getString("fullName"), rs.getString("phone") ,rs.getInt("clientNumber"));
+                        c = new ReturnClient(rs.getInt("clientID"), rs.getString("fullName"), rs.getString("phone"), rs.getInt("clientNumber"));
                         clientArrayList.add(c);
                         break;
                     case "VIPCLIENT":
-                        c = new VipClient(rs.getInt("clientID"), rs.getString("fullName"), rs.getString("phone") ,rs.getInt("clientNumber"));
+                        c = new VipClient(rs.getInt("clientID"), rs.getString("fullName"), rs.getString("phone"), rs.getInt("clientNumber"));
                         clientArrayList.add(c);
                         break;
                 }
-//                c.setClientCode(rs.getInt("clientNumber"));
-//                c.setId(rs.getInt("clientID"));
-//                c.setFullName(rs.getString("fullName"));
-//                c.setPhoneNumber(rs.getString("phone"));
-//                c.setType(ClientType.valueOf(rs.getString("ClientType")));
-//                c.setDiscountRate(rs.getInt("discountRate"));
-            }
 
-            myConn.close();
+            }
+            log.logger.info("All Clients was selected");
+//            myConn.close();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log.logger.severe(e.getMessage());
+            //e.printStackTrace();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.logger.severe(e.getMessage());
+            // e.printStackTrace();
         }
         return clientArrayList;
     }
 
-    public void addNewClient(int ID, String fullName, String phoneNum, String clientType) {
+
+    public boolean addNewClient(int ID, String fullName, String phoneNum, String clientType) {
         try {
 
             //change it later to something more secure
@@ -83,17 +85,30 @@ public class ClientsDataAccess {
             statement.setString(2, fullName);
             statement.setString(3, phoneNum);
             statement.setString(4, clientType);
-            statement.setInt(5, 0);
+            switch (clientType) {
+                case "NEWCLIENT":
+                    statement.setInt(5, 0);
+                    break;
+                case "RETURNCLIENT":
+                    statement.setInt(5, 30);
+                    break;
+                case "VIPCLIENT":
+                    statement.setInt(5, 50);
+                    break;
+            }
 
             statement.executeUpdate();
+            log.logger.info("BL.Client with id " + ID + " was added");
+            return true;
 
-            myConn.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log.logger.severe(e.getMessage());
+            //e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            // e.printStackTrace();
         }
+        return false;
     }
 
 
@@ -105,16 +120,19 @@ public class ClientsDataAccess {
             insertCartDetails(shoppingCart, total);
             insertToShoppingHistory(clientNum, shoppingCart.getCartID());
 
-            myConn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            log.logger.info("new order for client " + clientNum + "was successfully committed");
+
+//            myConn.close();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log.logger.severe(e.getMessage());
+            //e.printStackTrace();
         }
     }
 
 
-    public void insertToShoppingHistory(int clientNum, int cartID) {
+    private void insertToShoppingHistory(int clientNum, int cartID) {
         try {
 
             //change it later to something more secure
@@ -130,13 +148,16 @@ public class ClientsDataAccess {
 
             statement.executeUpdate();
 
+            log.logger.info("shopping history for " + clientNum + " with cart number: " +cartID+ " succeed");
+
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            log.logger.severe(e.getMessage());
         }
     }
 
-    public void insertShoppingCart(ShoppingCart shoppingCart) {
+    private void insertShoppingCart(ShoppingCart shoppingCart) {
 
         //change it later to something more secure
 
@@ -152,13 +173,15 @@ public class ClientsDataAccess {
                 statement.setInt(3, entry.getValue().getAmount());
                 statement.executeUpdate();
             }
+            log.logger.info("shopping cart was successfully added");
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            log.logger.severe(e.getMessage());
         }
     }
 
 
-    public void insertCartDetails(ShoppingCart shoppingCart, double total) {
+    private void insertCartDetails(ShoppingCart shoppingCart, double total) {
         try {
 
             //change it later to something more secure
@@ -167,7 +190,7 @@ public class ClientsDataAccess {
             //ResultSetMetaData metaData = rs.getMetaData();
             //int cols = metaData.getColumnCount();
             java.sql.Date sqlDate = new java.sql.Date(shoppingCart.getCartDate().getTime());
-            String sql = "INSERT INTO cart_details (cartID, total, branch_Number, employeeNum, date) values (?,?,?,?, ?)";
+            String sql = "INSERT INTO cart_details (cartID, total, branch_Number, employeeNum, date) values (?,?,?,?,?)";
             PreparedStatement statement = myConn.prepareStatement(sql);
 
             statement.setInt(1, shoppingCart.getCartID());
@@ -178,8 +201,11 @@ public class ClientsDataAccess {
 
             statement.executeUpdate();
 
+            log.logger.info("cart details successfully added");
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.logger.severe(e.getMessage());
+            //e.printStackTrace();
         }
     }
 
@@ -193,33 +219,33 @@ public class ClientsDataAccess {
             while (rs.next()) {
                 String type = rs.getString("ClientType");
                 Client c;
-                switch (type)
-                {
+                switch (type) {
                     case "NEWCLIENT":
                         c = new NewClient(rs.getInt("clientID"), rs.getString("fullName"),
-                                rs.getString("phone") ,rs.getInt("clientNumber"));
+                                rs.getString("phone"), rs.getInt("clientNumber"));
+                        log.logger.info("selecting client with id: " + id + "succeeded");
                         return c;
                     case "RETURNCLIENT":
                         c = new ReturnClient(rs.getInt("clientID"), rs.getString("fullName"),
-                                rs.getString("phone") ,rs.getInt("clientNumber"));
+                                rs.getString("phone"), rs.getInt("clientNumber"));
+                        log.logger.info("selecting client with id: " + id + "succeeded");
                         return c;
                     case "VIPCLIENT":
                         c = new VipClient(rs.getInt("clientID"), rs.getString("fullName"),
-                                rs.getString("phone") ,rs.getInt("clientNumber"));
+                                rs.getString("phone"), rs.getInt("clientNumber"));
+                        log.logger.info("selecting client with id: " + id + "succeeded");
                         return c;
                 }
-//                c.setClientCode(rs.getInt("clientNumber"));
-//                c.setFullName(rs.getString("fullName"));
-//                c.setPhoneNumber(rs.getString("phone"));
-//                c.setType(ClientType.valueOf(rs.getString("ClientType")));
-//                c.setDiscountRate(rs.getInt("discountRate"));
+
             }
 
-            myConn.close();
+//            myConn.close();
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.logger.severe(e.getMessage());
+             e.printStackTrace();
         }
         return null;
     }

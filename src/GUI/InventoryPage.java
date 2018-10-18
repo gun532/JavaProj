@@ -1,14 +1,15 @@
 package GUI;
 
-import BL.AuthService;
-import BL.CashierBL;
-import BL.ManagerBL;
+import BL.*;
 import DAL.ClientsDataAccess;
 import DAL.EmployeeDataAccess;
 import DAL.InventoryDataAccess;
+import DTO.InventoryDto;
+import DTO.ProductDto;
 import Entities.Employee.*;
 import Entities.Inventory;
 import Entities.Product;
+import com.google.gson.Gson;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -16,15 +17,14 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 
 public class InventoryPage extends CJPanel {
 
     private Employee emp = AuthService.getInstance().getCurrentEmployee();
-    private InventoryDataAccess inventoryDataAccess = new InventoryDataAccess();
-    private ManagerBL managerBL = new ManagerBL(new CashierBL(new EmployeeDataAccess(), inventoryDataAccess, new ClientsDataAccess()));
-    private Inventory inventory = managerBL.getCashierBL().selectFromInventory(emp.getBranchNumber());
-
+    private Inventory inventory =new Inventory();// = managerBL.getCashierBL().selectFromInventory(emp.getBranchNumber());
 
     private CJPanel subPanel1;
     private JTextField searchField = new JTextField("Search Product...");
@@ -37,10 +37,14 @@ public class InventoryPage extends CJPanel {
     private CJButton btnFinish;
     private CJButton btnCancel;
 
-    private ProductTableModel pTableModel;
+    //Defining table headers and columns type
+    private String[] colNames = {"Product Code", "Product Name", "Number of Items", "Price", "Total"};
+    private Class[] colClasses = {Integer.class, String.class, Integer.class, Integer.class, Integer.class};
+
+    private ProductTableModel pTableModel = new ProductTableModel(colNames, colClasses);
     private JTable productTable;
     private JScrollPane subPanel3;
-    private TableRowSorter<ProductTableModel> sorter;
+    private TableRowSorter<ProductTableModel> sorter = new TableRowSorter<>(pTableModel);
 
     private Font font = new Font("Candara", 0, 20); //Custom page font
     private Controller controller;
@@ -52,6 +56,8 @@ public class InventoryPage extends CJPanel {
     private RemoveProductPage removeProductPage;
     private AddNewProductPage addNewProductPage;
     private UpdateProductPage updateProductPage;
+
+
 
     public InventoryPage(Controller in_controller){
 
@@ -67,6 +73,8 @@ public class InventoryPage extends CJPanel {
 
         //Build sub panel #2.
         buildSubPanel2();
+
+        //productTable.setRowSorter(sorter);
     }
 
     private void buildSubPanel1() {
@@ -138,7 +146,10 @@ public class InventoryPage extends CJPanel {
             @Override
             protected Object doInBackground() {
                 if (chosenProduct != null) {
-                    removeProductPage = new RemoveProductPage(controller);
+
+                    removeProductFromInventory(chosenProduct, emp.getBranchNumber());
+                    updateTable();
+
                     chosenProduct = null;
                 } else {
                     JOptionPane.showMessageDialog(new JFrame(), "Please chose a product from the table, to be removed.", "Invalid input", JOptionPane.ERROR_MESSAGE);
@@ -174,9 +185,8 @@ public class InventoryPage extends CJPanel {
 
         //Finish button was pressed
         btnFinish.addActionListener(e -> {
-            // TODO: 01/09/2018 apply changes to DB... currently not working.
             setVisible(false);
-            //inventoryBL.createNewOrder(inventory);
+
             try {
                 controller.showMainMenuPage();
             } catch (IOException e1) {
@@ -202,15 +212,11 @@ public class InventoryPage extends CJPanel {
     }
 
     private void buildTable() {
-        //Defining table headers and columns type
-        String[] colNames = {"Product Code", "Product Name", "Number of Items", "Price", "Total"};
-        Class[] colClasses = {Integer.class, String.class, Integer.class, Integer.class, Integer.class};
 
-        pTableModel = new ProductTableModel(colNames, colClasses);
         productTable = new JTable(pTableModel);
         productTable.setFillsViewportHeight(true);
+        productTable.setRowSorter(sorter);
 
-        sorter = new TableRowSorter<>(pTableModel);
 
         subPanel3 = new JScrollPane(productTable);
         subPanel3.setPreferredSize(new Dimension((int) (getFrameSizeWidth() * 0.95), (int) (getFrameSizeHeight() * 0.6)));
@@ -223,7 +229,8 @@ public class InventoryPage extends CJPanel {
                 if (evt.getClickCount() >= 1) {
                     try {
                         chooseProductFromTable();
-                    } catch (Exception e) {
+                    } catch (IndexOutOfBoundsException e){ }
+                    catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -239,6 +246,8 @@ public class InventoryPage extends CJPanel {
         //Clear old data stored in table
         pTableModel.clearData();
 
+        createInventory();
+
         //Get new data from shopping cart and send it into table modal data vector.
         inventory.getMyInventory().entrySet().forEach(entry -> {
             pTableModel.addToVectorM_Data(entry.getValue());
@@ -251,17 +260,26 @@ public class InventoryPage extends CJPanel {
         productTable.repaint();
     }
 
-    public void removeFromInventory(int productCode, int amount) {
+    private void createInventory() {
         try {
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
+            Gson gson = new Gson();
 
-            inventory.takeFromInventory(productCode, amount);
-            updateTable();
+            InventoryDto inventoryDto = new InventoryDto("inverntoryByBranch", inventory.getMyInventory(),
+                    emp.getBranchNumber(), inventory.getTotalProducts(), inventory.getTotalItems(), inventory.getTotalValue());
+            out.println(gson.toJson(inventoryDto));
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "Invalid input", JOptionPane.ERROR_MESSAGE);
-            //e.printStackTrace();
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
+            String response = in.readLine();
+
+            if (response.equals("null")) {
+                JOptionPane.showMessageDialog(new JFrame(), "Inventory does no exist", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                inventory = gson.fromJson(response, Inventory.class);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
     }
 
     public void addToInventory(Product p) {
@@ -279,9 +297,7 @@ public class InventoryPage extends CJPanel {
 
     public void updateInventory(Product p){
         try {
-
-            // TODO: 08/09/2018 update inventory function.
-            //inventory.updateInventory(p);
+            inventory.updateInventory(p);
             updateTable();
 
         }catch (Exception e){
@@ -295,7 +311,7 @@ public class InventoryPage extends CJPanel {
         int selectedRowIndex = productTable.getSelectedRow();
         selectedRowIndex = productTable.convertRowIndexToModel(selectedRowIndex);
 
-        // set the selected row data into Client
+        // set the selected row data into BL.Client
         int pCode = (int) (pTableModel.getValueAt(selectedRowIndex, 0));
         String pName = (pTableModel.getValueAt(selectedRowIndex, 1).toString());
         int pAmount = (int) (pTableModel.getValueAt(selectedRowIndex, 2));
@@ -306,6 +322,35 @@ public class InventoryPage extends CJPanel {
     }
 
     public Product getChosenProduct() { return chosenProduct; }
+
+    private void removeProductFromInventory(Product product, int inventoryCode) {
+        try {
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
+            Gson gson = new Gson();
+
+            ProductDto productDto = new ProductDto("removeProductFromInventory", product.getName(),product.getPrice(),
+                    product.getAmount(),product.getProductCode(), inventoryCode);
+            out.println(gson.toJson(productDto));
+
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
+            String response = in.readLine();
+
+            if (response.equals("true")) {
+
+                JOptionPane.showMessageDialog(new JFrame(), "product with code - " + chosenProduct.getProductCode() + " were removed successfully!", "Success!", JOptionPane.INFORMATION_MESSAGE);
+
+            } else {
+                JOptionPane.showMessageDialog(new JFrame(), "Error removing product to DB", "Error", JOptionPane.ERROR_MESSAGE);
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
 
     @Override
     protected void paintComponent(Graphics g) { g.drawImage(controller.getInnerPageImage(),0,0,null); }

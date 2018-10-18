@@ -1,9 +1,13 @@
 package GUI;
 
 import BL.AuthService;
-import BL.ManagerBL;
-import DAL.ManagerDataAccess;
+import DTO.EmployeeArrayDto;
+import DTO.EmployeeDto;
 import Entities.Employee.*;
+import com.google.gson.Gson;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -11,6 +15,9 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 public class EmployeesPage extends JFrame {
@@ -31,10 +38,10 @@ public class EmployeesPage extends JFrame {
     private CJButton btnUpdateEmp = new CJButton("Update", font);
 
     //Defining table headers and columns type
-    private String[] colNames = {"Employee Code", "Employee ID", "Employee Name", "Phone Number","Account Number", "Employee Type"};
-    private Class[] colClasses = {Integer.class, Integer.class, String.class, String.class,Integer.class, Profession.class};
+    private String[] colNames = {"Employee Code", "Employee ID", "Employee Name", "Phone Number", "Account Number", "Employee Type"};
+    private Class[] colClasses = {Integer.class, Integer.class, String.class, String.class, Integer.class, Profession.class};
 
-    private EmployeeTableModel employeeTableModel = new EmployeeTableModel(colNames,colClasses);
+    private EmployeeTableModel employeeTableModel = new EmployeeTableModel(colNames, colClasses);
     private JTable employeesTable = new JTable(employeeTableModel);
     private JScrollPane tablePanel;
 
@@ -43,8 +50,8 @@ public class EmployeesPage extends JFrame {
     private AddEmployeePage addEmployeePage;
     private UpdateEmployeePage updateEmployeePage;
 
-    private ManagerBL managerBL = new ManagerBL(new ManagerDataAccess());
-    private ArrayList<Employee> listOfEmployees;
+    //    private ManagerBL managerBL = new ManagerBL(new ManagerDataAccess());
+    private ArrayList<Employee> listOfEmployees = new ArrayList<>();
 
     private Employee emp = AuthService.getInstance().getCurrentEmployee();
     private Employee chosenEmployee;
@@ -125,15 +132,11 @@ public class EmployeesPage extends JFrame {
 
 
         btnRemoveEmp.addActionListener(e -> {
-            if (chosenEmployee != null){
+            if (chosenEmployee != null) {
 
-                // TODO: 03/09/2018 remove employee from DB.
+                removeEmployee();
 
-                    JOptionPane.showMessageDialog(new JFrame(), "Employee " + chosenEmployee.getName() + " was removed successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
-
-                    controller.getEmployeesPage().setVisible(false);
-                    controller.showEmployeesPage();
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(new JFrame(), "Please choose employee from table, to be removed", "Invalid input", JOptionPane.ERROR_MESSAGE);
             }
         });
@@ -144,7 +147,7 @@ public class EmployeesPage extends JFrame {
             if (chosenEmployee != null) {
                 updateEmployeePage = new UpdateEmployeePage(controller, chosenEmployee);
                 updateEmployeePage.setVisible(true);
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(new JFrame(), "Please choose employee from table, to be updated", "Invalid input", JOptionPane.ERROR_MESSAGE);
             }
         });
@@ -153,13 +156,39 @@ public class EmployeesPage extends JFrame {
 
         SpringUtilities.makeCompactGrid(subPanel1, 1, 4, 5, 10, 5, 0);
 
-        if(emp.getJobPos() != Profession.MANAGER) {
+        if (emp.getJobPos() != Profession.MANAGER) {
             btnAddEmp.setEnabled(false);
             btnRemoveEmp.setEnabled(false);
             btnUpdateEmp.setEnabled(false);
         }
         mainPanel.add(subPanel1);
         setContentPane(mainPanel);
+    }
+
+    private void removeEmployee() {
+            try {
+                PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
+                Gson gson = new Gson();
+                EmployeeDto employeeDto = new EmployeeDto("removeEmployee",chosenEmployee.getName(),chosenEmployee.getId(),
+                        chosenEmployee.getEmployeeNumber(),chosenEmployee.getPhone(),chosenEmployee.getAccountNum(),
+                        chosenEmployee.getBranchNumber(),chosenEmployee.getJobPos(),"null");
+                out.println(gson.toJson(employeeDto));
+
+                DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
+                String response = in.readLine();
+                if(response.equals("true"))
+                {
+                    JOptionPane.showMessageDialog(new JFrame(), "Employee " + chosenEmployee.getName() + " was removed successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+
+                    controller.getEmployeesPage().setVisible(false);
+                    controller.showEmployeesPage();
+                }
+                else
+                    JOptionPane.showMessageDialog(new JFrame(), "Please choose employee from table, to be removed", "Invalid input", JOptionPane.ERROR_MESSAGE);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
 
     private JScrollPane buildTable() {
@@ -175,7 +204,9 @@ public class EmployeesPage extends JFrame {
         employeesTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 if (evt.getClickCount() >= 1) {
-                    chooseEmployeeFromTable();
+                    try {
+                        chooseEmployeeFromTable();
+                    }catch (IndexOutOfBoundsException e){ }
                 }
             }
         });
@@ -191,7 +222,7 @@ public class EmployeesPage extends JFrame {
         int selectedRowIndex = employeesTable.getSelectedRow();
         selectedRowIndex = employeesTable.convertRowIndexToModel(selectedRowIndex);
 
-        // set the selected row data into Client
+        // set the selected row data into BL.Client
         int employeeCode = (int) (employeeTableModel.getValueAt(selectedRowIndex, 0));
         int employeeID = (int) (employeeTableModel.getValueAt(selectedRowIndex, 1));
         String employeeName = (employeeTableModel.getValueAt(selectedRowIndex, 2).toString());
@@ -207,11 +238,8 @@ public class EmployeesPage extends JFrame {
         //Clear old data stored in table
         employeeTableModel.clearData();
 
-        listOfEmployees = managerBL.selectAllEmployees();
 
-        for (int i = 0; i < listOfEmployees.size(); i++) {
-            employeeTableModel.addToVectorM_Data(listOfEmployees.get(i));
-        }
+        selectAllEmployees();
 
         //update table graphics
         employeeTableModel.fireTableDataChanged();
@@ -220,18 +248,70 @@ public class EmployeesPage extends JFrame {
         employeesTable.repaint();
     }
 
+    private void selectAllEmployees() {
+
+        try {
+            PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
+            Gson gson = new Gson();
+
+            EmployeeArrayDto employeeArrayDto = new EmployeeArrayDto("selectAllEmployessByBranch", listOfEmployees, emp.getBranchNumber());
+            out.println(gson.toJson(employeeArrayDto));
+
+            DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
+            String response = in.readLine();
+
+            Employee employee;
+
+            if (response != null) {
+                JSONArray array = new JSONArray(response); //object.getJSONArray("");
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject js = array.getJSONObject(i);
+                    int employeeNum = js.getInt("employeeNumber");
+                    String name = js.getString("name");
+                    int id = js.getInt("id");
+                    String phone = js.getString("phone");
+                    int accountNumber = js.getInt("accountNum");
+                    String type = js.getString("jobPos");
+                    int branchNumber = js.getInt("branchNumber");
+                    switch (type) {
+                        case "SELLER":
+                            employee = new Seller(employeeNum, name, id, phone, accountNumber, branchNumber);
+                            listOfEmployees.add(employee);
+                            break;
+                        case "CASHIER":
+                            employee = new Cashier(employeeNum, name, id, phone, accountNumber, branchNumber);
+                            listOfEmployees.add(employee);
+                            break;
+                        case "MANAGER":
+                            employee = new Manager(employeeNum, name, id, phone, accountNumber, branchNumber);
+                            listOfEmployees.add(employee);
+                            break;
+                    }
+                }
+
+                for (int i = 0; i < listOfEmployees.size(); i++) {
+                    employeeTableModel.addToVectorM_Data(listOfEmployees.get(i));
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void selectedEmployee(int empCode, int empID, String empName, String empPhone, int empAccount, Profession profession) {
 
         switch (profession) {
             case SELLER:
-                this.chosenEmployee = new Seller(empCode,empName,empID,empPhone,empAccount,emp.getBranchNumber());
+                this.chosenEmployee = new Seller(empCode, empName, empID, empPhone, empAccount, emp.getBranchNumber());
                 break;
             case CASHIER:
-                this.chosenEmployee = new Cashier(empCode,empName,empID,empPhone,empAccount,emp.getBranchNumber());
+                this.chosenEmployee = new Cashier(empCode, empName, empID, empPhone, empAccount, emp.getBranchNumber());
                 break;
 
             case MANAGER:
-                this.chosenEmployee = new Manager(empCode,empName,empID,empPhone,empAccount,emp.getBranchNumber());
+                this.chosenEmployee = new Manager(empCode, empName, empID, empPhone, empAccount, emp.getBranchNumber());
                 break;
         }
     }
