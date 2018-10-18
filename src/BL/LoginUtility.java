@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LoginUtility {
     private EmployeeDataAccess employeeDataAccess = new EmployeeDataAccess();
@@ -16,7 +17,6 @@ public class LoginUtility {
     private GlobalLogger log = new GlobalLogger("logs.log");
 
     public LoginUtility() {
-        log.logger.setLevel(Level.INFO);
     }
 
     public String getEncryptedPass(String pass) {
@@ -32,7 +32,7 @@ public class LoginUtility {
             return sb.toString().toUpperCase();
         }
         catch (NoSuchAlgorithmException e) {
-            log.logger.severe(e.getMessage());
+            log.logger.info(e.getMessage());
             e.printStackTrace();
             return null;
         }
@@ -57,7 +57,6 @@ public class LoginUtility {
             log.logger.info("login for employee with ID: " + id + "was successful");
             return emp;
         }
-//        return false;
         return null;
     }
 

@@ -156,57 +156,6 @@ public class ChatPage extends JPanel{
         add(btnBack);
     }
 
-//    private void buildTextPanel() {
-//
-//        textPanel = new CJPanel(new BorderLayout(), controller.getAppFrame().getWidth() * 0.6, controller.getAppFrame().getHeight() * 0.1);
-//
-//        theLayout.putConstraint(SpringLayout.SOUTH, textPanel, 0, SpringLayout.SOUTH, this);
-//        theLayout.putConstraint(SpringLayout.WEST, textPanel, 0, SpringLayout.WEST, this);
-//        theLayout.putConstraint(SpringLayout.EAST, textPanel, 0, SpringLayout.WEST, tablePanel);
-//
-//        textField.setFont(font);
-//        textField.setText("Type a message...");
-//        textField.addFocusListener(new FocusListener() {
-//            @Override
-//            public void focusGained(FocusEvent e) {
-//                if (textField.getText().matches("Type a message..."))
-//                    textField.setText("");
-//            }
-//
-//            @Override
-//            public void focusLost(FocusEvent e) {
-//                if (textField.getText().isEmpty())
-//                    textField.setText("Type a message...");
-//            }
-//        });
-//
-//        textPanel.add(textField);
-//        add(textPanel);
-//    }
-
-//    private void buildMessageBoard() {
-//
-//        textArea.setEditable(false);
-//        textArea.setFont(new Font("Serif", Font.ITALIC, 16));
-//        textArea.setLineWrap(true);
-//        textArea.setWrapStyleWord(true);
-//
-//        textArea.setText("Example...");
-//        textArea.setOpaque(false);
-//
-//        areaScrollPane.setOpaque(false);
-//        areaScrollPane.setPreferredSize(new Dimension((int) (controller.getAppFrame().getWidth() * 0.6), (int) (controller.getAppFrame().getHeight() * 0.9)));
-//
-//
-//        theLayout.putConstraint(SpringLayout.NORTH, areaScrollPane, 10, SpringLayout.NORTH, this);
-//        theLayout.putConstraint(SpringLayout.WEST, areaScrollPane, 5, SpringLayout.WEST, this);
-//        theLayout.putConstraint(SpringLayout.EAST, areaScrollPane, -5, SpringLayout.WEST, tablePanel);
-//        theLayout.putConstraint(SpringLayout.SOUTH, areaScrollPane, -5, SpringLayout.NORTH, textPanel);
-//
-//        add(areaScrollPane);
-//    }
-
-
     private void buildContactsTable() {
         employeesTable.setFillsViewportHeight(true);
 
@@ -250,11 +199,7 @@ public class ChatPage extends JPanel{
             }
 
             chatFramesMap.get(chosenEmployee.getEmployeeNumber()).setVisible(true);
-
         }
-
-
-
     }
 
     public Map<Integer, ChatMessagePage> getChatFramesMap() {
@@ -300,9 +245,7 @@ public class ChatPage extends JPanel{
         //Clear old data stored in table
         contactsTableModel.clearData();
 
-
         selectAllEmployees();
-
 
         //update table graphics
         contactsTableModel.fireTableDataChanged();
@@ -353,8 +296,10 @@ public class ChatPage extends JPanel{
                 }
 
                 for (int i = 0; i < listOfEmployees.size(); i++) {
-                    contactsTableModel.addToVectorM_Data(listOfEmployees.get(i));
-                    chatFramesMap.put(listOfEmployees.get(i).getEmployeeNumber(),null);
+                    if(listOfEmployees.get(i).getEmployeeNumber() != emp.getEmployeeNumber()) {
+                        contactsTableModel.addToVectorM_Data(listOfEmployees.get(i));
+                        chatFramesMap.put(listOfEmployees.get(i).getEmployeeNumber(), null);
+                    }
                 }
             }
         } catch (JSONException e) {

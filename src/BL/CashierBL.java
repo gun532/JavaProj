@@ -60,13 +60,4 @@ public class CashierBL {
         inventoryDataAccess.updateInventory(inventory);
         return true;
     }
-
-
-//    private void insertShoppingCart(ShoppingCart shoppingCart, BL.Client client)
-//    {
-//        clientsDataAccess.insertShoppingCart(shoppingCart);
-//        clientsDataAccess.insertCartDetails(shoppingCart);
-//        clientsDataAccess.insertToShoppingHistory(client.getClientCode(),shoppingCart.getCartID());
-//    }
-
 }

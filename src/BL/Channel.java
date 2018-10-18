@@ -1,6 +1,5 @@
 package BL;
 
-import DTO.EmployeeDto;
 import DTO.PeerDto;
 import Entities.Employee.Cashier;
 import Entities.Employee.Employee;
@@ -10,12 +9,8 @@ import GUI.ChatMessagePage;
 import GUI.ChatPage;
 import GUI.Controller;
 import com.google.gson.Gson;
-import javafx.application.Platform;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.io.*;
 import java.net.*;
 
@@ -28,6 +23,7 @@ public class Channel implements Runnable {
     private Employee peerToTalk;
     private ChatPage chatPage;
     private ChatMessagePage chatMessagePage;
+    private GlobalLogger log = new GlobalLogger("logs.log");
 
     public void bind(int port, ChatPage chatPage) throws SocketException {
         socket = new DatagramSocket(port);
@@ -35,8 +31,10 @@ public class Channel implements Runnable {
     }
 
     public void start() {
+        running = true;
         Thread thread = new Thread(this);
         thread.start();
+
     }
 
     public void stop() {
@@ -48,8 +46,8 @@ public class Channel implements Runnable {
     public void run() {
         byte[] buffer = new byte[1024];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-
-        running = true;
+        Boolean isEmpty = true;
+        //running = true;
         while (running) {
             try {
                 socket.receive(packet);
@@ -77,15 +75,17 @@ public class Channel implements Runnable {
                         chatMessagePage.getTextArea().append(msg + "\n");
 
                         System.out.println(msg);
+                        log.logger.info(msg);
                     }
                 }
 
-
-
-
-
         } catch(IOException e){
-            e.printStackTrace();
+                for(int i = 0 ; i<buffer.length;i++)
+                {
+                    if(buffer[i] != 0)  isEmpty = false;
+                }
+                if(isEmpty) System.out.println("The buffer was empty");
+                else e.printStackTrace();
             break;
         }
 
@@ -101,6 +101,7 @@ public class Channel implements Runnable {
         packet.setSocketAddress(address);
 
         socket.send(packet);
+        log.logger.info("message sent");
     }
 
     private Employee searchPeerLocation(InetAddress peerAddress, int peerPort) {

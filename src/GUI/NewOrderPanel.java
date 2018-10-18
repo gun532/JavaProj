@@ -23,6 +23,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class NewOrderPanel extends CJPanel {
+
+    private CJPanel subPanel1;
+
     private JLabel labelProduct;
     private JTextField productCodeField;
 
@@ -70,7 +73,7 @@ public class NewOrderPanel extends CJPanel {
         setLayout(theLayout);
 
         //Build sub panel #1.
-        CJPanel subPanel1 = new CJPanel(new SpringLayout(), getFrameSizeWidth() * 0.4, getFrameSizeHeight() * 0.33);
+        subPanel1 = new CJPanel(new SpringLayout(), getFrameSizeWidth() * 0.4, getFrameSizeHeight() * 0.33);
         theLayout.putConstraint(SpringLayout.WEST, subPanel1, 0, SpringLayout.WEST, this);
 
         labelProduct = new JLabel("Product Code: ", JLabel.TRAILING);
@@ -113,42 +116,31 @@ public class NewOrderPanel extends CJPanel {
         subPanel2.add(btnAddProduct);
 
         //Add to cart button pressed
-        btnAddProduct.addActionListener(new ActionListener() {
+        btnAddProduct.addActionListener(e -> new SwingWorker() { //Open a new thread for add to cart.
+
             @Override
-            public void actionPerformed(ActionEvent e) {
-
-                new SwingWorker() { //Open a new thread for add to cart.
-
-                    @Override
-                    protected Object doInBackground() throws Exception {
-                        addToCart(Integer.parseInt(productCodeField.getText()),
-                                Integer.parseInt(amountField.getText()));
-                        return null;
-                    }
-                }.execute();
+            protected Object doInBackground() throws Exception {
+                addToCart(Integer.parseInt(productCodeField.getText()),
+                        Integer.parseInt(amountField.getText()));
+                return null;
             }
-        });
+        }.execute());
 
         //Remove product button pressed
-        btnRemoveProduct.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new SwingWorker() { //Open a new thread.
+        btnRemoveProduct.addActionListener(e -> new SwingWorker() { //Open a new thread.
 
-                    @Override
-                    protected Object doInBackground() throws Exception {
-                        removeFromCart(Integer.parseInt(productCodeField.getText()),
-                                Integer.parseInt(amountField.getText()));
-                        return null;
-                    }
-                }.execute();
+            @Override
+            protected Object doInBackground() throws Exception {
+                removeFromCart(Integer.parseInt(productCodeField.getText()),
+                        Integer.parseInt(amountField.getText()));
+                return null;
             }
-        });
+        }.execute());
 
         SpringUtilities.makeGrid(subPanel2, 1, 2, 50, 10, 30, 6);
 
         //Create "Choose a BL.Client" button
-        btnChooseClient = new CJButton("Choose a BL.Client", font);
+        btnChooseClient = new CJButton("Choose a client", font);
         btnChooseClient.setSize(50, 50);
 
         theLayout.putConstraint(SpringLayout.HORIZONTAL_CENTER, btnChooseClient, 0, SpringLayout.HORIZONTAL_CENTER, subPanel2);
@@ -158,7 +150,7 @@ public class NewOrderPanel extends CJPanel {
         add(btnChooseClient);
 
         //Choose a client label and field
-        labelChosenClient = new JLabel("Chosen BL.Client: ", JLabel.TRAILING);
+        labelChosenClient = new JLabel("Chosen Client: ", JLabel.TRAILING);
         labelChosenClient.setFont(font);
         labelChosenClient.setLabelFor(fieldChosenClient);
         add(labelChosenClient);
@@ -179,7 +171,7 @@ public class NewOrderPanel extends CJPanel {
 
         //Build sub Panel #3
         CJPanel subPanel3 = new CJPanel(new SpringLayout(), getFrameSizeWidth(), getFrameSizeHeight() * 0.33);
-        //subPanel3.setBackground(null);
+
         theLayout.putConstraint(SpringLayout.NORTH, subPanel3, 0, SpringLayout.SOUTH, subPanel2);
 
         btnFinish = new CJButton("Finish", new Font("Candara", 0, 40));
@@ -187,15 +179,12 @@ public class NewOrderPanel extends CJPanel {
         subPanel3.add(btnFinish);
 
         //Finish button was pressed
-        btnFinish.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (chosenClient == null) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Please choose a client", "Invalid input", JOptionPane.ERROR_MESSAGE);
-                } else {
+        btnFinish.addActionListener(e -> {
+            if (chosenClient == null) {
+                JOptionPane.showMessageDialog(new JFrame(), "Please choose a client", "Invalid input", JOptionPane.ERROR_MESSAGE);
+            } else {
 
-                    createNewOrder();
-                }
+                createNewOrder();
             }
         });
 
@@ -203,15 +192,12 @@ public class NewOrderPanel extends CJPanel {
         btnCancel.setPreferredSize(new Dimension(300, 150));
         subPanel3.add(btnCancel);
 
-        btnCancel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                try {
-                    controller.showMainMenuPage();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+        btnCancel.addActionListener(e -> {
+            setVisible(false);
+            try {
+                controller.showMainMenuPage();
+            } catch (IOException e1) {
+                e1.printStackTrace();
             }
         });
 
@@ -255,7 +241,7 @@ public class NewOrderPanel extends CJPanel {
 
         chosenClient = controller.getMainMenuPage().getChosenClient();
         if (chosenClient == null)
-            fieldChosenClient.setText("Please choose a client");
+            fieldChosenClient.setText("Choose a client");
         else {
             fieldChosenClient.setText(chosenClient.getFullName());
             updateShoppingCartDeal();
@@ -389,6 +375,8 @@ public class NewOrderPanel extends CJPanel {
 
         theLayout.putConstraint(SpringLayout.NORTH, subPanel4, 0, SpringLayout.NORTH, this);
         theLayout.putConstraint(SpringLayout.EAST, subPanel4, 0, SpringLayout.EAST, this);
+        theLayout.putConstraint(SpringLayout.EAST, subPanel1, -5, SpringLayout.WEST, subPanel4);
+        theLayout.putConstraint(SpringLayout.EAST, fieldChosenClient, -5, SpringLayout.WEST, subPanel4);
 
         add(subPanel4);
     }
@@ -396,20 +384,8 @@ public class NewOrderPanel extends CJPanel {
     public void updateShoppingCartDeal() {
         Deal currentDeal = this.clientsDeals.get(chosenClient.getType());
 
-        // TODO: may need to add a discount method to ShoppingCart class for saving and displaying the correct order total price in DB.
         fieldDiscount.setText(String.format("%,.0f%%", currentDeal.getDiscount()));
         discountRate = (100 - currentDeal.getDiscount()) / 100;
-
-        // TODO: add free gits to inventory and then uncomment this section
-//        new SwingWorker() { //Open a new thread for add to cart.
-//            @Override
-//            protected Object doInBackground() throws Exception {
-//                for(int n:currentDeal.getGifts()) {
-//                    addToCart(n,1);
-//                }
-//                return null;
-//            }
-//        }.execute();
 
         updateTable();
     }

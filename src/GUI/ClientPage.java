@@ -42,7 +42,7 @@ public class ClientPage extends JFrame {
     private SpringLayout theLayout = new SpringLayout();
     private CJPanel mainPanel;
 
-    private JTextField searchField = new JTextField("Search BL.Client...");
+    private JTextField searchField = new JTextField("Search Client...");
 
     private CJButton btnAddNewClient = new CJButton("Add", font);
     private CJButton btnRemoveClient = new CJButton("Remove", font);
@@ -52,7 +52,7 @@ public class ClientPage extends JFrame {
     private CJButton btnCancel = new CJButton("Cancel", font);
 
     //Defining table headers and columns type
-    private String[] colNames = {"BL.Client Code", "BL.Client ID", "BL.Client Name", "Phone Number", "BL.Client Type"};
+    private String[] colNames = {"Client Code", "Client ID", "Client Name", "Phone Number", "Client Type"};
     private Class[] colClasses = {Integer.class, Integer.class, String.class, String.class, ClientType.class};
 
     private ClientTableModal clientTableModal = new ClientTableModal(colNames, colClasses);
@@ -258,7 +258,9 @@ public class ClientPage extends JFrame {
         clientTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 if (evt.getClickCount() >= 1) {
-                    chooseClientFromTable();
+                    try {
+                        chooseClientFromTable();
+                    }catch (IndexOutOfBoundsException e){ }
                 }
             }
         });
@@ -346,33 +348,6 @@ public class ClientPage extends JFrame {
                     for (int i = 0; i < listOfClients.size(); i++) {
                         clientTableModal.addToVectorM_Data(listOfClients.get(i));
                     }
-                    //listOfClients = gson.fromJson(response, ArrayList.class);
-
-//                    JsonObject root = gson.fromJson(response, JsonObject.class);
-//                    JsonArray ja  = root.getAsJsonArray();
-//
-//                    for(JsonElement j : ja) {
-//                    }
-
-
-                    //here use the json to parse into your custom object
-
-//                    ArrayList<BL.Client> arrayList = new ArrayList(array.size());
-//                    for(int i=0;i < array.size();i++){
-//                       String id = array.get(0).toString();
-//                    }
-
-
-                    //listOfClients = new Gson().fromJson(response, new TypeToken<ArrayList<BL.Client>>(){}.getType());
-
-//                    int id = listOfClients.get(0).getId();
-
-
-//                    for (int i = 0; i < array.size(); i++) {
-//                        //clientTableModal.addToVectorM_Data();
-//                    }
-
-
                 }
 
 
@@ -411,7 +386,7 @@ public class ClientPage extends JFrame {
             String response = in.readLine();
             if(response.equals("true"))
             {
-                JOptionPane.showMessageDialog(new JFrame(), "BL.Client " + chosenClient.getFullName() + " was removed successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(new JFrame(), "Client " + chosenClient.getFullName() + " was removed successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
 
                 controller.getClientPage().setVisible(false);
                 controller.showClientPage();

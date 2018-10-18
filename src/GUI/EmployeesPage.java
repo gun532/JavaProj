@@ -204,7 +204,9 @@ public class EmployeesPage extends JFrame {
         employeesTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 if (evt.getClickCount() >= 1) {
-                    chooseEmployeeFromTable();
+                    try {
+                        chooseEmployeeFromTable();
+                    }catch (IndexOutOfBoundsException e){ }
                 }
             }
         });

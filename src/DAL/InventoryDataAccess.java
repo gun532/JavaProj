@@ -7,6 +7,7 @@ import Entities.Product;
 import java.sql.*;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class InventoryDataAccess {
 

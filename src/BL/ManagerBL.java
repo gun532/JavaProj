@@ -129,6 +129,17 @@ public class ManagerBL {
         return managerDataAccess.createReport_totalPurchasesInBranchByDate(branchNumber,date);
     }
 
+    public Boolean createReport_totalPurchasesInBranch(int branchNumber)
+    {
+        return managerDataAccess.createReport_totalPurchasesInBranch(branchNumber);
+    }
+    public boolean createReport_productSalesByBranch(int branchNumber, Product product) {
+        return managerDataAccess.createReport_productSalesByBranch(branchNumber,product);
+    }
+    public void closeConnection(){
+        managerDataAccess.closeConnection();
+    }
+
 //    public JSONArray createReportTotalPurchasesInBranch(int branchNumber) {
 //        try {
 //            JSONArray jsonArray = new JSONArray();

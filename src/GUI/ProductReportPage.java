@@ -2,6 +2,7 @@ package GUI;
 
 import BL.AuthService;
 import DTO.InventoryDto;
+import DTO.ProductReportDto;
 import Entities.Employee.Employee;
 import Entities.Inventory;
 import Entities.Product;
@@ -12,6 +13,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 
@@ -146,6 +148,35 @@ public class ProductReportPage extends JFrame{
         this.chosenProduct = new Product(pName,pPrice,pAmount,pCode);
 
         // TODO: 17/10/2018 open word file with the report of the chosen product.
+
+        openReport(chosenProduct);
+    }
+
+    private void openReport(Product product) {
+        try
+        {
+            if (Desktop.isDesktopSupported()) {
+                PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
+                Gson gson = new Gson();
+                ProductReportDto productReportDto = new ProductReportDto("productReports", chosenProduct,
+                        emp.getBranchNumber());
+
+                out.println(gson.toJson(productReportDto));
+
+                DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
+                String response = in.readLine();
+
+                if (response.equals("true")) {
+
+                    Desktop.getDesktop().open(new File(".idea/dataSources/wordReportsFiles/" +"Report for product #" + product.getProductCode() + " branch #" +emp.getBranchNumber()+ ".docx"));
+                } else {
+                    JOptionPane.showMessageDialog(new JFrame(), "report can't be created!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
 
     }
 }
