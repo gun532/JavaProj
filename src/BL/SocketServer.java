@@ -314,7 +314,7 @@ public class SocketServer extends Thread{
             }
         }
 
-        //utility function to check sender id in chat
+    //utility function to check sender id in chat
     private int checkSenderId(int receiver) {
         if(messagesToSend.containsKey(receiver)) {
             return messagesToSend.get(receiver).getSender();
