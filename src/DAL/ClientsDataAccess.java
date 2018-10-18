@@ -11,6 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ClientsDataAccess {
 
@@ -23,9 +24,6 @@ public class ClientsDataAccess {
         try {
             myConn = DriverManager.getConnection
                     ("jdbc:mysql://localhost:3306/test_db", "root", "12345");
-            log.logger.setLevel(Level.INFO);
-            log.logger.setLevel(Level.WARNING);
-            log.logger.setLevel(Level.SEVERE);
         } catch (Exception e) {
             log.logger.severe(e.getMessage());
             throw new IllegalStateException("Cannot connect the database!", e);

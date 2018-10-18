@@ -126,6 +126,33 @@ public class ReportsPage extends JPanel {
 
         btnTotalReport.addActionListener(e -> {
             // TODO: 17/10/2018 open report of branch sales.
+
+            try
+            {
+                if (Desktop.isDesktopSupported()) {
+                    PrintStream out = new PrintStream(Controller.echoSocket.getOutputStream());
+                    Gson gson = new Gson();
+                    DateReportDto dateReportDto = new DateReportDto("salesReportByBranch", null,
+                            AuthService.getInstance().getCurrentEmployee().getBranchNumber());
+
+                    out.println(gson.toJson(dateReportDto));
+
+                    DataInputStream in = new DataInputStream(Controller.echoSocket.getInputStream());
+                    String response = in.readLine();
+
+                    if (response.equals("true")) {
+
+                        Desktop.getDesktop().open(new File(".idea/dataSources/wordReportsFiles/" + "Branch #" +
+                                AuthService.getInstance().getCurrentEmployee().getBranchNumber() + " Sales Report" + ".docx"));
+                    } else {
+                        JOptionPane.showMessageDialog(new JFrame(), "report can't be created!", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+
         });
 
         btnProductReport.addActionListener(e -> {

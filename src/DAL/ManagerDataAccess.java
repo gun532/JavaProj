@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -31,9 +33,6 @@ public class ManagerDataAccess {
         try {
             myConn = DriverManager.getConnection
                     ("jdbc:mysql://localhost:3306/test_db", "root", "12345");
-            log.logger.setLevel(Level.INFO);
-            log.logger.setLevel(Level.WARNING);
-            log.logger.setLevel(Level.SEVERE);
         } catch (Exception e) {
             log.logger.severe(e.getMessage());
             throw new IllegalStateException("Cannot connect the database!", e);
@@ -238,48 +237,69 @@ public class ManagerDataAccess {
         return employeeArrayList;
     }
 
-//    public int getTotalAmountInBranch(int branchNumber) {
-//        try {
-//            int total = 0;
-//            Class.forName(myDriver);
-//            createViewForTotalPurchasesForBranch(branchNumber);
-//            String sql = "SELECT sum(total) as totalPurchases from purchasesbybranch";
-//            PreparedStatement statement = myConn.prepareStatement(sql);
-//            ResultSet rs = statement.executeQuery();
-//            while (rs.next()) {
-//                total = rs.getInt("totalPurchases");
-//            }
-//            log.logger.info("total amount was calculated");
-//            return total;
-//        } catch (ClassNotFoundException e) {
-//            log.logger.severe(e.getMessage());
-//            e.printStackTrace();
-//        } catch (SQLException e) {
-//            log.logger.severe(e.getMessage());
-//            e.printStackTrace();
-//        }
-//        return 0;
-//    }
+    public int getTotalAmountInBranch(int branchNumber) {
+        try {
+            int total = 0;
+            Class.forName(myDriver);
+            String sql = "select sum(total) as allTotal from  purchasesbybranch_" + branchNumber;
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                total = rs.getInt("allTotal");
+            }
+            log.logger.info("total amount was calculated");
+            return total;
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
 
-//    private void createViewForTotalPurchasesForBranch(int branchNumber) {
-//        try {
-//            Class.forName(myDriver);
-//
-//            String sql = "create view PurchasesByBranch  as (select distinct clients.fullName, total, clients.ClientType from clients join shopping_history join cart_details on clients.clientNumber = shopping_history.clientNumber and shopping_history.cartID = cart_details.cartID where branch_Number = ?)";
-//            PreparedStatement statement = myConn.prepareStatement(sql);
-//            statement.setInt(1, branchNumber);
-//            statement.executeUpdate();
-//            log.logger.info("view in the db was created");
-//
-//        } catch (ClassNotFoundException e) {
-//            log.logger.severe(e.getMessage());
-//            e.printStackTrace();
-//        } catch (SQLException e) {
-//            log.logger.severe(e.getMessage());
-//            System.out.println("Table already exists!");
-//        }
-//    }
+    private Boolean createViewForTotalPurchasesForBranch(int branchNumber) {
+        try {
+            Class.forName(myDriver);
+
+            String sql = "create view PurchasesByBranch_" + branchNumber + " as (select distinct clients.fullName, total, clients.ClientType from clients join shopping_history join cart_details on clients.clientNumber = shopping_history.clientNumber and shopping_history.cartID = cart_details.cartID where branch_Number = ?)";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, branchNumber);
+            statement.executeUpdate();
+            log.logger.info("view in the db was created");
+            return true;
+
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            System.out.println("Table already exists!");
+            return false;
+        }
+        return false;
+    }
+
+    private void updateViewForTotalPurchasesForBranch(int branchNumber) {
+        try {
+            Class.forName(myDriver);
+
+            String sql = "update view PurchasesByBranch_" + branchNumber + " as (select distinct clients.fullName, total, clients.ClientType from clients join shopping_history join cart_details on clients.clientNumber = shopping_history.clientNumber and shopping_history.cartID = cart_details.cartID where branch_Number = ?)";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, branchNumber);
+            statement.executeUpdate();
+            log.logger.info("view in the db was created");
+
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            System.out.println("Table already exists!");
+        }
+    }
 //
 //    public ResultSetMetaData getResultSetMetaData(ResultSet rs) {
 //        try {
@@ -377,11 +397,16 @@ public class ManagerDataAccess {
             statement.setInt(1, numOfEmployees);
             statement.setInt(2, branchNumber);
             statement.executeUpdate();
+
+            log.logger.info("Number of employees in branch  " + branchNumber + " increased");
+
             return true;
 //            myConn.close();
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
 
@@ -397,11 +422,15 @@ public class ManagerDataAccess {
             statement.setInt(1, numOfEmployees);
             statement.setInt(2, branchNumber);
             statement.executeUpdate();
+            log.logger.info("Number of employees in branch  " + branchNumber + " decreased");
+
             return true;
 //            myConn.close();
         } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
 
@@ -440,7 +469,7 @@ public class ManagerDataAccess {
             statement.setString(1, phone);
             statement.setInt(2, branchNumber);
             statement.executeUpdate();
-            log.logger.info("phone number in branch " + branchNumber + "was updated");
+            log.logger.info("phone number in branch " + branchNumber + " was updated");
             return true;
 //            myConn.close();
         } catch (ClassNotFoundException e) {
@@ -603,10 +632,10 @@ public class ManagerDataAccess {
             //statement.setInt(1, empNum);
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                Product p = new Product(rs.getInt("productCode"),rs.getString("name"),
+                Product p = new Product(rs.getInt("productCode"), rs.getString("name"),
                         rs.getDouble("price"));
                 productArrayList.add(p);
-                }
+            }
             //            myConn.close();
         } catch (ClassNotFoundException e) {
             log.logger.severe(e.getMessage());
@@ -622,20 +651,40 @@ public class ManagerDataAccess {
 
         return productArrayList;
     }
+//
+//    private ResultSet purchaseDetailsRS(int branchNumber)
+//    {
+//        try {
+//            Class.forName(myDriver);
+//            String sql = "select distinct clients.fullName, clients.ClientType, date, product_code, product.name, product.price ,numOfItems, total from clients join product join shoppingcart join shopping_history join cart_details on clients.clientNumber = shopping_history.clientNumber and shopping_history.cartID = cart_details.cartID" +
+//                    "and shoppingcart.cartCode = cart_details.cartID and product.productCode = shoppingcart.product_code where branch_Number = ?";
+//            PreparedStatement statement = myConn.prepareStatement(sql);
+//            statement.setInt(1, branchNumber);
+////            statement.setInt(1, branch);
+//            ResultSet rs = statement.executeQuery();
+//            return rs;
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
     public boolean createReport_totalPurchasesInBranchByDate(int branchNumber, java.util.Date date) {
         try {
 
             Class.forName(myDriver);
-            createViewForPurchasesDetailsInBranch(branchNumber);
+            Boolean isCreated = createViewForPurchasesDetailsInBranch(branchNumber);
+            if (!isCreated) updateViewForPurchasesDetailsInBranch(branchNumber);
             java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-            String sql = "select fullName, ClientType, date, name, price, numOfItems from PurchasesDetails where date = ?";
+            String sql = "select fullName, ClientType, date, name, price, numOfItems from PurchasesDetails_" + branchNumber + " where date = ?";
             PreparedStatement statement = myConn.prepareStatement(sql);
             statement.setDate(1, sqlDate);
             ResultSet rs = statement.executeQuery();
 
             //creating word document
-            String fileName = ".idea/dataSources/wordReportsFiles/" +"dateReport" + sqlDate + ".docx";
+            String fileName = ".idea/dataSources/wordReportsFiles/" + "dateReport" + sqlDate + ".docx";
             XWPFDocument docx = new XWPFDocument();
             XWPFParagraph para1 = docx.createParagraph();
             para1.setAlignment(ParagraphAlignment.CENTER);
@@ -651,8 +700,7 @@ public class ManagerDataAccess {
             row.addNewTableCell().setText("Product Name");
             row.addNewTableCell().setText("Product Price");
             row.addNewTableCell().setText("number of Items");
-            while((rs!=null) && (rs.next()))
-            {
+            while ((rs != null) && (rs.next())) {
                 row = tab.createRow();
                 row.getCell(0).setText(rs.getString("fullName"));
                 row.getCell(1).setText(rs.getString("ClientType"));
@@ -679,24 +727,23 @@ public class ManagerDataAccess {
         } catch (ClassNotFoundException e) {
             log.logger.severe(e.getMessage());
             e.printStackTrace();
-        }  catch (IOException e) {
+        } catch (IOException e) {
             log.logger.severe(e.getMessage());
             e.printStackTrace();
         }
         return false;
     }
 
-    private void createViewForPurchasesDetailsInBranch(int branchNumber) {
+    private void updateViewForPurchasesDetailsInBranch(int branchNumber) {
         try {
             Class.forName(myDriver);
 
-            String sql = "create view PurchasesDetails as (select distinct clients.fullName, clients.ClientType, date, product_code, product.name, product.price ,numOfItems, total from clients join product join shoppingcart join shopping_history join cart_details on clients.clientNumber = shopping_history.clientNumber and shopping_history.cartID = cart_details.cartID \n" +
+            String sql = "UPDATE view PurchasesDetails_" + branchNumber + " as (select distinct clients.fullName, clients.ClientType, date, product_code, product.name, product.price ,numOfItems, total from clients join product join shoppingcart join shopping_history join cart_details on clients.clientNumber = shopping_history.clientNumber and shopping_history.cartID = cart_details.cartID \n" +
                     "and shoppingcart.cartCode = cart_details.cartID and product.productCode = shoppingcart.product_code where branch_Number = ?)";
             PreparedStatement statement = myConn.prepareStatement(sql);
             statement.setInt(1, branchNumber);
             statement.executeUpdate();
             log.logger.info("view in the db was created");
-
         } catch (ClassNotFoundException e) {
             log.logger.severe(e.getMessage());
             e.printStackTrace();
@@ -704,18 +751,165 @@ public class ManagerDataAccess {
             log.logger.severe(e.getMessage());
             System.out.println("Table already exists!");
         }
+
     }
 
-//    public ResultSetMetaData getResultSetMetaData(ResultSet rs) {
-//        try {
-//            return rs.getMetaData();
-//        } catch (SQLException e) {
-//            log.logger.severe(e.getMessage());
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
+    private Boolean createViewForPurchasesDetailsInBranch(int branchNumber) {
+        try {
+            Class.forName(myDriver);
 
+            String sql = "create view PurchasesDetails_" + branchNumber + " as (select distinct clients.fullName, clients.ClientType, date, product_code, product.name, product.price ,numOfItems, total from clients join product join shoppingcart join shopping_history join cart_details on clients.clientNumber = shopping_history.clientNumber and shopping_history.cartID = cart_details.cartID \n" +
+                    "and shoppingcart.cartCode = cart_details.cartID and product.productCode = shoppingcart.product_code where branch_Number = ?)";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, branchNumber);
+            statement.executeUpdate();
+            log.logger.info("view in the db was created");
+            return true;
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            System.out.println("Table already exists!");
+            return false;
+        }
+        return false;
+    }
+
+    public boolean createReport_productSalesByBranch(int branchNumber, Product product) {
+        try {
+
+            Class.forName(myDriver);
+            Boolean isCreated = createViewForPurchasesDetailsInBranch(branchNumber);
+            if (!isCreated) updateViewForPurchasesDetailsInBranch(branchNumber);
+            String sql = "select fullName, ClientType, date, numOfItems, (price*numOfItems) as PurchaseTotal from PurchasesDetails_"
+                    + branchNumber + " where product_code = ?";
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            statement.setInt(1, product.getProductCode());
+
+            ResultSet rs = statement.executeQuery();
+
+            //creating word document
+            String fileName = ".idea/dataSources/wordReportsFiles/" + "Report for product #" + product.getProductCode() + " branch #" +branchNumber+ ".docx";
+            XWPFDocument docx = new XWPFDocument();
+            XWPFParagraph para1 = docx.createParagraph();
+            para1.setAlignment(ParagraphAlignment.CENTER);
+            XWPFRun run = para1.createRun();
+            run.setBold(true);
+            run.setFontSize(30);
+            run.setText("Report for product: " + product.getName() +" in branch number: " +branchNumber);
+            XWPFTable tab = docx.createTable();
+            XWPFTableRow row = tab.getRow(0);
+            row.getCell(0).setText("fullName");
+            row.addNewTableCell().setText("ClientType");
+            row.addNewTableCell().setText("Date Of Purchase");
+            row.addNewTableCell().setText("number of Items");
+            row.addNewTableCell().setText("Total Payment");
+            while ((rs != null) && (rs.next())) {
+                row = tab.createRow();
+                row.getCell(0).setText(rs.getString("fullName"));
+                row.getCell(1).setText(rs.getString("ClientType"));
+                row.getCell(2).setText(rs.getString("date"));
+                row.getCell(3).setText(rs.getString("numOfItems"));
+                row.getCell(4).setText(rs.getString("PurchaseTotal"));
+            }
+            docx.createParagraph().createRun().addBreak();
+            XWPFParagraph para2 = docx.createParagraph();
+            XWPFRun run2 = para2.createRun();
+            run2.setText("Generated Automatically from the store system");
+            docx.write(new FileOutputStream(fileName));
+            //docx.write(new FileOutputStream(fileName));
+
+
+            log.logger.severe("Word document was created!");
+            System.out.println("Word document was created!");
+            return true;
+
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+
+    public boolean createReport_totalPurchasesInBranch(int branchNumber) {
+        try {
+
+            Class.forName(myDriver);
+            Boolean isCreated = createViewForPurchasesDetailsInBranch(branchNumber);
+            if (!isCreated) updateViewForPurchasesDetailsInBranch(branchNumber);
+            String sql = "SELECT * from PurchasesDetails_" + branchNumber;
+            PreparedStatement statement = myConn.prepareStatement(sql);
+            ResultSet rs = statement.executeQuery();
+
+            //creating word document
+            String fileName = ".idea/dataSources/wordReportsFiles/" + "Branch #" + branchNumber + " Sales Report" + ".docx";
+            XWPFDocument docx = new XWPFDocument();
+            XWPFParagraph para1 = docx.createParagraph();
+            para1.setAlignment(ParagraphAlignment.CENTER);
+            XWPFRun run = para1.createRun();
+            run.setBold(true);
+            run.setFontSize(30);
+            run.setText("Report for branch:" + branchNumber);
+            XWPFTable tab = docx.createTable();
+            XWPFTableRow row = tab.getRow(0);
+            row.getCell(0).setText("fullName");
+            row.addNewTableCell().setText("ClientType");
+            row.addNewTableCell().setText("Date Of Purchase");
+            row.addNewTableCell().setText("Product Code");
+            row.addNewTableCell().setText("Product Name");
+            row.addNewTableCell().setText("Product Price");
+            row.addNewTableCell().setText("number of Items");
+            row.addNewTableCell().setText("Total Payment");
+            while ((rs != null) && (rs.next())) {
+                row = tab.createRow();
+                row.getCell(0).setText(rs.getString("fullName"));
+                row.getCell(1).setText(rs.getString("ClientType"));
+                row.getCell(2).setText(rs.getString("date"));
+                row.getCell(3).setText(rs.getString("product_code"));
+                row.getCell(4).setText(rs.getString("name"));
+                row.getCell(5).setText(rs.getString("price"));
+                row.getCell(6).setText(rs.getString("numOfItems"));
+                row.getCell(7).setText(rs.getString("total"));
+            }
+            docx.createParagraph().createRun().addBreak();
+
+            int total = getTotalAmountInBranch(branchNumber);
+            tab = docx.createTable();
+            row = tab.getRow(0);
+            row.getCell(0).setText("Total Earnings:");
+            row.addNewTableCell().setText(String.valueOf(total));
+            XWPFParagraph para2 = docx.createParagraph();
+            XWPFRun run2 = para2.createRun();
+            run2.setText("Generated Automatically from the store system");
+            docx.write(new FileOutputStream(fileName));
+            //docx.write(new FileOutputStream(fileName));
+
+
+            log.logger.severe("Word document was created!");
+            System.out.println("Word document was created!");
+            return true;
+
+        } catch (SQLException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            log.logger.severe(e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 
     public void closeConnection() {

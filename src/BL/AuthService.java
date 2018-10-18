@@ -26,22 +26,3 @@ public class AuthService {
         this.currentEmployee = currentEmployee;
     }
 }
-
-    //
-//    public boolean login(int id, String password) {
-//        String hasedPass = loginUtility.getEncryptedPass(password);
-//
-//
-//        //String hasedPass = String.valueOf(hash);
-//        String DBPass = employeeDataAccess.getPass(id);
-//        if (hasedPass == null) {
-//            //TODO: write to logger
-//            return false;
-//        }
-//        if (hasedPass.equals(DBPass)) {
-//            currentEmployee = employeeDataAccess.selectEmpDetailsById(id);
-//            return true;
-//        }
-//        return false;
-//    }
-//}

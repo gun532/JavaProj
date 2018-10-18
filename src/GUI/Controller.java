@@ -1,6 +1,7 @@
 package GUI;
 
 import BL.Channel;
+import BL.GlobalLogger;
 
 import javax.imageio.ImageIO;
 import javax.net.ssl.SSLContext;
@@ -21,6 +22,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Logger;
 
 public class Controller {
     private JFrame appFrame;
@@ -43,13 +45,14 @@ public class Controller {
     private final String host = "localhost";
     private final int port = 9999;
     public static SSLSocket echoSocket;
+    private final static Logger log = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     // Controller constructor holds all the app pages (panels)
-    public Controller() { }
+    public Controller() {
+
+    }
 
     public void loadApp() throws IOException {
-
-
 //        Thread connThread = new Thread(Controller);
 //        connThread.start();
         try {
@@ -129,8 +132,7 @@ public class Controller {
         }
         catch (Exception e)
         {
-            //TODO:write to logger
-            e.printStackTrace();
+            log.severe(e.getMessage());
         }
     }
 
@@ -141,8 +143,7 @@ public class Controller {
         }
         catch (Exception e)
         {
-            //TODO:write to logger
-            e.printStackTrace();
+            log.severe(e.getMessage());
         }
     }
 
@@ -155,8 +156,7 @@ public class Controller {
         }
         catch (Exception e)
         {
-            //TODO:write to logger
-            e.printStackTrace();
+            log.severe(e.getMessage());
         }
     }
 
@@ -170,8 +170,7 @@ public class Controller {
         }
         catch (Exception e)
         {
-            //TODO:write to logger
-            e.printStackTrace();
+            log.severe(e.getMessage());
         }
     }
 
@@ -184,8 +183,7 @@ public class Controller {
         }
         catch (Exception e)
         {
-            //TODO:write to logger
-            e.printStackTrace();
+            log.severe(e.getMessage());
         }
     }
 
@@ -195,8 +193,7 @@ public class Controller {
             employeesPage.setVisible(true);
 
         } catch (Exception e) {
-            //TODO:write to logger
-            e.printStackTrace();
+            log.severe(e.getMessage());
         }
     }
 

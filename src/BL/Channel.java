@@ -18,6 +18,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.*;
 import java.net.*;
+import java.util.logging.Logger;
 
 
 public class Channel implements Runnable {
@@ -28,6 +29,7 @@ public class Channel implements Runnable {
     private Employee peerToTalk;
     private ChatPage chatPage;
     private ChatMessagePage chatMessagePage;
+    private GlobalLogger log = new GlobalLogger("logs.log");
 
     public void bind(int port, ChatPage chatPage) throws SocketException {
         socket = new DatagramSocket(port);
@@ -77,6 +79,7 @@ public class Channel implements Runnable {
                         chatMessagePage.getTextArea().append(msg + "\n");
 
                         System.out.println(msg);
+                        log.logger.info(msg);
                     }
                 }
 
@@ -101,6 +104,7 @@ public class Channel implements Runnable {
         packet.setSocketAddress(address);
 
         socket.send(packet);
+        log.logger.info("message sent");
     }
 
     private Employee searchPeerLocation(InetAddress peerAddress, int peerPort) {

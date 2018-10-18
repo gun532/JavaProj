@@ -80,6 +80,7 @@ public class SocketServer extends Thread{
                     BranchDto branchDto;
                     ProductDto productDto;
                     SendMessageLaterDto sendMessageLaterDto;
+                    DateReportDto dateReportDto;
 
                     switch (dtoBase.getFunc()) {
                         case "login":
@@ -235,11 +236,24 @@ public class SocketServer extends Thread{
                             out.println(jsArray);
                             break;
                         case "reportByDate":
-                            DateReportDto dateReportDto = gson.fromJson(request, DateReportDto.class);
+                            dateReportDto = gson.fromJson(request, DateReportDto.class);
                             boolean isReportCreated =
                                     managerBL.createReport_totalPurchasesInBranchByDate
                                             (dateReportDto.getBranchNumber(), dateReportDto.getDate());
                             out.println(gson.toJson(isReportCreated));
+                            break;
+                        case "salesReportByBranch":
+                            dateReportDto = gson.fromJson(request, DateReportDto.class);
+                            boolean isSalesReportCreated =
+                                    managerBL.createReport_totalPurchasesInBranch(dateReportDto.getBranchNumber());
+                            out.println(gson.toJson(isSalesReportCreated));
+                            break;
+                        case "productReports":
+                            ProductReportDto productReportDto = gson.fromJson(request, ProductReportDto.class);
+                            boolean isProductReportCreated =
+                                    managerBL.createReport_productSalesByBranch(productReportDto.getBranchNumber(),
+                                            productReportDto.getProduct());
+                            out.println(gson.toJson(isProductReportCreated));
                             break;
                         case "getPeerDetails":
                             employeeDto = gson.fromJson(request, EmployeeDto.class);

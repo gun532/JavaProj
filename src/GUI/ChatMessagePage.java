@@ -2,6 +2,7 @@ package GUI;
 
 import BL.AuthService;
 import BL.Channel;
+import BL.GlobalLogger;
 import BL.ManagerBL;
 import DAL.ManagerDataAccess;
 import DTO.EmployeeDto;
@@ -57,6 +58,9 @@ public class ChatMessagePage extends JFrame {
     private static int firstTime = 0;
 
     private int peerPort;
+
+
+    private GlobalLogger log = new GlobalLogger("logs.log");
 
     public ChatMessagePage(Controller in_controller, Employee emp, Channel channel) throws HeadlessException {
 
@@ -211,9 +215,11 @@ public class ChatMessagePage extends JFrame {
 
                             msg = currentEmployee.getName() + ": " + msg;
 
-
                             channel.sendTo(address, msg);
                             System.out.println(msg);
+                            log.logger.info(msg);
+
+
                             textArea.append(msg + "\n");
 //                            }
 
@@ -230,6 +236,7 @@ public class ChatMessagePage extends JFrame {
                         msgToSend = currentEmployee.getName() + ": " + msgToSend;
 //                        Message msg = new Message(msgToSend, currentEmployee.getId());
                         msgSendLater.getAllMessages().add(msgToSend);
+                        log.logger.info("message sent later and the message is: " +msgSendLater);
                         sendLater(chosenEmployee.getEmployeeNumber(), msgSendLater);
 //                        messagesToSend.put(chosenEmployee.getEmployeeNumber(), msg);
                         textArea.append(msgToSend + "\n");
