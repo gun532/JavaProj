@@ -1,6 +1,5 @@
 package BL;
 
-import DTO.EmployeeDto;
 import DTO.PeerDto;
 import Entities.Employee.Cashier;
 import Entities.Employee.Employee;
@@ -10,15 +9,10 @@ import GUI.ChatMessagePage;
 import GUI.ChatPage;
 import GUI.Controller;
 import com.google.gson.Gson;
-import javafx.application.Platform;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.io.*;
 import java.net.*;
-import java.util.logging.Logger;
 
 
 public class Channel implements Runnable {
@@ -37,8 +31,10 @@ public class Channel implements Runnable {
     }
 
     public void start() {
+        running = true;
         Thread thread = new Thread(this);
         thread.start();
+
     }
 
     public void stop() {
@@ -50,8 +46,8 @@ public class Channel implements Runnable {
     public void run() {
         byte[] buffer = new byte[1024];
         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-
-        running = true;
+        Boolean isEmpty = true;
+        //running = true;
         while (running) {
             try {
                 socket.receive(packet);
@@ -83,12 +79,13 @@ public class Channel implements Runnable {
                     }
                 }
 
-
-
-
-
         } catch(IOException e){
-            e.printStackTrace();
+                for(int i = 0 ; i<buffer.length;i++)
+                {
+                    if(buffer[i] != 0)  isEmpty = false;
+                }
+                if(isEmpty) System.out.println("The buffer was empty");
+                else e.printStackTrace();
             break;
         }
 

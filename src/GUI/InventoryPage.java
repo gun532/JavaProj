@@ -229,7 +229,8 @@ public class InventoryPage extends CJPanel {
                 if (evt.getClickCount() >= 1) {
                     try {
                         chooseProductFromTable();
-                    } catch (Exception e) {
+                    } catch (IndexOutOfBoundsException e){ }
+                    catch (Exception e) {
                         e.printStackTrace();
                     }
                 }

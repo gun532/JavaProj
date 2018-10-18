@@ -9,14 +9,8 @@ import javax.net.ssl.SSLSocket;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -45,7 +39,8 @@ public class Controller {
     private final String host = "localhost";
     private final int port = 9999;
     public static SSLSocket echoSocket;
-    private final static Logger log = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+//    private final static Logger log = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private GlobalLogger log = new GlobalLogger("logs.log");
 
     // Controller constructor holds all the app pages (panels)
     public Controller() {
@@ -59,6 +54,7 @@ public class Controller {
             SSLContext context = SSLContext.getInstance("TLSv1.2");
             context.init(null,null,null);
 
+            //establish ssl connection with the server
             echoSocket = (SSLSocket) context.getSocketFactory().getDefault().createSocket(host, port);
             System.out.println("Connecting to host " + host + " on port " + port + ".");
             echoSocket.setEnabledCipherSuites(echoSocket.getSupportedCipherSuites());
@@ -132,7 +128,7 @@ public class Controller {
         }
         catch (Exception e)
         {
-            log.severe(e.getMessage());
+            log.logger.severe(e.getMessage());
         }
     }
 
@@ -143,7 +139,7 @@ public class Controller {
         }
         catch (Exception e)
         {
-            log.severe(e.getMessage());
+            log.logger.severe(e.getMessage());
         }
     }
 
@@ -156,7 +152,7 @@ public class Controller {
         }
         catch (Exception e)
         {
-            log.severe(e.getMessage());
+            log.logger.severe(e.getMessage());
         }
     }
 
@@ -170,7 +166,7 @@ public class Controller {
         }
         catch (Exception e)
         {
-            log.severe(e.getMessage());
+            log.logger.severe(e.getMessage());
         }
     }
 
@@ -183,7 +179,7 @@ public class Controller {
         }
         catch (Exception e)
         {
-            log.severe(e.getMessage());
+            log.logger.severe(e.getMessage());
         }
     }
 
@@ -193,7 +189,7 @@ public class Controller {
             employeesPage.setVisible(true);
 
         } catch (Exception e) {
-            log.severe(e.getMessage());
+            log.logger.severe(e.getMessage());
         }
     }
 
@@ -229,7 +225,7 @@ public class Controller {
                 if (JOptionPane.showConfirmDialog(appFrame, "Are you sure you want to close this window?", "Close Window?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
                 {
                     try {
-                        echoSocket.close();
+                        echoSocket.close(); //closes the connection to the server when a window is closed
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

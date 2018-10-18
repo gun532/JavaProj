@@ -136,6 +136,9 @@ public class ManagerBL {
     public boolean createReport_productSalesByBranch(int branchNumber, Product product) {
         return managerDataAccess.createReport_productSalesByBranch(branchNumber,product);
     }
+    public void closeConnection(){
+        managerDataAccess.closeConnection();
+    }
 
 //    public JSONArray createReportTotalPurchasesInBranch(int branchNumber) {
 //        try {

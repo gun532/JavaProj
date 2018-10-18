@@ -166,7 +166,7 @@ public class AddEmployeePage extends JFrame {
 
         fieldPhoneNumber.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
-                if (fieldPhoneNumber.getText().length() >= 10 || e.getKeyChar() < '0' || e.getKeyChar() > '9') // limits text field to 9 characters
+                if (fieldPhoneNumber.getText().length() >= 11 || e.getKeyChar() < '0' || e.getKeyChar() > '9') // limits text field to 9 characters
                     if (e.getKeyChar() != '-')
                         e.consume();
             }

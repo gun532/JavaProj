@@ -1,28 +1,17 @@
 package BL;
 
-import DAL.ClientsDataAccess;
-import DAL.EmployeeDataAccess;
-import DAL.InventoryDataAccess;
-import DAL.ManagerDataAccess;
-import DTO.*;
-import Entities.Branch;
-import Entities.Clients.Client;
-import Entities.Employee.Employee;
-import Entities.Inventory;
-import Entities.ShoppingCart;
-import com.google.gson.Gson;
-import org.json.JSONArray;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
-import javax.swing.*;
 import java.io.*;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 
+
+//SERVER class - to run the project please run this first before you run the controller
+//if you see - serverSocket starteed, it's ok to start the controller
 
 public class Server{
     public static final int PORT_NUMBER = 9999;
@@ -41,6 +30,7 @@ public class Server{
         System.out.println("SocketServer started");
         //ServerSocket server = null;
         try {
+            //create the ssl connection on the server side
             SSLContext context = SSLContext.getInstance("TLSv1.2");
             context.init(null, null, null);
              sslServerSocketfactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();

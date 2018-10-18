@@ -209,7 +209,7 @@ public class ChatMessagePage extends JFrame {
 //                                String msg = scanner.nextLine();
 
                             String msg = textField.getText();
-
+                            textField.setText("");
 //                                if (msg.isEmpty())
 //                                    break;
 
@@ -233,6 +233,7 @@ public class ChatMessagePage extends JFrame {
                         }
                     } else {
                         String msgToSend = textField.getText();
+                        textField.setText("");
                         msgToSend = currentEmployee.getName() + ": " + msgToSend;
 //                        Message msg = new Message(msgToSend, currentEmployee.getId());
                         msgSendLater.getAllMessages().add(msgToSend);

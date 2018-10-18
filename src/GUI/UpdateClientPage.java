@@ -30,14 +30,14 @@ public class UpdateClientPage extends JFrame {
     private JLabel labelFullName = new JLabel("Full Name:", JLabel.TRAILING);
     private JTextField fieldFullName = new JTextField(10);
 
-    private JLabel labelClientID = new JLabel("BL.Client ID:", JLabel.TRAILING);
+    private JLabel labelClientID = new JLabel("Client ID:", JLabel.TRAILING);
     private JTextField fieldClientID = new JTextField(10);
 
     private JLabel labelPhoneNumber = new JLabel("Phone Number:", JLabel.TRAILING);
     private JTextField fieldPhoneNumber = new JTextField(10);
 
 
-    private JLabel labelClientType = new JLabel("BL.Client Type:", JLabel.TRAILING);
+    private JLabel labelClientType = new JLabel("Client Type:", JLabel.TRAILING);
     private JComboBox<ClientType> cmbClientType = new JComboBox<ClientType>();
 
 
@@ -64,7 +64,7 @@ public class UpdateClientPage extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
 
-        setTitle("Edit BL.Client");
+        setTitle("Edit Client");
         setLayout(theLayout);
 
         //Build sub panel #1.
@@ -129,7 +129,7 @@ public class UpdateClientPage extends JFrame {
 
         fieldPhoneNumber.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
-                if (fieldPhoneNumber.getText().length() >= 10 || e.getKeyChar() < '0' || e.getKeyChar() > '9') // limits text field to 9 characters
+                if (fieldPhoneNumber.getText().length() >= 11 || e.getKeyChar() < '0' || e.getKeyChar() > '9') // limits text field to 9 characters
                     if (e.getKeyChar() != '-')
                         e.consume();
             }
@@ -159,7 +159,7 @@ public class UpdateClientPage extends JFrame {
 
 
                 } else {
-                    JOptionPane.showMessageDialog(new JFrame(), "BL.Client " + fieldClientID.getText() + " already in the Clients list!", "Already exists!", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(new JFrame(), "Client " + fieldClientID.getText() + " already in the Clients list!", "Already exists!", JOptionPane.ERROR_MESSAGE);
                 }
 
             } else {
@@ -186,7 +186,7 @@ public class UpdateClientPage extends JFrame {
             if(response.equals("true"))
             {
 
-                JOptionPane.showMessageDialog(new JFrame(), "BL.Client " + fieldFullName.getText() + " was updated successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(new JFrame(), "Client " + fieldFullName.getText() + " was updated successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
 
                 controller.getClientPage().setVisible(false);
                 controller.showClientPage();
@@ -194,7 +194,7 @@ public class UpdateClientPage extends JFrame {
                 setVisible(false);
             }
             else {
-                JOptionPane.showMessageDialog(new JFrame(), "BL.Client " + fieldClientID.getText() + " already in the Clients list!", "Already exists!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(new JFrame(), "Client " + fieldClientID.getText() + " already in the Clients list!", "Already exists!", JOptionPane.ERROR_MESSAGE);
             }
         } catch (IOException e1) {
             e1.printStackTrace();
